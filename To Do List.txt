@@ -1,0 +1,21 @@
+To Do List:
+
+Version 1
+Play a sound throught Java
+Play a sound depending on a user input
+Make it more Object Oriented
+Make a simple console menu
+Make the program work with already done backing tracks
+
+Version 2
+Learn Buttons
+Make the menu with buttons
+Make it OO
+Make it work on Android...
+
+Version 3
+Make the menu fancy
+Real fancy...
+Make a way for generating tracks with recordings of chords(If possible)
+
+Other stuff...
