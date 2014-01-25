@@ -11,11 +11,9 @@ Version 2
 Learn Buttons
 Make the menu with buttons
 Make it OO
-Make it work on Android...
 
 Version 3
 Make the menu fancy
 Real fancy...
-Make a way for generating tracks with recordings of chords(If possible)
 
 Other stuff...
