@@ -35,32 +35,31 @@ public class MainActivity extends Activity {
 		favourites.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				Intent FavouritesMenu = new Intent(MainActivity.this, FavouritesMenu.class);
+		        MainActivity.this.startActivity(FavouritesMenu); 
 			}
 		});
 		
 		options.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				Intent OptionsMenu = new Intent(MainActivity.this, OptionsMenu.class);
+		        MainActivity.this.startActivity(OptionsMenu); 
 			}
 		});
 		
 		credits.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				Intent CreditsMenu = new Intent(MainActivity.this, CreditsMenu.class);
+		        MainActivity.this.startActivity(CreditsMenu);  
 			}
 		});
 		
 		exit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
+				return;
 			}
 		});
 	}
@@ -71,5 +70,4 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 }

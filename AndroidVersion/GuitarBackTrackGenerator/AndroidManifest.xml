@@ -25,7 +25,22 @@
         
          <activity 
             android:name=".GenerateMenu" 
-            android:label="@string/Start">
+            android:label="Generate">
+        </activity>
+        
+         <activity 
+            android:name=".FavouritesMenu" 
+            android:label="Favourites">
+        </activity>
+         
+        <activity 
+            android:name=".OptionsMenu" 
+            android:label="Options">
+        </activity>
+         
+          <activity 
+            android:name=".CreditsMenu" 
+            android:label="Credits">
         </activity>
           
     </application>

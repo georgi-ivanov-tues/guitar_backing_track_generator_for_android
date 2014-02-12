@@ -9,51 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/buttonSlow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonFast"
-        android:layout_alignBottom="@+id/buttonFast"
-        android:layout_toLeftOf="@+id/buttonKey"
-        android:text="Slow" />
-
-    <Button
-        android:id="@+id/buttonPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonExit"
-        android:layout_alignBottom="@+id/buttonExit"
-        android:layout_toLeftOf="@+id/buttonKey"
-        android:text="Play" />
-
-    <Button
-        android:id="@+id/buttonFast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonExit"
-        android:layout_alignLeft="@+id/buttonExit"
-        android:layout_marginBottom="38dp"
-        android:text="Fast" />
-
-    <Button
-        android:id="@+id/buttonCalm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/buttonMaj"
-        android:layout_below="@+id/buttonMaj"
-        android:layout_marginTop="36dp"
-        android:text="Calm" />
-
-    <TextView
-        android:id="@+id/textMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonKey"
-        android:layout_centerHorizontal="true"
-        android:text="Mode"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <TextView
         android:id="@+id/textKey"
         android:layout_width="wrap_content"
@@ -62,6 +17,41 @@
         android:layout_centerHorizontal="true"
         android:text="Key"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <Button
+        android:id="@+id/buttonKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textKey"
+        android:layout_centerHorizontal="true"
+        android:text="Key" />
+    
+    <TextView
+        android:id="@+id/textMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonKey"
+        android:layout_centerHorizontal="true"
+        android:text="Mode"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <Button
+        android:id="@+id/buttonMaj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonMin"
+        android:layout_alignBottom="@+id/buttonMin"
+        android:layout_toLeftOf="@+id/textStyle"
+        android:text="maj" />
+    
+    <Button
+        android:id="@+id/buttonMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textMode"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/textMode"
+        android:text="min" />
 
     <TextView
         android:id="@+id/textStyle"
@@ -71,15 +61,15 @@
         android:layout_centerHorizontal="true"
         android:text="Style"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+    
     <Button
-        android:id="@+id/buttonMin"
+        android:id="@+id/buttonCalm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textMode"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/textMode"
-        android:text="min" />
+        android:layout_alignRight="@+id/buttonMaj"
+        android:layout_below="@+id/buttonMaj"
+        android:layout_marginTop="36dp"
+        android:text="Calm" />
 
     <Button
         android:id="@+id/buttonHeavy"
@@ -100,15 +90,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
-        android:id="@+id/buttonMaj"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonMin"
-        android:layout_alignBottom="@+id/buttonMin"
-        android:layout_toLeftOf="@+id/textStyle"
-        android:text="maj" />
-
-    <Button
         android:id="@+id/buttonExit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -118,11 +99,30 @@
         android:text="Exit" />
 
     <Button
-        android:id="@+id/buttonKey"
+        android:id="@+id/buttonPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textKey"
-        android:layout_centerHorizontal="true"
-        android:text="Key" />
+        android:layout_alignBaseline="@+id/buttonExit"
+        android:layout_alignBottom="@+id/buttonExit"
+        android:layout_toLeftOf="@+id/textMode"
+        android:text="Play" />
 
+    <Button
+        android:id="@+id/buttonSlow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonFast"
+        android:layout_alignBottom="@+id/buttonFast"
+        android:layout_alignRight="@+id/buttonCalm"
+        android:text="Slow" />
+
+    <Button
+        android:id="@+id/buttonFast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonExit"
+        android:layout_alignLeft="@+id/buttonExit"
+        android:layout_marginBottom="30dp"
+        android:text="Fast" />
+    
 </RelativeLayout>
