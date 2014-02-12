@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:gravity="center"
+        android:text="@string/Title"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/buttonGenerate"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Title"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="@string/Generate" />
+
+    <Button
+        android:id="@+id/buttonFavourites"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonGenerate"
+        android:layout_below="@+id/buttonGenerate"
+        android:layout_marginTop="20dp"
+        android:text="@string/Favourites" />
+
+    <Button
+        android:id="@+id/buttonOptions"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonFavourites"
+        android:layout_below="@+id/buttonFavourites"
+        android:layout_marginTop="20dp"
+        android:text="@string/Options" />
+
+    <Button
+        android:id="@+id/buttonCredits"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonOptions"
+        android:layout_below="@+id/buttonOptions"
+        android:layout_marginTop="20dp"
+        android:text="@string/Credits" />
+
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonCredits"
+        android:layout_below="@+id/buttonCredits"
+        android:layout_marginTop="20dp"
+        android:text="@string/Exit" />
+
+</RelativeLayout>
