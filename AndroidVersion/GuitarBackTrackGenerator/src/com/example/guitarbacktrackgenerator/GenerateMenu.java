@@ -9,21 +9,38 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class GenerateMenu extends Activity {
-
-		Button start;
-		TextView display;
+	
+		Button buttonKey, buttonMaj, buttonMin, buttonCalm, buttonHeavy, buttonSlow, buttonFast, buttonPlay, buttonExit;
+		TextView display; 
 
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_generate_menu);
-			start = (Button) findViewById(R.id.buttonStart);
+			buttonKey = (Button) findViewById(R.id.buttonKey);
+			buttonMaj = (Button) findViewById(R.id.buttonMaj);
+			buttonMin = (Button) findViewById(R.id.buttonMin);
+			buttonCalm = (Button) findViewById(R.id.buttonCalm);
+			buttonHeavy = (Button) findViewById(R.id.buttonHeavy);
+			buttonSlow = (Button) findViewById(R.id.buttonSlow);
+			buttonFast = (Button) findViewById(R.id.buttonFast);
+			buttonPlay = (Button) findViewById(R.id.buttonPlay);
+			buttonExit = (Button) findViewById(R.id.buttonExit);
+			
 			display = (TextView) findViewById(R.id.Title);
 
-			start.setOnClickListener(new View.OnClickListener() {
+			buttonPlay.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					
+				}
+			});
+			
+			buttonExit.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent BackToMainActivity = new Intent(GenerateMenu.this, MainActivity.class);
+					GenerateMenu.this.startActivity(BackToMainActivity); 
 				}
 			});
 		}

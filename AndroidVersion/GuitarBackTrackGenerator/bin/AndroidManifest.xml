@@ -27,7 +27,7 @@
             android:name=".GenerateMenu" 
             android:label="@string/Start">
         </activity>
-        
+          
     </application>
 
 </manifest>
