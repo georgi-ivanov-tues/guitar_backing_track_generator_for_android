@@ -35,10 +35,18 @@ Medium priority:
 
 Low priority:
   --> 7 <--
+  Title: Recording
+  Description: Being able to record your soloing over the track.
+  
+  --> 8 <--
+  Title: Playback and Delete
+  Description: Being able to playback your recorded tracks and delete them if wanted.
+  
+  --> 9 <--
   Title: Most Played Tracks
   Description: The option to sort the favourest list by most played tracks.
   
-  --> 8 <--
+  --> 10 <--
   Title: Most Used Input
   Description: The option to be able to se user's most comonly used choice of
                key, mode, style and speed.
