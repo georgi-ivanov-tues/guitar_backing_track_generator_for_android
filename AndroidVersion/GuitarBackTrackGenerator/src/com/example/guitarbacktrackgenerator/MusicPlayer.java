@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -61,10 +62,12 @@ public class MusicPlayer extends Activity{
 	}
 	
 	void GenerateBackingTrack(String[] userChoice) throws IOException{
+		Log.d("GuitarBackingTrackGenerator",userChoice[0] + " " + userChoice[1] + " " + userChoice[2] + " " + userChoice[3]);
 		ParseCSV newParseCSV = new ParseCSV();
-		ArrayList<String []> tracksThatMatchUserChoice = newParseCSV.parseCsv(userChoice, null);
+		ArrayList<String []> tracksThatMatchUserChoice = newParseCSV.parseCsv(userChoice, "../backingTracks.csv");
 		
 		BackingTrack newBackingTrack = new BackingTrack();
 		newBackingTrack.generateBackingTrack(tracksThatMatchUserChoice);
+		newBackingTrack.play();
 	}
 }

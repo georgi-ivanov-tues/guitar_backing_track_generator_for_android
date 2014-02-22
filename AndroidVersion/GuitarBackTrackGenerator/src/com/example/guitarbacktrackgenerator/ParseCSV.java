@@ -14,11 +14,12 @@ public class ParseCSV {
 		    String read = null;
 		    while((read = in.readLine()) != null){
 		        String[] splited = read.split(",");
-		        
+		        System.out.println(splited);
 		        // Key, Mode, Style, Speed, Name, Path, Link to original track
 		        if(splited[0].equals(userChoice[0]) && splited[1].equals(userChoice[1]) 
 	 			   && splited[2].equals(userChoice[2]) && splited[3].equals(userChoice[3])){
 		        	tracksThatMatchUserChoice.add(splited);
+		        	System.out.println(splited);
 		        }
 		    }
 		}catch (IOException e) {
