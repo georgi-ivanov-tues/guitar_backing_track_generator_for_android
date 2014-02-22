@@ -42,6 +42,11 @@
             android:name=".CreditsMenu" 
             android:label="Credits">
         </activity>
+        
+          <activity 
+            android:name=".MusicPlayer" 
+            android:label="MusicPlayer">
+        </activity>
           
     </application>
 

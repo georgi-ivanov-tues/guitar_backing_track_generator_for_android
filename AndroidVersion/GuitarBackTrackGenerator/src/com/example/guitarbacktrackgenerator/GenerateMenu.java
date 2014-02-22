@@ -1,5 +1,9 @@
 package com.example.guitarbacktrackgenerator;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,8 +15,11 @@ import android.widget.TextView;
 public class GenerateMenu extends Activity {
 	
 		Button buttonKey, buttonMaj, buttonMin, buttonCalm, buttonHeavy, buttonSlow, buttonFast, buttonPlay, buttonExit;
-		TextView display; 
+		TextView title; 
 
+		String key, mode, style, speed;
+		String[] userChoice = new String[4];
+		
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -27,12 +34,70 @@ public class GenerateMenu extends Activity {
 			buttonPlay = (Button) findViewById(R.id.buttonPlay);
 			buttonExit = (Button) findViewById(R.id.buttonExit);
 			
-			display = (TextView) findViewById(R.id.Title);
+			title = (TextView) findViewById(R.id.Title);
 
+			buttonKey.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					key = "A";
+				}
+			});
+			
+			buttonMaj.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mode = "maj";
+				}
+			});
+			
+			buttonMin.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mode = "min";
+				}
+			});
+			
+			buttonCalm.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					style = "calm";
+				}
+			});
+			
+			buttonHeavy.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					style = "heavy";
+				}
+			});
+			
+			buttonSlow.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					speed = "slow";
+				}
+			});
+			
+			buttonFast.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					speed = "fast";
+				}
+			});
+			
 			buttonPlay.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					userChoice[0] = key;
+					userChoice[1] = mode;
+					userChoice[2] = style;
+					userChoice[3] = speed;
 					
+					Bundle newBundle=new Bundle();
+					newBundle.putStringArray(null, userChoice);
+					Intent MusicPlayer = new Intent(GenerateMenu.this, MusicPlayer.class);
+					MusicPlayer.putExtras(newBundle);
+					GenerateMenu.this.startActivity(MusicPlayer); 
 				}
 			});
 			

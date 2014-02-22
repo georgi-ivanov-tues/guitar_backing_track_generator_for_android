@@ -10,13 +10,14 @@ import android.widget.TextView;
 
 public class CreditsMenu extends Activity {
 		Button exit;
-		TextView display;
+		TextView title;
 
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_credits_menu);
 			exit = (Button) findViewById(R.id.buttonExit);
+			title = (TextView) findViewById(R.id.Title);
 			
 			exit.setOnClickListener(new View.OnClickListener() {
 				@Override

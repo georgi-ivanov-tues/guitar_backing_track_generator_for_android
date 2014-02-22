@@ -1,0 +1,69 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:gravity="center"
+        android:text="Music Player"
+        android:textSize="20sp" />
+    
+    <TextView
+        android:id="@+id/Choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Title"
+        android:layout_centerHorizontal="true"
+        android:editable = "true"
+        android:layout_marginTop="33dp"
+        android:gravity="center"
+        android:text="Key, Mode, Style, Speed"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="38dp"
+        android:text="Exit" />
+
+    <Button
+        android:id="@+id/buttonStop"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonPause"
+        android:layout_alignLeft="@+id/buttonPause"
+        android:text="Stop" />
+
+    <Button
+        android:id="@+id/buttonPause"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonExit"
+        android:layout_alignLeft="@+id/buttonExit"
+        android:layout_alignRight="@+id/buttonExit"
+        android:text="Pause" />
+
+    <Button
+        android:id="@+id/buttonPlay"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonStop"
+        android:layout_alignLeft="@+id/buttonStop"
+        android:text="Play" />
+
+</RelativeLayout>

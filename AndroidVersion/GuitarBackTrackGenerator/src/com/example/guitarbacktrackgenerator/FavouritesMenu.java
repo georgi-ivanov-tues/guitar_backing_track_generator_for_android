@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class FavouritesMenu extends Activity{
 
 		Button buttonRemoveTrack, buttonRemoveAllTracks, exit;
-		TextView display;
+		TextView title;
 
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,7 @@ public class FavouritesMenu extends Activity{
 			buttonRemoveTrack = (Button) findViewById(R.id.buttonRemoveTrack);
 			buttonRemoveAllTracks = (Button) findViewById(R.id.buttonRemoveAllTracks);
 			exit = (Button) findViewById(R.id.buttonExit);
+			title = (TextView) findViewById(R.id.Title);
 
 			exit.setOnClickListener(new View.OnClickListener() {
 				@Override

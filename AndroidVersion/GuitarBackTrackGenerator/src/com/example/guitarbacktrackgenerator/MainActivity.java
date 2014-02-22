@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	Button generate, favourites, options, credits, exit;
-	TextView display;
+	TextView title;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 		options = (Button) findViewById(R.id.buttonOptions);
 		credits = (Button) findViewById(R.id.buttonCredits);
 		exit = (Button) findViewById(R.id.buttonExit);
-		display = (TextView) findViewById(R.id.Title);
+		title = (TextView) findViewById(R.id.Title);
 
 		generate.setOnClickListener(new View.OnClickListener() {
 			@Override
