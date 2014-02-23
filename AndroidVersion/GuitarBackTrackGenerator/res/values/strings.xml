@@ -10,5 +10,17 @@
     <string name="Credits">Credits</string>
     <string name="Exit">Exit</string>
     <string name="Start">Start</string>
+    <string name="Key">Key</string>
+    <string name="Play">Play</string>
+    <string name="Speed">Speed</string>
+    <string name="Slow">Slow</string>
+    <string name="Fast">Fast</string>
+    <string name="Style">Style</string>
+    <string name="Calm">Calm</string>
+    <string name="Heavy">Heavy</string>
+    <string name="Mode">Mode</string>
+    <string name="Major">Major</string>
+    <string name="Minor">Minor</string>
+   
 
 </resources>
