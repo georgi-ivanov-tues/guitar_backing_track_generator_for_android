@@ -26,12 +26,13 @@ public final class R {
         public static final int icon=0x7f020002;
     }
     public static final class id {
-        public static final int B=0x7f08001d;
+        public static final int B=0x7f080020;
         public static final int Choice=0x7f080017;
+        public static final int Key=0x7f08001a;
         public static final int Title=0x7f080012;
-        public static final int action_settings=0x7f08001a;
-        public static final int buttonA=0x7f08001b;
-        public static final int buttonAsharp=0x7f08001c;
+        public static final int action_settings=0x7f08001d;
+        public static final int buttonA=0x7f08001e;
+        public static final int buttonAsharp=0x7f08001f;
         public static final int buttonCalm=0x7f08000d;
         public static final int buttonCredits=0x7f080016;
         public static final int buttonExit=0x7f080002;
@@ -42,9 +43,11 @@ public final class R {
         public static final int buttonKey=0x7f080007;
         public static final int buttonMaj=0x7f080009;
         public static final int buttonMin=0x7f08000a;
+        public static final int buttonNext=0x7f08001c;
         public static final int buttonOptions=0x7f080015;
         public static final int buttonPause=0x7f080019;
         public static final int buttonPlay=0x7f080010;
+        public static final int buttonPrev=0x7f08001b;
         public static final int buttonRemoveAllTracks=0x7f080004;
         public static final int buttonRemoveTrack=0x7f080005;
         public static final int buttonSlow=0x7f080011;
@@ -64,6 +67,7 @@ public final class R {
         public static final int activity_main=0x7f030003;
         public static final int activity_music_player=0x7f030004;
         public static final int activity_options_menu=0x7f030005;
+        public static final int old_activity_options_menu=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f070000;

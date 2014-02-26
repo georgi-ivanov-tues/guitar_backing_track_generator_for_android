@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 public class GenerateMenu extends Activity {
 	
 		Button buttonKey, buttonMaj, buttonMin, buttonCalm, buttonHeavy, buttonSlow, buttonFast, buttonPlay, buttonExit;
-		TextView title; 
+		TextView title,textKey,textMode,textStyle,textSpeed; 
 
 		String key, mode, style, speed;
 		String[] userChoice = new String[4];
@@ -42,6 +43,12 @@ public class GenerateMenu extends Activity {
 			buttonExit = (Button) findViewById(R.id.buttonExit);
 			
 			title = (TextView) findViewById(R.id.Title);
+			textKey = (TextView) findViewById(R.id.textKey);
+			textMode = (TextView) findViewById(R.id.textMode);
+			textStyle = (TextView) findViewById(R.id.textStyle);
+			textSpeed = (TextView) findViewById(R.id.textSpeed);
+			
+			changeTextViewColors();
 			
 			buttonKey.setOnClickListener(new OnClickListener() {
 				 @SuppressLint("NewApi")
@@ -132,5 +139,12 @@ public class GenerateMenu extends Activity {
 			// Inflate the menu; this adds items to the action bar if it is present.
 			getMenuInflater().inflate(R.menu.main, menu);
 			return true;
+		}
+		
+		void changeTextViewColors(){
+			textKey.setTextColor(Color.parseColor("#FFFFFF"));
+			textMode.setTextColor(Color.parseColor("#FFFFFF"));
+			textStyle.setTextColor(Color.parseColor("#FFFFFF"));
+			textSpeed.setTextColor(Color.parseColor("#FFFFFF"));			
 		}
 }

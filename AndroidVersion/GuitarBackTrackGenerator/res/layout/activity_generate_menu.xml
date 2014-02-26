@@ -45,15 +45,6 @@
         android:layout_toLeftOf="@+id/textStyle"
         android:text="@string/Major" />
 
-    <Button
-        android:id="@+id/buttonMin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textMode"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/textMode"
-        android:text="@string/Minor" />
-
     <TextView
         android:id="@+id/textStyle"
         android:layout_width="wrap_content"
@@ -91,15 +82,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
-        android:id="@+id/buttonExit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonHeavy"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="46dp"
-        android:text="@string/Exit" />
-
-    <Button
         android:id="@+id/buttonPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -125,5 +107,23 @@
         android:layout_alignLeft="@+id/buttonExit"
         android:layout_marginBottom="30dp"
         android:text="@string/Fast" />
+
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonHeavy"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="14dp"
+        android:text="@string/Exit" />
+
+    <Button
+        android:id="@+id/buttonMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textMode"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@+id/buttonKey"
+        android:text="@string/Minor" />
 
 </RelativeLayout>
