@@ -5,11 +5,17 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View.OnClickListener; 
 import android.widget.TextView;
 
 public class GenerateMenu extends Activity {
@@ -20,6 +26,7 @@ public class GenerateMenu extends Activity {
 		String key, mode, style, speed;
 		String[] userChoice = new String[4];
 		
+		@SuppressLint("NewApi")
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -35,12 +42,22 @@ public class GenerateMenu extends Activity {
 			buttonExit = (Button) findViewById(R.id.buttonExit);
 			
 			title = (TextView) findViewById(R.id.Title);
-
-			buttonKey.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					key = "A";
-				}
+			
+			buttonKey.setOnClickListener(new OnClickListener() {
+				 @SuppressLint("NewApi")
+				@Override  
+		           public void onClick(View v) {  
+		            PopupMenu pop_up = new PopupMenu(GenerateMenu.this, buttonKey);  
+		            pop_up.getMenuInflater().inflate(R.menu.pop_up_menu, pop_up.getMenu());  
+		            pop_up.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {  
+		             @SuppressLint("NewApi")
+					public boolean onMenuItemClick(MenuItem item) {  
+		              Toast.makeText(GenerateMenu.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();  
+		              return true;  
+		             }  
+		            });  
+		            pop_up.show();
+		           } 
 			});
 			
 			buttonMaj.setOnClickListener(new View.OnClickListener() {
