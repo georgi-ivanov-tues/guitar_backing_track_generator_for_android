@@ -1,2 +1,0 @@
-String workingDir = System.getProperty("user.dir");
-System.out.println("Current working directory : " + workingDir);
