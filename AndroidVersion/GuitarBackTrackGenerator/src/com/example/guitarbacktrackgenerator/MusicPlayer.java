@@ -1,17 +1,12 @@
 package com.example.guitarbacktrackgenerator;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.AssetManager;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -34,13 +29,12 @@ public class MusicPlayer extends Activity{
 		title = (TextView) findViewById(R.id.Title);
 		displayUserChoice = (TextView) findViewById(R.id.Choice);
 		
+		changeTextViewColors();
+		
 		Bundle newBundle=this.getIntent().getExtras();
 		final String[] userChoice = newBundle.getStringArray(null);
 		
-		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " " + userChoice[2] + " " + userChoice[3]);
-		
-		String workingDir = System.getProperty("user.dir");
-		System.out.println("Current working directory : " + workingDir);
+		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " " + userChoice[2]);
 		
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -71,37 +65,24 @@ public class MusicPlayer extends Activity{
 	}
 	
 	void GenerateBackingTrack(String[] userChoice) throws IOException{
-		Log.d("GuitarBackingTrackGenerator",userChoice[0] + " " + userChoice[1] + " " + userChoice[2] + " " + userChoice[3]);
+		Log.d("GuitarBackingTrackGenerator",userChoice[0] + " " + userChoice[1] + " " + userChoice[2]);
+		
 		ParseCSV newParseCSV = new ParseCSV();
 		
-		File file = new File("assets/backingTracks.csv");
-		String filePath = file.getAbsolutePath();
-		if (file.exists()){
-			displayUserChoice.setText("Exists");
-		}
-		else{
-			displayUserChoice.setText("Does not exist");
-		}
+		ArrayList<String []> tracksThatMatchUserChoice = newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv"));
 		
-//		AssetManager assetManager = getResources().getAssets();
-//		InputStream inputStream = null;
-//	    try {
-//	        inputStream = assetManager.open("backingTracks.csv");
-//	            if ( inputStream != null)
-//	            	displayUserChoice.setText("It worked!");
-//	            else
-//	            	displayUserChoice.setText("It did not work!");
-//	        } catch (IOException e) {
-//	            e.printStackTrace();
-//	        }
-//	    
-	   
-		ArrayList<String []> tracksThatMatchUserChoice = newParseCSV.parseCsv(userChoice,filePath);
+		String tracks = Integer.toString(tracksThatMatchUserChoice.size());
+		Log.d("GuitarBackingTrackGenerator",tracks); // Printign in LogCat
 		
-		//displayUserChoice.setText("" + tracksThatMatchUserChoice);
+		displayUserChoice.setText("Tracks that match = " + tracksThatMatchUserChoice.size());
 		
 		//BackingTrack newBackingTrack = new BackingTrack();
 		//newBackingTrack.generateBackingTrack(tracksThatMatchUserChoice);
 		//newBackingTrack.play();
+	}
+	
+	void changeTextViewColors(){
+		title.setTextColor(Color.parseColor("#FFFFFF"));
+		displayUserChoice.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 }

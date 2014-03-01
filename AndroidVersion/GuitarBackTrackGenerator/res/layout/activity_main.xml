@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/icon"
+    android:background="@drawable/background"
     tools:context=".MainActivity" >
 
     <TextView
@@ -57,14 +57,5 @@
         android:layout_below="@+id/buttonOptions"
         android:layout_marginTop="20dp"
         android:text="@string/Credits" />
-
-    <Button
-        android:id="@+id/buttonExit"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonCredits"
-        android:layout_below="@+id/buttonCredits"
-        android:layout_marginTop="20dp"
-        android:text="@string/Exit" />
 
 </RelativeLayout>

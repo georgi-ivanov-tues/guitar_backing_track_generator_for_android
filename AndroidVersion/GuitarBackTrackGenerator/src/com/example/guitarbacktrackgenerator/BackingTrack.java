@@ -54,7 +54,7 @@ public class BackingTrack{
 	public void generateBackingTrack(ArrayList<String[]> tracksThatMatchUserChoice){
 		int randomNum = (int)(Math.random()*tracksThatMatchUserChoice.size());		
 		// Key, Mode, Style, Speed, Name, Path, Link to original track
-		setFileName(tracksThatMatchUserChoice.get(randomNum)[5]); //filename = Linka na random track
+		setFileName(tracksThatMatchUserChoice.get(randomNum)[4]); //filename = Linka na random track
 
 		//setFileName("/Backing Tracks/acoustic rock backing track  in a minor.mp3"); //filename = Linka na random track
 
