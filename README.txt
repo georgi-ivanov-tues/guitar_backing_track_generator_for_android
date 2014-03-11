@@ -1,6 +1,6 @@
 Guitar Backing Track Generator for Android
 
-This is a school project craeted by Georgi Ivanov and Nedelcho Delchev,
+This is a school project created by Georgi Ivanov and Nedelcho Delchev,
 students in 11-th grade in the "Technological School of Electronic Systems"
 in Sofia, Bulgaria, for the subject "Technology of Programing" with teacher
 Kiril Mitov.
