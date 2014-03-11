@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -36,21 +37,33 @@ public class MusicPlayer extends Activity{
 		
 		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " " + userChoice[2]);
 		
+		final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.blues_backing_track_in_em);
+		
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					GenerateBackingTrack(userChoice);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				mediaPlayer.start();
+			}
+		});
+		
+		buttonPause.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mediaPlayer.pause();
+			}
+		});
+		
+		buttonStop.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mediaPlayer.stop();
 			}
 		});
 		
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mediaPlayer.stop();
 				Intent BackToGenerateMenuActivity = new Intent(MusicPlayer.this, GenerateMenu.class);
 				MusicPlayer.this.startActivity(BackToGenerateMenuActivity); 
 			}
@@ -72,7 +85,7 @@ public class MusicPlayer extends Activity{
 		ArrayList<String []> tracksThatMatchUserChoice = newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv"));
 		
 		String tracks = Integer.toString(tracksThatMatchUserChoice.size());
-		Log.d("GuitarBackingTrackGenerator",tracks); // Printign in LogCat
+		Log.d("GuitarBackingTrackGenerator",tracks); // Printing in LogCat
 		
 		displayUserChoice.setText("Tracks that match = " + tracksThatMatchUserChoice.size());
 		

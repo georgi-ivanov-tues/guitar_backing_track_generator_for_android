@@ -21,7 +21,6 @@ public class MainActivity extends Activity {
 		favourites = (Button) findViewById(R.id.buttonFavourites);
 		options = (Button) findViewById(R.id.buttonOptions);
 		credits = (Button) findViewById(R.id.buttonCredits);
-		
 		title = (TextView) findViewById(R.id.Title);
 
 		generate.setOnClickListener(new View.OnClickListener() {
