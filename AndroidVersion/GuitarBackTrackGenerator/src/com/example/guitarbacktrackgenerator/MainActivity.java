@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	Button generate, favourites, options, credits, exit;
+	Button generate, favourites, options, credits;
 	TextView title;
 
 	@Override
@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
 		favourites = (Button) findViewById(R.id.buttonFavourites);
 		options = (Button) findViewById(R.id.buttonOptions);
 		credits = (Button) findViewById(R.id.buttonCredits);
-		exit = (Button) findViewById(R.id.buttonExit);
+		
 		title = (TextView) findViewById(R.id.Title);
 
 		generate.setOnClickListener(new View.OnClickListener() {
@@ -53,13 +53,6 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				Intent CreditsMenu = new Intent(MainActivity.this, CreditsMenu.class);
 		        MainActivity.this.startActivity(CreditsMenu);  
-			}
-		});
-		
-		exit.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				return;
 			}
 		});
 	}

@@ -1,2 +1,0 @@
-Name, Path, Key, Mode, Style, Speed, Length, Link to original track
-Track1, C:/..., G, min, Calm, Slow, Long, http://www.youtube.com/watch?v=d5qbm1_Jzck
