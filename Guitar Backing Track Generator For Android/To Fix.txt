@@ -1,4 +1,0 @@
-It's still not case sensitive
-Test it better
-Add exceptions
-...

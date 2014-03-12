@@ -1,14 +1,11 @@
 package com.example.guitarbacktrackgenerator;
 
-import java.io.IOException;
-import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -33,11 +30,14 @@ public class MusicPlayer extends Activity{
 		changeTextViewColors();
 		
 		Bundle newBundle=this.getIntent().getExtras();
-		final String[] userChoice = newBundle.getStringArray(null);
+		String[] userChoice = newBundle.getStringArray(null);
 		
-		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " " + userChoice[2]);
+		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " " + userChoice[2] + " " + userChoice[3]);
 		
-		final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.blues_backing_track_in_em);
+		int sound_id = this.getResources().getIdentifier(userChoice[3], "raw",this.getPackageName());
+		//if(sound_id != 0) {
+			final MediaPlayer mediaPlayer = MediaPlayer.create(this, sound_id);
+		//}
 		
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -77,22 +77,6 @@ public class MusicPlayer extends Activity{
 		return true;
 	}
 	
-	void GenerateBackingTrack(String[] userChoice) throws IOException{
-		Log.d("GuitarBackingTrackGenerator",userChoice[0] + " " + userChoice[1] + " " + userChoice[2]);
-		
-		ParseCSV newParseCSV = new ParseCSV();
-		
-		ArrayList<String []> tracksThatMatchUserChoice = newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv"));
-		
-		String tracks = Integer.toString(tracksThatMatchUserChoice.size());
-		Log.d("GuitarBackingTrackGenerator",tracks); // Printing in LogCat
-		
-		displayUserChoice.setText("Tracks that match = " + tracksThatMatchUserChoice.size());
-		
-		//BackingTrack newBackingTrack = new BackingTrack();
-		//newBackingTrack.generateBackingTrack(tracksThatMatchUserChoice);
-		//newBackingTrack.play();
-	}
 	
 	void changeTextViewColors(){
 		title.setTextColor(Color.parseColor("#FFFFFF"));

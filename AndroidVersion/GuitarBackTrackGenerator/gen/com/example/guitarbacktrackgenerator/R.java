@@ -72,6 +72,8 @@ public final class R {
     public static final class raw {
         public static final int acoustic_rock_backing_track_in_a_minor=0x7f040000;
         public static final int blues_backing_track_in_em=0x7f040001;
+        public static final int c_minor_rock_ballad_guitar_backing_track=0x7f040002;
+        public static final int e_minor_sad_backing_track_acoustic_ballad=0x7f040003;
     }
     public static final class string {
         public static final int Calm=0x7f06000f;

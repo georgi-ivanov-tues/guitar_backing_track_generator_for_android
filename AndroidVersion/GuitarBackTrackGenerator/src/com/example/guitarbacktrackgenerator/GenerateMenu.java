@@ -1,9 +1,13 @@
 package com.example.guitarbacktrackgenerator;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -98,11 +102,17 @@ public class GenerateMenu extends Activity {
 				userChoice[1] = mode;
 				userChoice[2] = style;
 				
-				Bundle newBundle=new Bundle();
-				newBundle.putStringArray(null, userChoice);
-				Intent MusicPlayer = new Intent(GenerateMenu.this, MusicPlayer.class);
-				MusicPlayer.putExtras(newBundle);
-				GenerateMenu.this.startActivity(MusicPlayer); 
+				try {
+					String[] track = GenerateBackingTrack(userChoice);
+					Bundle newBundle=new Bundle();
+					newBundle.putStringArray(null, track);
+					Intent MusicPlayer = new Intent(GenerateMenu.this, MusicPlayer.class);
+					MusicPlayer.putExtras(newBundle);
+					GenerateMenu.this.startActivity(MusicPlayer); 
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		
@@ -123,37 +133,27 @@ public class GenerateMenu extends Activity {
 	}
 	
 	void changeKey(int keyCounter){
-		String currentKey;
-		switch (keyCounter) {
-	        case 1:  currentKey = "A";
-	                 break;
-	        case 2:  currentKey = "A#";
-	                 break;
-	        case 3:  currentKey = "B";
-	                 break;
-	        case 4:  currentKey = "C";
-	                 break;
-	        case 5:  currentKey = "C#";
-	                 break;
-	        case 6:  currentKey = "D";
-	                 break;
-	        case 7:  currentKey = "D#";
-	                 break;
-	        case 8:  currentKey = "E";
-	                 break;
-	        case 9:  currentKey = "F";
-	                 break;
-	        case 10: currentKey = "F#";
-	                 break;
-	        case 11: currentKey = "G";
-	                 break;
-	        case 12: currentKey = "G#";
-	                 break;
-	        default: currentKey = "null";
-	                 break;
-	    }
+		String[] currentKey = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
 		textKeyChosen.setText("" + currentKey);
-		key = currentKey;
+		key = currentKey[keyCounter];
+	}
+	
+	String[] GenerateBackingTrack(String[] userChoice) throws IOException{
+		ParseCSV newParseCSV = new ParseCSV();
+		
+		ArrayList<String []> tracksThatMatchUserChoice = newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv"));
+		
+		String tracks = Integer.toString(tracksThatMatchUserChoice.size());
+		Log.d("GuitarBackingTrackGenerator",tracks); 
+		
+		return getRandomTrack(tracksThatMatchUserChoice);
+	}
+	
+	String[] getRandomTrack(ArrayList<String[]> tracksThatMatchUserChoice){
+		int randomNum = (int)(Math.random()*tracksThatMatchUserChoice.size());		
+		// Key, Mode, Style, Speed, Name, Path, Link to original track
+		String[] randomTrack = tracksThatMatchUserChoice.get(randomNum);
+		return randomTrack;		
 	}
 	
 	void changeTextViewColors(){
