@@ -3,7 +3,6 @@ package com.example.guitarbacktrackgenerator;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +18,7 @@ public class CreditsMenu extends Activity {
 		setContentView(R.layout.activity_credits_menu);
 		exit = (Button) findViewById(R.id.buttonExit);
 		title = (TextView) findViewById(R.id.Title);
-		changeTextViewColors();
+		//changeTextViewColors();
 		
 		exit.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -37,7 +36,7 @@ public class CreditsMenu extends Activity {
 		return true;
 	}
 	
-	void changeTextViewColors(){
-		title.setTextColor(Color.parseColor("#FFFFFF"));
-	}
+//	void changeTextViewColors(){
+//		title.setTextColor(Color.parseColor("#FFFFFF"));
+//	}
 }

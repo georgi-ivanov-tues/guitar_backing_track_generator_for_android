@@ -2,12 +2,10 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -16,12 +14,12 @@ import android.widget.TextView;
 public class GenerateMenu extends Activity {
 	
 	Button buttonPrev,buttonNext, buttonMaj, buttonMin, buttonCalm, buttonHeavy, buttonPlay, buttonExit;
-	TextView title,textKey,textMode,textStyle, textKeyChosen; 
+	TextView title,textKey,textMode,textStyle, textKeyChosen,warning; 
 	
-	String key = "A", mode, style; // Key is A by default
+	String key = "A", mode, style;
 	String[] userChoice = new String[3];
 	
-	int keyCounter = 1;
+	int keyCounter = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,14 +38,15 @@ public class GenerateMenu extends Activity {
 		textMode = (TextView) findViewById(R.id.textMode);
 		textStyle = (TextView) findViewById(R.id.textStyle);
 		textKeyChosen = (TextView) findViewById(R.id.Key);
+		warning = (TextView) findViewById(R.id.textWarning);
 		
 		changeTextViewColors();
 		
 		buttonPrev.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(keyCounter == 1)
-					keyCounter = 12;
+				if(keyCounter == 0)
+					keyCounter = 11;
 				else
 					keyCounter--;
 				
@@ -58,8 +57,8 @@ public class GenerateMenu extends Activity {
 		buttonNext.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(keyCounter == 12)
-					keyCounter = 1;
+				if(keyCounter == 11)
+					keyCounter = 0;
 				else
 					keyCounter++;
 				
@@ -102,16 +101,20 @@ public class GenerateMenu extends Activity {
 				userChoice[1] = mode;
 				userChoice[2] = style;
 				
-				try {
-					String[] track = GenerateBackingTrack(userChoice);
-					Bundle newBundle=new Bundle();
-					newBundle.putStringArray(null, track);
-					Intent MusicPlayer = new Intent(GenerateMenu.this, MusicPlayer.class);
-					MusicPlayer.putExtras(newBundle);
-					GenerateMenu.this.startActivity(MusicPlayer); 
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(mode == null || style == null){
+					warning.setText("Please choose key, mode and style before clicking play!");
+				}else{
+					try {
+						String[] track = GenerateBackingTrack(userChoice);
+						Bundle newBundle=new Bundle();
+						newBundle.putStringArray(null, track);
+						Intent MusicPlayer = new Intent(GenerateMenu.this, MusicPlayer.class);
+						MusicPlayer.putExtras(newBundle);
+						GenerateMenu.this.startActivity(MusicPlayer); 
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		});
@@ -124,6 +127,17 @@ public class GenerateMenu extends Activity {
 			}
 		});
 	}
+	
+//	public void onBackPressed() {
+//	   Log.d("CDA", "onBackPressed Called");
+//	   Intent setIntent = new Intent(Intent.ACTION_MAIN);
+//	   setIntent.addCategory(Intent.CATEGORY_HOME);
+//	   setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//	   startActivity(setIntent);
+//	   
+//	   Intent BackToMainActivity = new Intent(GenerateMenu.this, MainActivity.class);
+//	   GenerateMenu.this.startActivity(BackToMainActivity); 
+//	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -134,24 +148,17 @@ public class GenerateMenu extends Activity {
 	
 	void changeKey(int keyCounter){
 		String[] currentKey = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
-		textKeyChosen.setText("" + currentKey);
 		key = currentKey[keyCounter];
+		textKeyChosen.setText("" + key);
 	}
 	
 	String[] GenerateBackingTrack(String[] userChoice) throws IOException{
 		ParseCSV newParseCSV = new ParseCSV();
-		
-		ArrayList<String []> tracksThatMatchUserChoice = newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv"));
-		
-		String tracks = Integer.toString(tracksThatMatchUserChoice.size());
-		Log.d("GuitarBackingTrackGenerator",tracks); 
-		
-		return getRandomTrack(tracksThatMatchUserChoice);
+		return getRandomTrack(newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv")));
 	}
 	
 	String[] getRandomTrack(ArrayList<String[]> tracksThatMatchUserChoice){
 		int randomNum = (int)(Math.random()*tracksThatMatchUserChoice.size());		
-		// Key, Mode, Style, Speed, Name, Path, Link to original track
 		String[] randomTrack = tracksThatMatchUserChoice.get(randomNum);
 		return randomTrack;		
 	}
@@ -161,5 +168,6 @@ public class GenerateMenu extends Activity {
 		textMode.setTextColor(Color.parseColor("#FFFFFF"));
 		textStyle.setTextColor(Color.parseColor("#FFFFFF"));
 		textKeyChosen.setTextColor(Color.parseColor("#FFFFFF"));
+		warning.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 }
