@@ -66,15 +66,6 @@
         android:text="Next" />
 
     <Button
-        android:id="@+id/buttonExit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonPlay"
-        android:layout_alignBottom="@+id/buttonPlay"
-        android:layout_alignRight="@+id/buttonMin"
-        android:text="@string/Exit" />
-
-    <Button
         android:id="@+id/buttonMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,15 +73,6 @@
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/textStyle"
         android:text="@string/Minor" />
-
-    <Button
-        android:id="@+id/buttonPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="63dp"
-        android:layout_toLeftOf="@+id/textStyle"
-        android:text="@string/Play" />
 
     <Button
         android:id="@+id/buttonMaj"
@@ -119,13 +101,51 @@
         android:text="@string/Mode"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <Button
+        android:id="@+id/buttonPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonRandomize"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/buttonRandomize"
+        android:layout_marginBottom="51dp"
+        android:text="@string/Play" />
+
+    <Button
+        android:id="@+id/buttonRandomize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonPlay"
+        android:layout_alignRight="@+id/textStyle"
+        android:text="Randomize" />
+
+    <Button
+        android:id="@+id/buttonClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonRandomize"
+        android:layout_alignBottom="@+id/buttonRandomize"
+        android:layout_alignRight="@+id/buttonExit"
+        android:layout_toRightOf="@+id/textKey"
+        android:text="Clear" />
+
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonPlay"
+        android:layout_alignBottom="@+id/buttonPlay"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="29dp"
+        android:layout_toRightOf="@+id/textKey"
+        android:text="@string/Exit" />
+
     <TextView
         android:id="@+id/textWarning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonExit"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_toLeftOf="@+id/buttonMin"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

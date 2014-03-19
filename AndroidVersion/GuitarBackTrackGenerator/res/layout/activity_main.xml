@@ -58,4 +58,13 @@
         android:layout_marginTop="20dp"
         android:text="@string/Credits" />
 
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonCredits"
+        android:layout_below="@+id/buttonCredits"
+        android:layout_marginTop="20dp"
+        android:text="@string/Exit" />
+
 </RelativeLayout>

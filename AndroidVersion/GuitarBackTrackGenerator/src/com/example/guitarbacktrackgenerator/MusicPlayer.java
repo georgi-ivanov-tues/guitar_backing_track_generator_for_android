@@ -33,37 +33,39 @@ public class MusicPlayer extends Activity{
 		String[] userChoice = newBundle.getStringArray(null);
 		
 		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " " + userChoice[2] + " " + userChoice[3]);
-		
-		int sound_id = this.getResources().getIdentifier(userChoice[3], "raw",this.getPackageName());
-		//if(sound_id != 0) {
-			final MediaPlayer mediaPlayer = MediaPlayer.create(this, sound_id);
-		//}
-		
-		buttonPlay.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mediaPlayer.start();
-			}
-		});
-		
-		buttonPause.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mediaPlayer.pause();
-			}
-		});
-		
-		buttonStop.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mediaPlayer.stop();
-			}
-		});
-		
+
+//		FIX PLAYER TO PLAY VIA URL's	
+//		
+//		int sound_id = this.getResources().getIdentifier(userChoice[3], "raw",this.getPackageName());
+//		//if(sound_id != 0) {
+//			final MediaPlayer mediaPlayer = MediaPlayer.create(this, sound_id);
+//		//}
+//		
+//		buttonPlay.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				mediaPlayer.start();
+//			}
+//		});
+//		
+//		buttonPause.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				mediaPlayer.pause();
+//			}
+//		});
+//		
+//		buttonStop.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				mediaPlayer.stop();
+//			}
+//		});
+//		
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mediaPlayer.stop();
+				//mediaPlayer.stop();
 				Intent BackToGenerateMenuActivity = new Intent(MusicPlayer.this, GenerateMenu.class);
 				MusicPlayer.this.startActivity(BackToGenerateMenuActivity); 
 			}

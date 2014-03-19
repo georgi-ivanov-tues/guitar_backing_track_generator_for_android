@@ -17,7 +17,6 @@ public class ParseCSV{
 		    	}
 		    }
 		}catch (Exception e) {}
-	  		
 		return tracksThatMatchUserChoice;
 	}
 }

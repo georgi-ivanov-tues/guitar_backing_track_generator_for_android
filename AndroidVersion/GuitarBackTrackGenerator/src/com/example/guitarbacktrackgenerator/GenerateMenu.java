@@ -2,10 +2,12 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +15,7 @@ import android.widget.TextView;
 
 public class GenerateMenu extends Activity {
 	
-	Button buttonPrev,buttonNext, buttonMaj, buttonMin, buttonCalm, buttonHeavy, buttonPlay, buttonExit;
+	Button buttonPrev,buttonNext, buttonMaj, buttonMin, buttonCalm, buttonHeavy, buttonRadomize, buttonClear, buttonPlay, buttonExit;
 	TextView title,textKey,textMode,textStyle, textKeyChosen,warning; 
 	
 	String key = "A", mode, style;
@@ -30,6 +32,8 @@ public class GenerateMenu extends Activity {
 		buttonMin = (Button) findViewById(R.id.buttonMin);
 		buttonCalm = (Button) findViewById(R.id.buttonCalm);
 		buttonHeavy = (Button) findViewById(R.id.buttonHeavy);
+		buttonRadomize = (Button) findViewById(R.id.buttonRandomize);
+		buttonClear = (Button) findViewById(R.id.buttonClear);
 		buttonPlay = (Button) findViewById(R.id.buttonPlay);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
 		
@@ -94,6 +98,38 @@ public class GenerateMenu extends Activity {
 			}
 		});
 		
+		buttonRadomize.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				changeKey(getRandomNumber(12));
+				if(getRandomNumber(2) == 0){
+					mode = "min";
+				}else{
+					mode = "maj";
+				}
+				
+				if(getRandomNumber(2) == 0){
+					style = "calm";
+				}else{
+					style = "heavy";
+				}
+				
+				Log.d("", mode);
+				Log.d("", style);
+			}
+		});
+		
+		buttonClear.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				key = "A";
+				keyCounter = 0;
+				textKeyChosen.setText("A");
+				mode = null;
+				style = null;
+			}
+		});
+		
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -105,12 +141,18 @@ public class GenerateMenu extends Activity {
 					warning.setText("Please choose key, mode and style before clicking play!");
 				}else{
 					try {
-						String[] track = GenerateBackingTrack(userChoice);
-						Bundle newBundle=new Bundle();
-						newBundle.putStringArray(null, track);
-						Intent MusicPlayer = new Intent(GenerateMenu.this, MusicPlayer.class);
-						MusicPlayer.putExtras(newBundle);
-						GenerateMenu.this.startActivity(MusicPlayer); 
+						ArrayList<String[]>tracksThatMatchUserChoice = FindBackingTracks(userChoice);
+						
+						if(tracksThatMatchUserChoice.size() == 0){
+							warning.setText("No track matching your input... Sorry :(");
+						}else{
+							String[] track = getRandomTrack(tracksThatMatchUserChoice);
+							Bundle newBundle=new Bundle();
+							newBundle.putStringArray(null, track);
+							Intent MusicPlayer = new Intent(GenerateMenu.this, MusicPlayer.class);
+							MusicPlayer.putExtras(newBundle);
+							GenerateMenu.this.startActivity(MusicPlayer); 
+						}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -127,17 +169,6 @@ public class GenerateMenu extends Activity {
 			}
 		});
 	}
-	
-//	public void onBackPressed() {
-//	   Log.d("CDA", "onBackPressed Called");
-//	   Intent setIntent = new Intent(Intent.ACTION_MAIN);
-//	   setIntent.addCategory(Intent.CATEGORY_HOME);
-//	   setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//	   startActivity(setIntent);
-//	   
-//	   Intent BackToMainActivity = new Intent(GenerateMenu.this, MainActivity.class);
-//	   GenerateMenu.this.startActivity(BackToMainActivity); 
-//	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -149,18 +180,23 @@ public class GenerateMenu extends Activity {
 	void changeKey(int keyCounter){
 		String[] currentKey = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
 		key = currentKey[keyCounter];
-		textKeyChosen.setText("" + key);
+		textKeyChosen.setText(key);
 	}
 	
-	String[] GenerateBackingTrack(String[] userChoice) throws IOException{
+	ArrayList<String[]> FindBackingTracks(String[] userChoice) throws IOException{
 		ParseCSV newParseCSV = new ParseCSV();
-		return getRandomTrack(newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv")));
+		//return getRandomTrack(newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv")));
+		return newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv"));
 	}
 	
 	String[] getRandomTrack(ArrayList<String[]> tracksThatMatchUserChoice){
-		int randomNum = (int)(Math.random()*tracksThatMatchUserChoice.size());		
+		int randomNum = (int)(Math.random()*tracksThatMatchUserChoice.size());	
 		String[] randomTrack = tracksThatMatchUserChoice.get(randomNum);
 		return randomTrack;		
+	}
+	
+	int getRandomNumber(int max){
+		return (int)(Math.random()*max);
 	}
 	
 	void changeTextViewColors(){
