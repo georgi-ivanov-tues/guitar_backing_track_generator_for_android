@@ -8,6 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/background"
+    android:screenOrientation="portrait"
     tools:context=".MainActivity" >
 
     <TextView
@@ -16,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Credits"
+        android:text="@string/Credits"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
@@ -36,7 +37,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="54dp"
-        android:text="Exit" />
+        android:text="@string/Exit" />
 
     
 </RelativeLayout>

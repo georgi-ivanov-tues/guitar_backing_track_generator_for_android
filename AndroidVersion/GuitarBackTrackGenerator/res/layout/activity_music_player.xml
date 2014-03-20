@@ -8,6 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/background"
+    android:screenOrientation="portrait"
     tools:context=".MainActivity" >
 
     <TextView
@@ -18,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
         android:gravity="center"
-        android:text="Music Player"
+        android:text="@string/Music_Player"
         android:textSize="20sp" />
     
     <TextView
@@ -40,7 +41,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="38dp"
-        android:text="Exit" />
+        android:text="@string/Exit" />
 
     <Button
         android:id="@+id/buttonStop"
@@ -48,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonPause"
         android:layout_alignLeft="@+id/buttonPause"
-        android:text="Stop" />
+        android:text="@string/Stop" />
 
     <Button
         android:id="@+id/buttonPause"
@@ -57,7 +58,7 @@
         android:layout_above="@+id/buttonExit"
         android:layout_alignLeft="@+id/buttonExit"
         android:layout_alignRight="@+id/buttonExit"
-        android:text="Pause" />
+        android:text="@string/Pause" />
 
     <Button
         android:id="@+id/buttonPlay"
@@ -65,6 +66,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonStop"
         android:layout_alignLeft="@+id/buttonStop"
-        android:text="Play" />
+        android:text="@string/Play" />
 
 </RelativeLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="app_name">Guitar Backing Track Generator</string>
     <string name="action_settings">Settings</string>
@@ -9,18 +9,24 @@
     <string name="Options">Options</string>
     <string name="Credits">Credits</string>
     <string name="Exit">Exit</string>
-    <string name="Start">Start</string>
+    <string name="Stop">Start</string>
+    <string name="Start">Stop</string>
     <string name="Key">Key</string>
     <string name="Play">Play</string>
     <string name="Speed">Speed</string>
-    <string name="Slow">Slow</string>
-    <string name="Fast">Fast</string>
+    <string name="Prev">Prev</string>
+    <string name="Next">Next</string>
     <string name="Style">Style</string>
     <string name="Calm">Calm</string>
     <string name="Heavy">Heavy</string>
     <string name="Mode">Mode</string>
     <string name="Major">Major</string>
     <string name="Minor">Minor</string>
+    <string name="Pause">Pause</string>
+    <string name="Randomize">Randomize</string>
+    <string name="Clear">Clear</string>
+     <string name="Music_Player">Music Player</string>
+    
    
 
 </resources>

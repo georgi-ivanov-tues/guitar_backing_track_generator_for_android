@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:screenOrientation="portrait"
     tools:context=".MainActivity" >
 
     <TextView
@@ -54,7 +55,7 @@
         android:layout_alignBaseline="@+id/Key"
         android:layout_alignBottom="@+id/Key"
         android:layout_alignRight="@+id/buttonMaj"
-        android:text="Prev" />
+        android:text="@string/Prev" />
 
     <Button
         android:id="@+id/buttonNext"
@@ -117,7 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonPlay"
         android:layout_alignRight="@+id/textStyle"
-        android:text="Randomize" />
+        android:text="@string/Randomize" />
 
     <Button
         android:id="@+id/buttonClear"
@@ -127,7 +128,7 @@
         android:layout_alignBottom="@+id/buttonRandomize"
         android:layout_alignRight="@+id/buttonExit"
         android:layout_toRightOf="@+id/textKey"
-        android:text="Clear" />
+        android:text="@string/Clear" />
 
     <Button
         android:id="@+id/buttonExit"
