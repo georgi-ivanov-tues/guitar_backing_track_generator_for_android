@@ -184,9 +184,8 @@ public class GenerateMenu extends Activity {
 	}
 	
 	ArrayList<String[]> FindBackingTracks(String[] userChoice) throws IOException{
-		ParseCSV newParseCSV = new ParseCSV();
-		//return getRandomTrack(newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv")));
-		return newParseCSV.parseCsv(userChoice,getAssets().open("backingTracks.csv"));
+		CsvReader newCsvReader = new CsvReader();
+		return newCsvReader.parseCsv(userChoice,getAssets().open(userChoice[0]+"_Backing_Tracks.csv"));
 	}
 	
 	String[] getRandomTrack(ArrayList<String[]> tracksThatMatchUserChoice){

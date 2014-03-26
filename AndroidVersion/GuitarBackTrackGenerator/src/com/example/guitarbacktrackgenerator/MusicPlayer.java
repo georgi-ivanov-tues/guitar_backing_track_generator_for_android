@@ -1,8 +1,6 @@
 package com.example.guitarbacktrackgenerator;
 
-
 import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,8 +15,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MusicPlayer extends Activity implements OnErrorListener, OnPreparedListener{
-	Button buttonExit, buttonPlay, buttonPause, buttonStop;
+	Button buttonExit, buttonPlay, buttonPause, buttonAddToFavourites, buttonStop;
 	TextView title, displayUserChoice;
+	String[] userChoice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +27,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		buttonPlay = (Button) findViewById(R.id.buttonPlay);
 		buttonPause = (Button) findViewById(R.id.buttonPause);
 		buttonStop = (Button) findViewById(R.id.buttonStop);
+		buttonAddToFavourites = (Button) findViewById(R.id.buttonAddToFavourites);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
 		title = (TextView) findViewById(R.id.Title);
 		displayUserChoice = (TextView) findViewById(R.id.Choice);
@@ -35,10 +35,9 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		changeTextViewColors();
 
 		Bundle newBundle = this.getIntent().getExtras();
-		String[] userChoice = newBundle.getStringArray(null);
+		userChoice = newBundle.getStringArray(null);
 
-		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " "
-				+ userChoice[2] + " " + userChoice[3]);
+		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " " + userChoice[2] + "\n" + userChoice[3]);
 		final MediaPlayer mediaPlayer = new MediaPlayer();
 		/*
 		 * int sound_id = this.getResources().getIdentifier(userChoice[3],
@@ -112,23 +111,40 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 						e.printStackTrace();
 					}
 				}
-		}
-	});
+			}
+		});
+		
+		buttonAddToFavourites.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CsvWriter newCsvWriter = new CsvWriter();
+				CsvReader newCsvReader = new CsvReader();
+				try {
+					if(newCsvWriter.writeInInternalStorageCsv(userChoice, "favouriteTracks.csv",MusicPlayer.this))
+						displayUserChoice.setText("Track successfully added to favourites!");
+					else
+						displayUserChoice.setText("Track already added to favourites!");
+					
+					newCsvReader.readFromInternalStorageCsv("favouriteTracks.csv",MusicPlayer.this);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mediaPlayer.stop();
 				mediaPlayer.release();
-				Intent BackToGenerateMenuActivity = new Intent(
-						MusicPlayer.this, GenerateMenu.class);
+				Intent BackToGenerateMenuActivity = new Intent(MusicPlayer.this, GenerateMenu.class);
 				MusicPlayer.this.startActivity(BackToGenerateMenuActivity);
 			}
 		});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateMusicPlayer(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
@@ -141,13 +157,11 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
-		// TODO Auto-generated method stub
 		buttonPlay.setEnabled(true);
 	}
 
 	@Override
-	public boolean onError(MediaPlayer arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
+	public boolean onError(MediaPlayer arg0, int arg1, int arg2){
 		return false;
 	}
 }

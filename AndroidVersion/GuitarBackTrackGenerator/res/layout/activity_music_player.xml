@@ -35,37 +35,46 @@
         android:textSize="20sp" />
 
     <Button
-        android:id="@+id/buttonExit"
+        android:id="@+id/buttonPause"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="38dp"
-        android:text="@string/Exit" />
+        android:layout_above="@+id/buttonExit"
+        android:layout_alignRight="@+id/buttonExit"
+        android:layout_toRightOf="@+id/buttonStop"
+        android:text="@string/Pause" />
 
     <Button
         android:id="@+id/buttonStop"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonPause"
-        android:layout_alignLeft="@+id/buttonPause"
-        android:text="@string/Stop" />
-
-    <Button
-        android:id="@+id/buttonPause"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_alignLeft="@+id/buttonExit"
-        android:layout_alignRight="@+id/buttonExit"
-        android:text="@string/Pause" />
+        android:layout_alignRight="@+id/buttonAddToFavourites"
+        android:text="@string/Stop" />
 
     <Button
         android:id="@+id/buttonPlay"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonStop"
-        android:layout_alignLeft="@+id/buttonStop"
+        android:layout_above="@+id/buttonPause"
+        android:layout_alignRight="@+id/buttonPause"
         android:text="@string/Play" />
+
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:text="@string/Exit" />
+
+    <Button
+        android:id="@+id/buttonAddToFavourites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonPlay"
+        android:layout_alignLeft="@+id/buttonExit"
+        android:text="Add To Favourites" />
 
 </RelativeLayout>
