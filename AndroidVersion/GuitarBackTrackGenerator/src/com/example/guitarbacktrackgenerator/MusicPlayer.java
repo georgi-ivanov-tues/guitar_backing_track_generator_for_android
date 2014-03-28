@@ -2,7 +2,6 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -48,16 +47,12 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		try {
 			mediaPlayer.setDataSource("http://www.hubharp.com/web_sound/BachGavotte.mp3");
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		mediaPlayer.setOnErrorListener(this);
@@ -89,25 +84,19 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 					try {
 						mediaPlayer.setDataSource("http://www.hubharp.com/web_sound/BachGavotte.mp3");
 					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (SecurityException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IllegalStateException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					try {
 						mediaPlayer.prepare();
 					} catch (IllegalStateException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -127,7 +116,6 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 					
 					newCsvReader.readFromInternalStorageCsv("favouriteTracks.csv",MusicPlayer.this);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -136,10 +124,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mediaPlayer.stop();
-				mediaPlayer.release();
-				Intent BackToGenerateMenuActivity = new Intent(MusicPlayer.this, GenerateMenu.class);
-				MusicPlayer.this.startActivity(BackToGenerateMenuActivity);
+				finish();
 			}
 		});
 	}

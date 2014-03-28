@@ -154,7 +154,6 @@ public class GenerateMenu extends Activity {
 							GenerateMenu.this.startActivity(MusicPlayer); 
 						}
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -164,8 +163,7 @@ public class GenerateMenu extends Activity {
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent BackToMainActivity = new Intent(GenerateMenu.this, MainActivity.class);
-				GenerateMenu.this.startActivity(BackToMainActivity); 
+				finish(); 
 			}
 		});
 	}

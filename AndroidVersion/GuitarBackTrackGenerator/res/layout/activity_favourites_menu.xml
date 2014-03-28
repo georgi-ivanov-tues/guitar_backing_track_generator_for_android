@@ -21,22 +21,131 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
-        android:id="@+id/buttonRemoveAllTracks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonExit"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="15dp"
-        android:layout_toRightOf="@+id/buttonRemoveTrack"
-        android:text="Remove All Tracks" />
-
-    <Button
         android:id="@+id/buttonRemoveTrack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/buttonExit"
         android:layout_alignTop="@+id/buttonRemoveAllTracks"
-        android:text="Remove Track" />
+        android:text="Delete Track" />
+	
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_alignLeft="@+id/buttonRemoveTrack"
+        android:layout_alignRight="@+id/buttonRemoveAllTracks"
+        android:layout_below="@+id/textFavouritesMenu" >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+         <!--  
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 1" />
+ 
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 2" />
+ 
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 3" />
+ 
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 4" />
+ 
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 5" />
+ 
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+ 
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RadioButton 1" />
+ 
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RadioButton 2" />
+ 
+        <ToggleButton
+            android:id="@+id/toggleButton1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ToggleButton" />
+ 
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 6" />
+ 
+        <SeekBar
+            android:id="@+id/seekBar1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+ 
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 7" />
+ 
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 8" />
+ 
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CheckBox" />
+ 
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 9" />
+ 
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 10" />
+ 
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Button 11" />
+            --> 
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/buttonRemoveAllTracks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonExit"
+        android:layout_alignRight="@+id/buttonExit"
+        android:text="Delete All Tracks" />
 
     <Button
         android:id="@+id/buttonExit"
@@ -44,16 +153,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="39dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/Exit" />
 
     <Button
-        android:id="@+id/buttonPrintTracksInLog"
+        android:id="@+id/buttonPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonRemoveTrack"
         android:layout_alignLeft="@+id/buttonRemoveTrack"
-        android:layout_alignRight="@+id/buttonRemoveAllTracks"
-        android:text="Print Tracks In Log" />
+        android:layout_alignRight="@+id/buttonRemoveTrack"
+        android:text="Play" />
 
 </RelativeLayout>

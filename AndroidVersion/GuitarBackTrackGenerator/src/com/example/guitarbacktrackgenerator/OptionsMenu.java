@@ -1,7 +1,6 @@
 package com.example.guitarbacktrackgenerator;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -22,8 +21,7 @@ public class OptionsMenu extends Activity {
 		exit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent BackToMainActivity = new Intent(OptionsMenu.this, MainActivity.class);
-				OptionsMenu.this.startActivity(BackToMainActivity); 
+				finish();
 			}
 		});
 	}

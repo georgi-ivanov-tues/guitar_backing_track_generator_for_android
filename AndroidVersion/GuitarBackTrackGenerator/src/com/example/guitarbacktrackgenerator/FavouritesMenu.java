@@ -1,41 +1,97 @@
 package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class FavouritesMenu extends Activity{
 
-	Button buttonRemoveTrack, buttonRemoveAllTracks, buttonPrintTracksInLog, exit;
+	Button buttonPlay, buttonRemoveTrack, buttonRemoveAllTracks, buttonExit;
 	TextView title;
+	TextView[] textView;
+	LinearLayout linearLayout;
+	String trackSelectedName = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favourites_menu);
 		
+		buttonPlay = (Button) findViewById(R.id.buttonPlay);
 		buttonRemoveTrack = (Button) findViewById(R.id.buttonRemoveTrack);
 		buttonRemoveAllTracks = (Button) findViewById(R.id.buttonRemoveAllTracks);
-		buttonPrintTracksInLog = (Button) findViewById(R.id.buttonPrintTracksInLog);
-		exit = (Button) findViewById(R.id.buttonExit);
+		buttonExit = (Button) findViewById(R.id.buttonExit);
 		title = (TextView) findViewById(R.id.Title);
-		//changeTextViewColors();
-
-		buttonPrintTracksInLog.setOnClickListener(new View.OnClickListener() {
+		linearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
+		
+		int numOfTracks = 0;
+		try {
+			numOfTracks = printTracks();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		for(int i = 0; i < numOfTracks; i++) {
+			final int num = numOfTracks; // Povrashtam na Javata..
+			final TextView trackSelected = textView[i];
+			trackSelected.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					for(int i = 0; i < num; i++) {
+						textView[i].setTextColor(Color.parseColor("#FFFFFF"));
+						textView[i].setBackgroundColor(Color.TRANSPARENT);
+					}
+					trackSelectedName = (String) trackSelected.getText();
+					trackSelected.setTextColor(Color.parseColor("#000000"));
+					trackSelected.setBackgroundColor(Color.parseColor("#FFFF00"));
+				}
+			});
+		}
+		
+		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CsvReader newCsvReader = new CsvReader();
+				if(("").equals(trackSelectedName)){
+					Log.d("","NO TRACK SELECTED!!!");
+					// Replace with a pop-up message
+				}else{
+					CsvReader newCsvReader = new CsvReader();
+					Bundle newBundle = new Bundle();
+					try {
+						newBundle.putStringArray(null, newCsvReader.findTrackByName("favouriteTracks.csv", trackSelectedName, FavouritesMenu.this));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					Intent MusicPlayer = new Intent(FavouritesMenu.this, MusicPlayer.class);
+					MusicPlayer.putExtras(newBundle);
+					FavouritesMenu.this.startActivity(MusicPlayer);
+				}
+			}
+		});
+		
+		buttonRemoveTrack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CsvWriter newCsvWriter = new CsvWriter();
 				try {
-					newCsvReader.readFromInternalStorageCsv("favouriteTracks.csv",FavouritesMenu.this);
+					newCsvWriter.removeTrack(trackSelectedName, "favouriteTracks.csv", FavouritesMenu.this);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+				linearLayout.removeAllViews();
+				try {
+					printTracks();
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 			}
 		});
@@ -44,14 +100,14 @@ public class FavouritesMenu extends Activity{
 			@Override
 			public void onClick(View v) {
 				deleteFile("favouriteTracks.csv");
+				linearLayout.removeAllViews(); // Not sure if OK. Find a better way maybe.
 			}
 		});
 		
-		exit.setOnClickListener(new View.OnClickListener() {
+		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent backToMainActivity = new Intent(FavouritesMenu.this, MainActivity.class);
-				FavouritesMenu.this.startActivity(backToMainActivity);
+				finish();
 			}
 		});
 	}
@@ -63,7 +119,24 @@ public class FavouritesMenu extends Activity{
 		return true;
 	}
 	
-//	void changeTextViewColors(){
-//		title.setTextColor(Color.parseColor("#FFFFFF"));
-//	}
+	public int printTracks() throws IOException{
+		CsvReader newCsvReader = new CsvReader();
+		final ArrayList<String[]> tracks = newCsvReader.readFromInternalStorageCsv("favouriteTracks.csv", FavouritesMenu.this);
+		
+		textView = new TextView[tracks.size()];
+		int i;
+		for(i = 0; i < tracks.size(); i++) {
+			textView[i] = new TextView(this);
+		}
+		
+		for(i = 0; i < tracks.size(); i++){
+			String trackName = tracks.get(i)[3];
+			textView[i].setText(trackName);
+			textView[i].setTextColor(Color.parseColor("#FFFFFF"));
+			linearLayout.setBackgroundColor(Color.TRANSPARENT);
+			linearLayout.addView(textView[i]);
+		}
+		
+		return tracks.size();
+	}
 }
