@@ -45,7 +45,7 @@
         android:layout_below="@+id/textKey"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="22dp"
-        android:text="A"
+        android:text="@string/DefaultKey"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
@@ -64,7 +64,7 @@
         android:layout_alignBaseline="@+id/Key"
         android:layout_alignBottom="@+id/Key"
         android:layout_alignLeft="@+id/buttonMin"
-        android:text="Next" />
+        android:text="@string/Next" />
 
     <Button
         android:id="@+id/buttonMin"

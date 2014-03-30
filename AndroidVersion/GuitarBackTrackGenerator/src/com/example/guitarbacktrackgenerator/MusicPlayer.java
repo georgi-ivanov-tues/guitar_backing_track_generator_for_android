@@ -1,6 +1,7 @@
 package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -12,9 +13,10 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MusicPlayer extends Activity implements OnErrorListener, OnPreparedListener{
-	Button buttonExit, buttonPlay, buttonPause, buttonAddToFavourites, buttonStop;
+	Button buttonExit, buttonPlay, buttonPause, buttonAddToFavourites, buttonAddToRecordings, buttonStop;
 	TextView title, displayUserChoice;
 	String[] userChoice;
 
@@ -27,6 +29,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		buttonPause = (Button) findViewById(R.id.buttonPause);
 		buttonStop = (Button) findViewById(R.id.buttonStop);
 		buttonAddToFavourites = (Button) findViewById(R.id.buttonAddToFavourites);
+		buttonAddToRecordings = (Button) findViewById(R.id.buttonAddToRecordings);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
 		title = (TextView) findViewById(R.id.Title);
 		displayUserChoice = (TextView) findViewById(R.id.Choice);
@@ -106,18 +109,14 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		buttonAddToFavourites.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CsvWriter newCsvWriter = new CsvWriter();
-				CsvReader newCsvReader = new CsvReader();
-				try {
-					if(newCsvWriter.writeInInternalStorageCsv(userChoice, "favouriteTracks.csv",MusicPlayer.this))
-						displayUserChoice.setText("Track successfully added to favourites!");
-					else
-						displayUserChoice.setText("Track already added to favourites!");
-					
-					newCsvReader.readFromInternalStorageCsv("favouriteTracks.csv",MusicPlayer.this);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				addTrackToCsv("favourites");
+			}
+		});
+		
+		buttonAddToRecordings.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addTrackToCsv("recordings");
 			}
 		});
 
@@ -140,6 +139,26 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		displayUserChoice.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 
+	@SuppressLint("ShowToast")
+	public void addTrackToCsv(String fileName){
+		CsvWriter newCsvWriter = new CsvWriter();
+		CsvReader newCsvReader = new CsvReader();
+		try {
+			if(newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",MusicPlayer.this)){
+				String text = "Track successfully added to " + fileName + "!";
+				Toast toast = Toast.makeText(MusicPlayer.this, text, 5);
+				toast.show();
+			}else{
+				String text = "Track already added to " + fileName + "!";
+				Toast toast = Toast.makeText(MusicPlayer.this, text, 5);
+				toast.show();
+			}
+			newCsvReader.readFromInternalStorageCsv(fileName+".csv",MusicPlayer.this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void onPrepared(MediaPlayer mp) {
 		buttonPlay.setEnabled(true);

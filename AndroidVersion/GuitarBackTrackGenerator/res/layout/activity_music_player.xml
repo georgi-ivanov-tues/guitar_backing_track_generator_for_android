@@ -28,10 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/Title"
         android:layout_centerHorizontal="true"
-        android:editable = "true"
         android:layout_marginTop="33dp"
         android:gravity="center"
-        android:text="Key, Mode, Style, Speed"
         android:textSize="20sp" />
 
     <Button
@@ -75,6 +73,15 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonPlay"
         android:layout_alignLeft="@+id/buttonExit"
-        android:text="Add To Favourites" />
+        android:text="@string/AddToFavourites" />
+
+    <Button
+        android:id="@+id/buttonAddToRecordings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/buttonAddToFavourites"
+        android:layout_alignBottom="@+id/buttonAddToFavourites"
+        android:layout_toRightOf="@+id/buttonAddToFavourites"
+        android:text="@string/AddToRecordings" />
 
 </RelativeLayout>

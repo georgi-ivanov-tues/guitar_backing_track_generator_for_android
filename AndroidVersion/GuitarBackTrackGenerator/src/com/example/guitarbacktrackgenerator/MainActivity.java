@@ -10,22 +10,22 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	Button generate, favourites, options, credits, exit;
+	Button buttonGenerate, buttonFavouritesRecordings, buttonOptions, buttonCredits, buttonExit;
 	TextView title;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		generate = (Button) findViewById(R.id.buttonGenerate);
-		favourites = (Button) findViewById(R.id.buttonFavourites);
-		options = (Button) findViewById(R.id.buttonOptions);
-		credits = (Button) findViewById(R.id.buttonCredits);
-		exit = (Button) findViewById(R.id.buttonExit);
+		buttonGenerate = (Button) findViewById(R.id.buttonGenerate);
+		buttonFavouritesRecordings = (Button) findViewById(R.id.buttonFavourites);
+		buttonOptions = (Button) findViewById(R.id.buttonOptions);
+		buttonCredits = (Button) findViewById(R.id.buttonCredits);
+		buttonExit = (Button) findViewById(R.id.buttonExit);
 		
 		title = (TextView) findViewById(R.id.Title);
 
-		generate.setOnClickListener(new View.OnClickListener() {
+		buttonGenerate.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent GenerateMenu = new Intent(MainActivity.this, GenerateMenu.class);
@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		favourites.setOnClickListener(new View.OnClickListener() {
+		buttonFavouritesRecordings.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent FavouritesMenu = new Intent(MainActivity.this, FavouritesMenu.class);
@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		options.setOnClickListener(new View.OnClickListener() {
+		buttonOptions.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent OptionsMenu = new Intent(MainActivity.this, OptionsMenu.class);
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		credits.setOnClickListener(new View.OnClickListener() {
+		buttonCredits.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent CreditsMenu = new Intent(MainActivity.this, CreditsMenu.class);
@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		exit.setOnClickListener(new View.OnClickListener() {
+		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				finish();

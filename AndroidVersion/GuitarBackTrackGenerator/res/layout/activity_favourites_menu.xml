@@ -2,22 +2,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/background"
     android:screenOrientation="portrait"
     tools:context=".MainActivity" >
 
     <TextView
-        android:id="@+id/textFavouritesMenu"
+        android:id="@+id/textViewFavouritesMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/Favourites"
+        android:text="@string/FavouritesRecordings"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
@@ -26,116 +26,21 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/buttonExit"
         android:layout_alignTop="@+id/buttonRemoveAllTracks"
-        android:text="Delete Track" />
+        android:text="@string/DeleteTrack" />
 	
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_alignLeft="@+id/buttonRemoveTrack"
         android:layout_alignRight="@+id/buttonRemoveAllTracks"
-        android:layout_below="@+id/textFavouritesMenu" >
+        android:layout_below="@+id/textViewFavouritesMenu" >
 
         <LinearLayout
             android:id="@+id/LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
-         <!--  
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 1" />
- 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 2" />
- 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 3" />
- 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 4" />
- 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 5" />
- 
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
- 
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="RadioButton 1" />
- 
-        <RadioButton
-            android:id="@+id/radioButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="RadioButton 2" />
- 
-        <ToggleButton
-            android:id="@+id/toggleButton1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ToggleButton" />
- 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 6" />
- 
-        <SeekBar
-            android:id="@+id/seekBar1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
- 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 7" />
- 
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 8" />
- 
-        <CheckBox
-            android:id="@+id/checkBox1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CheckBox" />
- 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 9" />
- 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 10" />
- 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Button 11" />
-            --> 
         </LinearLayout>
     </ScrollView>
 
@@ -145,14 +50,13 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_alignRight="@+id/buttonExit"
-        android:text="Delete All Tracks" />
+        android:text="@string/DeleteAllTracks" />
 
     <Button
         android:id="@+id/buttonExit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
         android:text="@string/Exit" />
 
@@ -162,7 +66,37 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonRemoveTrack"
         android:layout_alignLeft="@+id/buttonRemoveTrack"
-        android:layout_alignRight="@+id/buttonRemoveTrack"
-        android:text="Play" />
+        android:layout_alignRight="@+id/buttonRemoveAllTracks"
+        android:text="@string/Play" />
 
+    <Button
+        android:id="@+id/buttonSwitchToOtherView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonPlay"
+        android:layout_alignLeft="@+id/buttonPlay"
+        android:layout_alignRight="@+id/buttonRemoveTrack"
+        android:text="@string/SwitchTo" />
+
+    <!-- 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/buttonSwitchToOtherView"
+        android:layout_alignLeft="@+id/buttonRemoveAllTracks"
+        android:layout_alignTop="@+id/buttonSwitchToOtherView"
+        android:background="@android:drawable/btn_dropdown"
+         />
+	 -->
+    <Button
+        android:id="@+id/buttonSortBy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/buttonSwitchToOtherView"
+        android:layout_alignLeft="@+id/buttonRemoveAllTracks"
+        android:layout_alignRight="@+id/buttonPlay"
+        android:layout_alignTop="@+id/buttonSwitchToOtherView"
+        android:text="@string/SortBy" />
+ 
 </RelativeLayout>

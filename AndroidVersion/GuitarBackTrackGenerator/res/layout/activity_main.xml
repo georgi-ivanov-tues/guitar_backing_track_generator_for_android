@@ -39,7 +39,7 @@
         android:layout_alignLeft="@+id/buttonGenerate"
         android:layout_below="@+id/buttonGenerate"
         android:layout_marginTop="20dp"
-        android:text="@string/Favourites" />
+        android:text="@string/FavouritesRecordings" />
 
     <Button
         android:id="@+id/buttonOptions"

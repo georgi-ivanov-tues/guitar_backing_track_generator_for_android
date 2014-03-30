@@ -2,8 +2,8 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GenerateMenu extends Activity {
 	
@@ -131,6 +132,7 @@ public class GenerateMenu extends Activity {
 		});
 		
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
+			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
 				userChoice[0] = key;
@@ -138,13 +140,17 @@ public class GenerateMenu extends Activity {
 				userChoice[2] = style;
 				
 				if(mode == null || style == null){
-					warning.setText("Please choose key, mode and style before clicking play!");
+					String text = "Please choose key, mode and style before clicking play!";
+					Toast toast = Toast.makeText(GenerateMenu.this, text, 5);
+					toast.show();
 				}else{
 					try {
 						ArrayList<String[]>tracksThatMatchUserChoice = FindBackingTracks(userChoice);
 						
 						if(tracksThatMatchUserChoice.size() == 0){
-							warning.setText("No track matching your input... Sorry :(");
+							String text = "No tracks matching your input... Sorry :(";
+							Toast toast = Toast.makeText(GenerateMenu.this, text, 5);
+							toast.show();
 						}else{
 							String[] track = getRandomTrack(tracksThatMatchUserChoice);
 							Bundle newBundle=new Bundle();
