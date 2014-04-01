@@ -31,7 +31,7 @@ public class CsvWriter {
 				fos.write(data[i].getBytes());
 				fos.write(",".getBytes());
 			}
-			fos.write("\n".getBytes());
+			fos.write("0\n".getBytes()); // 0 for 0 times played. Fix later maybe... Fuck it...
 			fos.close();
 		}
 		
@@ -57,6 +57,37 @@ public class CsvWriter {
 		for(int i = 0; i < tracks.size(); i++){
 			String[] temp = tracks.get(i);
 			for(int i1 = 0; i1 <= 4; i1++){
+				fos.write(temp[i1].getBytes());
+				fos.write(",".getBytes());
+			}
+			fos.write("\n".getBytes());
+		}
+		fos.close();
+		
+		return true;
+	}
+	
+	public boolean ICantThinkOfAName(String trackName ,String fileName, Context context) throws IOException{
+		InputStream instream = context.openFileInput(fileName);
+		InputStreamReader inputreader = new InputStreamReader(instream);
+		BufferedReader buffreader = new BufferedReader(inputreader);
+		
+		ArrayList<String[]> tracks = new ArrayList<String[]>();
+		String line;
+		while ((line = buffreader.readLine()) != null) {
+			String[] parsed = (line.split(","));
+			if(parsed[3].equals(trackName)){
+				int temp = Integer.parseInt(parsed[5]) + 1;
+				parsed[5] = Integer.toString(temp);
+			}
+			tracks.add(parsed);
+		}
+		instream.close();
+		
+		FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE); // Replacing favourites.csv		              
+		for(int i = 0; i < tracks.size(); i++){
+			String[] temp = tracks.get(i);
+			for(int i1 = 0; i1 <= 5; i1++){
 				fos.write(temp[i1].getBytes());
 				fos.write(",".getBytes());
 			}

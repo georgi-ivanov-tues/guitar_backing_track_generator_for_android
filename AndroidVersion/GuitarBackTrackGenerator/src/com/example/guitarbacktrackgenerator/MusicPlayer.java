@@ -1,6 +1,7 @@
 package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 public class MusicPlayer extends Activity implements OnErrorListener, OnPreparedListener{
 	Button buttonExit, buttonPlay, buttonPause, buttonAddToFavourites, buttonAddToRecordings, buttonStop;
@@ -39,6 +41,10 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		Bundle newBundle = this.getIntent().getExtras();
 		userChoice = newBundle.getStringArray(null);
 
+//		VideoView asd = new VideoView(MusicPlayer.this);
+//		asd.setVideoPath("https://www.youtube.com/watch?v=umeZtszNShk");
+//		asd.start();
+		
 		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " " + userChoice[2] + "\n" + userChoice[3]);
 		final MediaPlayer mediaPlayer = new MediaPlayer();
 		/*
@@ -142,7 +148,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 	@SuppressLint("ShowToast")
 	public void addTrackToCsv(String fileName){
 		CsvWriter newCsvWriter = new CsvWriter();
-		CsvReader newCsvReader = new CsvReader();
+		//CsvReader newCsvReader = new CsvReader();
 		try {
 			if(newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",MusicPlayer.this)){
 				String text = "Track successfully added to " + fileName + "!";
@@ -153,7 +159,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 				Toast toast = Toast.makeText(MusicPlayer.this, text, 5);
 				toast.show();
 			}
-			newCsvReader.readFromInternalStorageCsv(fileName+".csv",MusicPlayer.this);
+			//newCsvReader.readFromInternalStorageCsv(fileName+".csv",MusicPlayer.this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

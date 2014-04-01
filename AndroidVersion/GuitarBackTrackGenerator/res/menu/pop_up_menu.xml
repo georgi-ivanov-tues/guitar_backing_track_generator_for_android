@@ -3,14 +3,14 @@
     
     <item  
         android:id="@+id/buttonA"  
-        android:title="A"/>  
+        android:title="Name"/>  
 
     <item  
         android:id="@+id/buttonAsharp"  
-        android:title="A#"/>  
+        android:title="Key"/>  
 
     <item  
         android:id="@+id/B"  
-        android:title="B"/>  
+        android:title="Most Played"/>  
      
 </menu>
