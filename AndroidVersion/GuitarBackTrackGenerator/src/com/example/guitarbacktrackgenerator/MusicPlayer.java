@@ -1,9 +1,9 @@
 package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 public class MusicPlayer extends Activity implements OnErrorListener, OnPreparedListener{
 	Button buttonExit, buttonPlay, buttonPause, buttonAddToFavourites, buttonAddToRecordings, buttonStop;
@@ -28,6 +27,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		setContentView(R.layout.activity_music_player);
 
 		buttonPlay = (Button) findViewById(R.id.buttonPlay);
+		buttonPlay.setText("OPEN YOUTUBE!!!");
 		buttonPause = (Button) findViewById(R.id.buttonPause);
 		buttonStop = (Button) findViewById(R.id.buttonStop);
 		buttonAddToFavourites = (Button) findViewById(R.id.buttonAddToFavourites);
@@ -70,9 +70,11 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(!mediaPlayer.isPlaying()){
-					mediaPlayer.start();
-				}
+//				if(!mediaPlayer.isPlaying()){
+//					mediaPlayer.start();
+//				}
+				Intent TruitonYouTubeAPIActivity = new Intent(MusicPlayer.this, TruitonYouTubeAPIActivity.class);
+				MusicPlayer.this.startActivity(TruitonYouTubeAPIActivity); 
 			}
 		});
 
