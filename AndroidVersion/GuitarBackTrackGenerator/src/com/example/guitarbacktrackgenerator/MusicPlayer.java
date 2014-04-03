@@ -1,119 +1,53 @@
 package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayer.Provider;
 import android.graphics.Color;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnErrorListener;
-import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MusicPlayer extends Activity implements OnErrorListener, OnPreparedListener{
+public class MusicPlayer extends YouTubeBaseActivity
+implements YouTubePlayer.OnInitializedListener{
+	
 	Button buttonExit, buttonPlay, buttonPause, buttonAddToFavourites, buttonAddToRecordings, buttonStop;
-	TextView title, displayUserChoice;
+	TextView title, trackName;
 	String[] userChoice;
+	static private final String DEVELOPER_KEY = "AIzaSyA53I5DUsgUvpBwOyeqfIkl9N0g9cxcHCA";
+	static private String VIDEO = "dKLftgvYsVU";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_music_player);
 
-		buttonPlay = (Button) findViewById(R.id.buttonPlay);
-		buttonPlay.setText("OPEN YOUTUBE!!!");
-		buttonPause = (Button) findViewById(R.id.buttonPause);
-		buttonStop = (Button) findViewById(R.id.buttonStop);
 		buttonAddToFavourites = (Button) findViewById(R.id.buttonAddToFavourites);
 		buttonAddToRecordings = (Button) findViewById(R.id.buttonAddToRecordings);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
 		title = (TextView) findViewById(R.id.Title);
-		displayUserChoice = (TextView) findViewById(R.id.Choice);
+		trackName = (TextView) findViewById(R.id.trackName);
 
 		changeTextViewColors();
 
 		Bundle newBundle = this.getIntent().getExtras();
 		userChoice = newBundle.getStringArray(null);
-
-//		VideoView asd = new VideoView(MusicPlayer.this);
-//		asd.setVideoPath("https://www.youtube.com/watch?v=umeZtszNShk");
-//		asd.start();
 		
-		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " " + userChoice[2] + "\n" + userChoice[3]);
-		final MediaPlayer mediaPlayer = new MediaPlayer();
-		/*
-		 * int sound_id = this.getResources().getIdentifier(userChoice[3],
-		 * "raw",this.getPackageName()); if(sound_id != 0) { MediaPlayer
-		 * mediaPlayer = MediaPlayer.create(this, sound_id); }
-		 */
-		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-		try {
-			mediaPlayer.setDataSource("http://www.hubharp.com/web_sound/BachGavotte.mp3");
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		mediaPlayer.setOnErrorListener(this);
-		mediaPlayer.setOnPreparedListener(this);
-		mediaPlayer.prepareAsync();
-		buttonPlay.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-//				if(!mediaPlayer.isPlaying()){
-//					mediaPlayer.start();
-//				}
-				Intent TruitonYouTubeAPIActivity = new Intent(MusicPlayer.this, TruitonYouTubeAPIActivity.class);
-				MusicPlayer.this.startActivity(TruitonYouTubeAPIActivity); 
-			}
-		});
-
-		buttonPause.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (mediaPlayer.isPlaying()) {
-					mediaPlayer.pause();
-				}
-			}
-		});
-
-		buttonStop.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (mediaPlayer.isPlaying()){
-					mediaPlayer.reset();
-					try {
-						mediaPlayer.setDataSource("http://www.hubharp.com/web_sound/BachGavotte.mp3");
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						e.printStackTrace();
-					} catch (IllegalStateException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					try {
-						mediaPlayer.prepare();
-					} catch (IllegalStateException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
+		trackName.setText(userChoice[3]);
+		String[] parsed = (userChoice[4].split("be/"));
+		Log.d("", parsed[1]);
+		VIDEO = parsed[1];
 		
+		YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
+		youTubeView.initialize(DEVELOPER_KEY, this);
+
 		buttonAddToFavourites.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -144,36 +78,33 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 
 	void changeTextViewColors() {
 		title.setTextColor(Color.parseColor("#FFFFFF"));
-		displayUserChoice.setTextColor(Color.parseColor("#FFFFFF"));
+		trackName.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 
-	@SuppressLint("ShowToast")
 	public void addTrackToCsv(String fileName){
 		CsvWriter newCsvWriter = new CsvWriter();
-		//CsvReader newCsvReader = new CsvReader();
 		try {
 			if(newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",MusicPlayer.this)){
 				String text = "Track successfully added to " + fileName + "!";
-				Toast toast = Toast.makeText(MusicPlayer.this, text, 5);
+				Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
 				toast.show();
 			}else{
 				String text = "Track already added to " + fileName + "!";
-				Toast toast = Toast.makeText(MusicPlayer.this, text, 5);
+				Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
 				toast.show();
 			}
-			//newCsvReader.readFromInternalStorageCsv(fileName+".csv",MusicPlayer.this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	@Override
-	public void onPrepared(MediaPlayer mp) {
-		buttonPlay.setEnabled(true);
-	}
-
-	@Override
-	public boolean onError(MediaPlayer arg0, int arg1, int arg2){
-		return false;
-	}
+	 @Override
+    public void onInitializationFailure(Provider provider, YouTubeInitializationResult error) {
+		Toast.makeText(this, "Oh no! "+error.toString(),
+		Toast.LENGTH_LONG).show();
+    }
+    @Override
+    public void onInitializationSuccess(Provider provider, YouTubePlayer player,boolean wasRestored) {
+        player.loadVideo(VIDEO);
+    }
 }

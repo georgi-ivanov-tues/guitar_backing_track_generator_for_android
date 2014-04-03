@@ -19,14 +19,6 @@
         android:layout_centerHorizontal="true"
         android:text="@string/Favourites"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Button
-        android:id="@+id/buttonRemoveTrack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonExit"
-        android:layout_alignTop="@+id/buttonRemoveAllTracks"
-        android:text="@string/DeleteTrack" />
 	
     <ScrollView
         android:id="@+id/scrollView"
@@ -39,14 +31,14 @@
         <LinearLayout
             android:id="@+id/LinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
         </LinearLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/buttonRemoveAllTracks"
-        android:layout_width="wrap_content"
+        android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_alignRight="@+id/buttonExit"
@@ -71,11 +63,9 @@
 
     <Button
         android:id="@+id/buttonSwitchToOtherView"
-        android:layout_width="wrap_content"
+        android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonPlay"
-        android:layout_alignLeft="@+id/buttonPlay"
-        android:layout_alignRight="@+id/buttonRemoveTrack"
         android:text="@string/SwitchTo" />
 <!--  
     <Spinner
@@ -92,11 +82,18 @@
 
     <Button
         android:id="@+id/buttonSortBy"
-        android:layout_width="wrap_content"
+        android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonPlay"
-        android:layout_alignLeft="@+id/buttonRemoveAllTracks"
         android:layout_alignRight="@+id/buttonPlay"
         android:text="@string/SortBy" />
+
+    <Button
+        android:id="@+id/buttonRemoveTrack"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonExit"
+        android:layout_alignLeft="@+id/buttonExit"
+        android:text="@string/DeleteTrack" />
 
 </RelativeLayout>

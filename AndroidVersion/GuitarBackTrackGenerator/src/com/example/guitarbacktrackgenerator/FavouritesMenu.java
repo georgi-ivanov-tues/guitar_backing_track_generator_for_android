@@ -1,27 +1,16 @@
 package com.example.guitarbacktrackgenerator;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +24,7 @@ public class FavouritesMenu extends Activity{
 	LinearLayout linearLayout;
 	Spinner spinner;
 	String trackSelectedName = "", currentView = "favourites";
-	int viewCounter = 0, sortByCounter = -1;
+	int viewCounter = 0, sortByCounter = -1, otherViewSortByCounter = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,24 +53,21 @@ public class FavouritesMenu extends Activity{
 //		String[] items = new String[]{"Name", "Key", "Most Played"};
 //		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
 //		spinner.setAdapter(adapter);
-		
-		
-		//String spin = spinner.getSelectedItem().toString();
-        //Log.d("", spin);
-        //tv.setText(spin);
+//		String spin = spinner.getSelectedItem().toString();
+//        Log.d("", spin);
+//        tv.setText(spin);
 		
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
-			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
 				if(("").equals(trackSelectedName)){
 					String text = "Please select a track first!";
-					Toast toast = Toast.makeText(FavouritesMenu.this, text, 5);
+					Toast toast = Toast.makeText(FavouritesMenu.this, text, Toast.LENGTH_LONG);
 					toast.show();
 				}else{
 					CsvWriter newCsvWriter = new CsvWriter();
 					try {
-						newCsvWriter.ICantThinkOfAName(trackSelectedName, currentView+".csv", FavouritesMenu.this);
+						newCsvWriter.changeNumberOfTimesPlayed(trackSelectedName, currentView+".csv", FavouritesMenu.this);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -109,14 +95,17 @@ public class FavouritesMenu extends Activity{
 					viewCounter = 0;
 				
 				String otherView = currentView;
+				
+				int temp = sortByCounter;
+				sortByCounter = otherViewSortByCounter;
+				otherViewSortByCounter = temp;
+				
 				currentView = changeViewCounter(viewCounter);
 				linearLayout.removeAllViews();
 				trackSelectedName = "";
-				sortByCounter = -1;
-				buttonSortBy.setText("Sort By");
+				buttonSortBy.setText("Sort By: " + getSortByCounterToAsString(sortByCounter));
 				textViewFavouritesMenu.setText(currentView.substring(0, 1).toUpperCase() + currentView.substring(1));
 				buttonSwitchToOtherView.setText("Switch to " + otherView.substring(0, 1).toUpperCase() + otherView.substring(1));
-				
 				try {
 					selectingTracks(printTracks(viewCounter));
 				} catch (IOException e) {
@@ -124,40 +113,6 @@ public class FavouritesMenu extends Activity{
 				}
 			}
 		});
-		
-//		a negative int if this < that
-//		0 if this == that
-//		a positive int if this > that
-		
-		//if(Integer.toString(Integer.valueOf(android.os.Build.VERSION.SDK)).compareTo("11") >= 0){
-
-		// 		NEW API SHIT...		
-//		buttonSortBy.setOnClickListener(new View.OnClickListener() {
-//			@SuppressLint("NewApi")
-//			@Override  
-//			public void onClick(View v) {  
-//				PopupMenu pop_up = new PopupMenu(FavouritesMenu.this, buttonSortBy);  
-//				pop_up.getMenuInflater().inflate(R.menu.pop_up_menu, pop_up.getMenu());  
-//				pop_up.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {  
-//					@SuppressLint("NewApi")
-//					public boolean onMenuItemClick(MenuItem item) {  
-//						//Toast.makeText(FavouritesMenu.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();  
-//						if(sortByCounter == 2)
-//							sortByCounter = 0;
-//						else
-//							sortByCounter++;
-//							
-//						try {
-//							buttonSortBy.setText("Sort By: " + sortBy(sortByCounter, viewCounter));
-//						} catch (IOException e) {
-//							e.printStackTrace();
-//						}
-//						return true;  
-//					}  
-//				});  
-//				pop_up.show();
-//			}
-//		});
 	
 		buttonSortBy.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -167,10 +122,9 @@ public class FavouritesMenu extends Activity{
 				else
 					sortByCounter++;
 				
-				replaceSelected(trackSelectedName);
-				
 				try {
-					buttonSortBy.setText("Sort By: " + sortBy(sortByCounter, viewCounter));
+					buttonSortBy.setText("Sort By: " + getSortByCounterToAsString(sortByCounter));
+					sort(sortByCounter, viewCounter);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -178,12 +132,11 @@ public class FavouritesMenu extends Activity{
 		});
 		
 		buttonRemoveTrack.setOnClickListener(new View.OnClickListener() {
-			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
 				if(("").equals(trackSelectedName)){
 					String text = "Please select a track first!";
-					Toast toast = Toast.makeText(FavouritesMenu.this, text, 5);
+					Toast toast = Toast.makeText(FavouritesMenu.this, text, Toast.LENGTH_LONG);
 					toast.show();
 				}else{
 					CsvWriter newCsvWriter = new CsvWriter();
@@ -194,9 +147,10 @@ public class FavouritesMenu extends Activity{
 					}
 					linearLayout.removeAllViews();
 					String text = "Track successfully removed";
-					Toast toast = Toast.makeText(FavouritesMenu.this, text, 5);
+					Toast toast = Toast.makeText(FavouritesMenu.this, text, Toast.LENGTH_LONG);
 					toast.show();
 					try {
+						takeTracksFromCsv();
 						selectingTracks(printTracks(viewCounter));
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -206,13 +160,12 @@ public class FavouritesMenu extends Activity{
 		});
 		
 		buttonRemoveAllTracks.setOnClickListener(new View.OnClickListener() {
-			@SuppressLint("ShowToast")
 			@Override
 			public void onClick(View v) {
 				deleteFile(currentView+".csv");
 				linearLayout.removeAllViews(); // Not sure if OK. Find a better way maybe.
 				String text = "All tracks successfully removed";
-				Toast toast = Toast.makeText(FavouritesMenu.this, text, 5);
+				Toast toast = Toast.makeText(FavouritesMenu.this, text, Toast.LENGTH_LONG);
 				toast.show();
 			}
 		});
@@ -237,54 +190,26 @@ public class FavouritesMenu extends Activity{
 		return view[viewCounter];
 	}
 	
-	public String sortBy(int sortByCounter, int viewCounter) throws IOException{
-		sort(viewCounter, sortByCounter);
+	public String getSortByCounterToAsString(int sortByCounter){
 		String[] sortBy = {"Name", "Key", "Most Played"};
-		return sortBy[sortByCounter];
+		if(sortByCounter == -1){;
+			return "";	
+		}else{
+			return sortBy[sortByCounter];
+		}
 	}
 	
-	public void sort(int viewCounter, int sortByCounter) throws IOException{
-		ArrayList<String []> tracks = null;
-		// Different array according to the view
+	public void sort(int sortByCounter, int viewCounter) throws IOException{
+		ArrayList<String[]> tracks = null;
 		if(viewCounter == 0)
 			tracks = favouriteTracks;
 		else if(viewCounter == 1)
 			tracks = recordings;
 		
-		int sortByIndex = -1;
-		// Different index to sort by according the clicked button
-		if(sortByCounter == 0)
-			sortByIndex = 3; // Name is 3 index
-		else if(sortByCounter == 1)
-			sortByIndex = 0; // Key is 0 index
-		//else if(sortByCounter == 2)	
-			//sortByIndex = 5; // Not yet...
-			
-		if(Integer.toString(sortByIndex).equals("-1")){ // Because comparing integers is to mainstream
-			String text = "Not yet implemented";
-			Toast toast = Toast.makeText(FavouritesMenu.this, text, 5);
-			toast.show();
-		}else{			
-			int shortestStringIndex;
-			for(int j=0; j < tracks.size() - 1;j++){
-			     shortestStringIndex = j;
-			     for (int i=j+1 ; i < tracks.size(); i++){
-			         //We keep track of the index to the smallest string
-			         if(tracks.get(i)[sortByIndex].trim().compareTo(tracks.get(shortestStringIndex)[sortByIndex].trim())<0)
-			             shortestStringIndex = i;  
-			     }
-			     //We only swap with the smallest string
-			     if(shortestStringIndex != j){
-					String[] temp = tracks.get(j);
-					tracks.add(j, tracks.get(shortestStringIndex));
-					tracks.remove(j+1);
-					tracks.add(shortestStringIndex, temp);
-					tracks.remove(shortestStringIndex+1);
-			     }
-			 }
-			
-			selectingTracks(printTracks(viewCounter));
-		}
+		Sort newSorter = new Sort(tracks, sortByCounter);
+		newSorter.sort();
+		tracks = newSorter.getTracks();
+		selectingTracks(printTracks(viewCounter));
 	}
 	
 	public void takeTracksFromCsv() throws IOException{
@@ -336,61 +261,37 @@ public class FavouritesMenu extends Activity{
 			});
 		}
 	}	
-	
-	public static void replaceSelected(String replaceWith) {
-	    try {
-	        // input the file content to the String "input"
-	        BufferedReader file = new BufferedReader(new FileReader("favourites.csv"));
-	        String line;String input = "";
-
-	        while ((line = file.readLine()) != null) 
-	        	input += line + '\n';
-
-	        input = input.replace("C,min,calm,c minor rock ballad guitar backing track,https://www.youtube.com/watch?v=t-YVZ8YM1zk,"
-	        			, "C,min,calm,c minor KOTKA!!!,https://www.youtube.com/watch?v=t-YVZ8YM1zk,");
-	        
-	        //System.out.println(input); // check that it's inputed right
-
-	        // this if structure determines whether or not to replace "0" or "1"
-//	        if (Integer.parseInt(type) == 0) {
-//	            input = input.replace(replaceWith + "1", replaceWith + "0"); 
-//	        }
-//	        else if (Integer.parseInt(type) == 1) {
-//	            input = input.replace(replaceWith + "0", replaceWith + "1");
-//	        } 
-
-	        // check if the new input is right
-	       // System.out.println("----------------------------------"  + '\n' + input);
-
-	        // write the new String with the replaced line OVER the same file
-	        FileOutputStream File = new FileOutputStream("favourites.csv");
-	        File.write(input.getBytes());
-	        
-	        file.close();
-	        File.close();
-
-	    } catch (Exception e) {
-	        System.out.println("Problem reading file.");
-	    }
-	}
 }
 
+//a negative int if this < that
+//0 if this == that
+//a positive int if this > that
 
-
-//String[] items = new String[]{"Aphabeticaly", "Most Played", "Key"};
-//ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-//spinner.setAdapter(adapter);
-
-// spinner = (Spinner) findViewById(R.id.spinner);
-//    List<String> list = new ArrayList<String>();
-//    list.add("Android");
-//    list.add("Java");
-//    list.add("Spinner Data");
-//    list.add("Spinner Adapter");
-//    list.add("Spinner Example");
-//     
-//    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
-//                  
-//    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                  
-//    spinner.setAdapter(dataAdapter);
+//if(Integer.toString(Integer.valueOf(android.os.Build.VERSION.SDK)).compareTo("11") >= 0){
+// 		NEW API SHIT...		
+//buttonSortBy.setOnClickListener(new View.OnClickListener() {
+//	@SuppressLint("NewApi")
+//	@Override  
+//	public void onClick(View v) {  
+//		PopupMenu pop_up = new PopupMenu(FavouritesMenu.this, buttonSortBy);  
+//		pop_up.getMenuInflater().inflate(R.menu.pop_up_menu, pop_up.getMenu());  
+//		pop_up.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {  
+//			@SuppressLint("NewApi")
+//			public boolean onMenuItemClick(MenuItem item) {  
+//				//Toast.makeText(FavouritesMenu.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();  
+//				if(sortByCounter == 2)
+//					sortByCounter = 0;
+//				else
+//					sortByCounter++;
+//					
+//				try {
+//					buttonSortBy.setText("Sort By: " + sortBy(sortByCounter, viewCounter));
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//				return true;  
+//			}  
+//		});  
+//		pop_up.show();
+//	}
+//});

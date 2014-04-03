@@ -60,14 +60,14 @@ public class CsvWriter {
 				fos.write(temp[i1].getBytes());
 				fos.write(",".getBytes());
 			}
-			fos.write("\n".getBytes());
+			fos.write("0\n".getBytes());
 		}
 		fos.close();
 		
 		return true;
 	}
 	
-	public boolean ICantThinkOfAName(String trackName ,String fileName, Context context) throws IOException{
+	public boolean changeNumberOfTimesPlayed(String trackName ,String fileName, Context context) throws IOException{
 		InputStream instream = context.openFileInput(fileName);
 		InputStreamReader inputreader = new InputStreamReader(instream);
 		BufferedReader buffreader = new BufferedReader(inputreader);
