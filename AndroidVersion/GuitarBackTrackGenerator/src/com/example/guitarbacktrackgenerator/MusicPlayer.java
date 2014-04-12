@@ -7,14 +7,10 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -122,7 +118,7 @@ implements YouTubePlayer.OnInitializedListener{
 	public void addTrackToCsv(String fileName){
 		CsvWriter newCsvWriter = new CsvWriter();
 		try {
-			if(newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",MusicPlayer.this)){
+			if(newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",MusicPlayer.this, true)){
 				String text = "Track successfully added to " + fileName + "!";
 				Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
 				toast.show();

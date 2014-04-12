@@ -68,6 +68,7 @@ public class FavouritesMenu extends Activity{
 					CsvWriter newCsvWriter = new CsvWriter();
 					try {
 						newCsvWriter.changeNumberOfTimesPlayed(trackSelectedName, currentView+".csv", FavouritesMenu.this);
+						takeTracksFromCsv();
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -163,6 +164,11 @@ public class FavouritesMenu extends Activity{
 			@Override
 			public void onClick(View v) {
 				deleteFile(currentView+".csv");
+				if(currentView.equals("favourites"))
+					favouriteTracks.clear();
+				else if(currentView.equals("recordings"))
+					recordings.clear();
+				
 				linearLayout.removeAllViews(); // Not sure if OK. Find a better way maybe.
 				String text = "All tracks successfully removed";
 				Toast toast = Toast.makeText(FavouritesMenu.this, text, Toast.LENGTH_LONG);
@@ -173,6 +179,7 @@ public class FavouritesMenu extends Activity{
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				updateCsvFiles();
 				finish();
 			}
 		});
@@ -261,6 +268,27 @@ public class FavouritesMenu extends Activity{
 			});
 		}
 	}	
+	
+	public void updateCsvFiles(){
+		CsvWriter newCsvWriter = new CsvWriter();
+		deleteFile("favourites.csv");
+		for(int i = 0; i < favouriteTracks.size(); i ++){
+			try {
+				newCsvWriter.writeInInternalStorageCsv(favouriteTracks.get(i), "favourites.csv", FavouritesMenu.this, false);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		deleteFile("recordings.csv");
+		for(int i = 0; i < recordings.size(); i ++){
+			try {
+				newCsvWriter.writeInInternalStorageCsv(recordings.get(i), "recordings.csv", FavouritesMenu.this,false);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
 
 //a negative int if this < that

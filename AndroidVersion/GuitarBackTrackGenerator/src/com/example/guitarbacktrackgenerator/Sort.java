@@ -1,6 +1,8 @@
 package com.example.guitarbacktrackgenerator;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,7 +17,7 @@ public class Sort {
 		else if(sortByCounter == 1)
 			index = 0; // Key is 0 index
 		else if(sortByCounter == 2)	
-			index = 5; // Most Played is 5 index
+			index = 6; // Most Played is 6 index
 	}
 	
 	@SuppressLint("DefaultLocale")
@@ -24,7 +26,8 @@ public class Sort {
 		for(int j=0; j < tracks.size() - 1;j++){
 		     shortestStringIndex = j;
 		     for (int i=j+1 ; i < tracks.size(); i++){
-		    	 if(index == 5){ // Sort by Most Played (We need to compare integers)
+		    	 if(index == 6){ // Sort by Most Played (We need to compare integers)
+		    		 Log.d("", tracks.get(i)[index]);
 		    		 if(Integer.parseInt(tracks.get(i)[index]) > Integer.parseInt(tracks.get(shortestStringIndex)[index]))
 			             shortestStringIndex = i;  
 		    	 }else{

@@ -28,5 +28,23 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="54dp"
         android:text="@string/Exit" />
+
+    <Button
+        android:id="@+id/buttonDoesTrackExist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/shareInSoundcloudButton"
+        android:layout_alignRight="@+id/shareInSoundcloudButton"
+        android:layout_below="@+id/textCreditsMenu"
+        android:layout_marginTop="49dp"
+        android:text="Does Track Exist ?" />
+
+    <Button
+        android:id="@+id/shareInSoundcloudButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonDoesTrackExist"
+        android:layout_centerHorizontal="true"
+        android:text="Share In Soundcloud" />
     
 </RelativeLayout>
