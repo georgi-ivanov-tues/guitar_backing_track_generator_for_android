@@ -1,110 +1,127 @@
 package com.example.guitarbacktrackgenerator;
 
+import java.io.File;
 import java.io.IOException;
-import com.google.android.youtube.player.YouTubeBaseActivity;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
-import com.google.android.youtube.player.YouTubePlayer.Provider;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnErrorListener;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MusicPlayer extends YouTubeBaseActivity
-implements YouTubePlayer.OnInitializedListener{
-	
-	Button buttonExit, buttonPlay, buttonPause, buttonAddToFavourites, buttonAddToRecordings, buttonStop, buttonPlayRec, buttonStartRec, buttonStopRec;
-	TextView title, trackName;
-	String[] userChoice;
-	static private final String DEVELOPER_KEY = "AIzaSyA53I5DUsgUvpBwOyeqfIkl9N0g9cxcHCA";
-	static private String VIDEO = "dKLftgvYsVU";
-	boolean mStartRecording = true;
-	boolean mStartPlaying = true;
+public class MusicPlayer extends Activity implements OnErrorListener, OnPreparedListener{
+	Button buttonExit, buttonPlay, buttonPause, buttonStop;
+	TextView title, displayUserChoice;
+	String path;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_music_player);
 
-		buttonAddToFavourites = (Button) findViewById(R.id.buttonAddToFavourites);
-		buttonAddToRecordings = (Button) findViewById(R.id.buttonAddToRecordings);
+		buttonPlay = (Button) findViewById(R.id.buttonPlay);
+		buttonPause = (Button) findViewById(R.id.buttonPause);
+		buttonStop = (Button) findViewById(R.id.buttonStop);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
-		buttonPlayRec = (Button) findViewById(R.id.buttonPlayRec);
-		buttonStartRec = (Button) findViewById(R.id.buttonStartRec);
 		title = (TextView) findViewById(R.id.Title);
-		trackName = (TextView) findViewById(R.id.trackName);
+		displayUserChoice = (TextView) findViewById(R.id.Choice);
 
 		changeTextViewColors();
 
 		Bundle newBundle = this.getIntent().getExtras();
-		userChoice = newBundle.getStringArray(null);
+		String[] userChoice = newBundle.getStringArray(null);
 
-		trackName.setText(userChoice[3]);
-		String[] parsed = (userChoice[4].split("be/"));
-		Log.d("", parsed[1]);
-		VIDEO = parsed[1];
-
-		YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-		youTubeView.initialize(DEVELOPER_KEY, this);
-
-		final AudioRecord rec = new AudioRecord();
-
-		buttonAddToFavourites.setOnClickListener(new View.OnClickListener() {
+		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " "
+				+ userChoice[2] + " " + userChoice[3]);
+		final MediaPlayer mediaPlayer = new MediaPlayer();
+		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+		path = Environment.getExternalStorageDirectory().getAbsolutePath()
+					+ "/GuitarRecordings/" +  userChoice[4] + ".3gp";
+		try {
+			mediaPlayer.setDataSource(path);
+		} catch (IllegalArgumentException e1) {
+			e1.printStackTrace();
+		} catch (SecurityException e1) {
+			e1.printStackTrace();
+		} catch (IllegalStateException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		mediaPlayer.setOnErrorListener(this);
+		mediaPlayer.setOnPreparedListener(this);
+		mediaPlayer.prepareAsync();
+		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				addTrackToCsv("favourites");
+				if(!mediaPlayer.isPlaying()){
+					File file = new File(path);
+					String text = Boolean.toString(file.exists());
+					Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
+					toast.show();
+					mediaPlayer.start();
+				}
 			}
 		});
 
-		buttonAddToRecordings.setOnClickListener(new View.OnClickListener() {
+		buttonPause.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				addTrackToCsv("recordings");
+				if (mediaPlayer.isPlaying()) {
+					mediaPlayer.pause();
+				}
+			}
+		});
+
+		buttonStop.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mediaPlayer.isPlaying()){
+					mediaPlayer.reset();
+					try {
+						mediaPlayer.setDataSource(path);
+					} catch (IllegalArgumentException e1) {
+						e1.printStackTrace();
+					} catch (SecurityException e1) {
+						e1.printStackTrace();
+					} catch (IllegalStateException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					try {
+						mediaPlayer.prepare();
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				mediaPlayer.stop();
+				mediaPlayer.release();
 				finish();
-			}
-		});
-
-		buttonPlayRec.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				rec.onPlay(mStartPlaying);
-				if (mStartPlaying) {
-					//setTitle("Stop playing");
-				} else {
-					//setTitle("Start playing");
-				}
-				mStartPlaying = !mStartPlaying;
-			}
-		});
-		buttonStartRec.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				rec.onRecord(mStartRecording);
-				if (mStartRecording) {
-					String text = "Recording is ON";
-					Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
-					toast.show();
-				} else {
-					String text = "Recording is OFF";
-					Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
-					toast.show();
-				}
-				mStartRecording = !mStartRecording;
 			}
 		});
 	}
 
-	public boolean onCreateMusicPlayer(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
@@ -112,33 +129,18 @@ implements YouTubePlayer.OnInitializedListener{
 
 	void changeTextViewColors() {
 		title.setTextColor(Color.parseColor("#FFFFFF"));
-		trackName.setTextColor(Color.parseColor("#FFFFFF"));
-	}
-
-	public void addTrackToCsv(String fileName){
-		CsvWriter newCsvWriter = new CsvWriter();
-		try {
-			if(newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",MusicPlayer.this, true)){
-				String text = "Track successfully added to " + fileName + "!";
-				Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
-				toast.show();
-			}else{
-				String text = "Track already added to " + fileName + "!";
-				Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
-				toast.show();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		displayUserChoice.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 
 	@Override
-	public void onInitializationFailure(Provider provider, YouTubeInitializationResult error) {
-		Toast.makeText(this, "Oh no! "+error.toString(),
-				Toast.LENGTH_LONG).show();
+	public void onPrepared(MediaPlayer mp) {
+		// TODO Auto-generated method stub
+		buttonPlay.setEnabled(true);
 	}
+
 	@Override
-	public void onInitializationSuccess(Provider provider, YouTubePlayer player,boolean wasRestored) {
-		player.loadVideo(VIDEO);
+	public boolean onError(MediaPlayer arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

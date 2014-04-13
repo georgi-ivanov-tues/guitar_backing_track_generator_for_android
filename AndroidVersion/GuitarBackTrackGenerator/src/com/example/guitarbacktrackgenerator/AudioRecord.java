@@ -2,14 +2,10 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.File;
 import java.io.IOException;
-
-import android.app.AlertDialog;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
-import android.provider.MediaStore.Files;
 import android.util.Log;
-import android.widget.EditText;
 
 public class AudioRecord {
 	private static final String LOG_TAG = "AudioRecordTest";
@@ -23,8 +19,10 @@ public class AudioRecord {
 		}
 	}
 
+	Long trackName = System.currentTimeMillis();
+	
 	String path = Environment.getExternalStorageDirectory().getAbsolutePath()
-			+ "/GuitarRecordings/" +  System.currentTimeMillis() + ".3gp";
+			+ "/GuitarRecordings/" +  trackName + ".3gp";
 	
 	void onRecord(boolean start) {
 		if (start) {
@@ -94,6 +92,10 @@ public class AudioRecord {
 			mPlayer.release();
 			mPlayer = null;
 		}
+	}
+	
+	public Long getTrackName(){
+		return trackName;
 	}
 
 }

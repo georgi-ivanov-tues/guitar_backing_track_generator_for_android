@@ -21,15 +21,17 @@
         android:gravity="center"
         android:text="@string/Music_Player"
         android:textSize="20sp" />
-        
+    
     <TextView
-        android:id="@+id/trackName"
+        android:id="@+id/Choice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/Title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
+        android:editable = "true"
+        android:layout_marginTop="33dp"
         android:gravity="center"
+        android:text="Key, Mode, Style, Speed"
         android:textSize="20sp" />
 
     <Button
@@ -38,50 +40,32 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="38dp"
         android:text="@string/Exit" />
 
     <Button
-        android:id="@+id/buttonAddToFavourites"
-        android:layout_width="125dp"
+        android:id="@+id/buttonStop"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonPause"
+        android:layout_alignLeft="@+id/buttonPause"
+        android:text="@string/Stop" />
+
+    <Button
+        android:id="@+id/buttonPause"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_alignLeft="@+id/buttonExit"
-        android:text="@string/AddToFavourites" />
+        android:layout_alignRight="@+id/buttonExit"
+        android:text="@string/Pause" />
 
     <Button
-        android:id="@+id/buttonStartRec"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonPlay"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonPlayRec"
-        android:layout_alignBottom="@+id/buttonPlayRec"
-        android:layout_toRightOf="@+id/buttonPlayRec"
-        android:text="StartRec" />
-
-    <Button
-        android:id="@+id/buttonPlayRec"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonAddToFavourites"
-        android:layout_alignLeft="@+id/buttonAddToFavourites"
-        android:text="PlayRec" />
-
-    <Button
-        android:id="@+id/buttonAddToRecordings"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonExit"
-        android:layout_toRightOf="@+id/buttonAddToFavourites"
-        android:text="@string/AddToRecordings" />
-
-    <com.google.android.youtube.player.YouTubePlayerView
-        android:id="@+id/youtube_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonPlayRec"
-        android:layout_below="@+id/trackName"
-        android:layout_marginTop="15dp" >
-    </com.google.android.youtube.player.YouTubePlayerView>
+        android:layout_above="@+id/buttonStop"
+        android:layout_alignLeft="@+id/buttonStop"
+        android:text="@string/Play" />
 
 </RelativeLayout>

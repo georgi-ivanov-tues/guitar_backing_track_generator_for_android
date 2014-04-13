@@ -6,7 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList; 
 import java.util.Scanner;
+
 import android.content.Context;
+import android.util.Log;
 
 public class CsvReader{
 	public ArrayList<String[]> parseCsv(String[] userChoice, InputStream inputStream) throws IOException{
@@ -47,7 +49,6 @@ public class CsvReader{
 			InputStream instream = context.openFileInput(fileName);
 			InputStreamReader inputreader = new InputStreamReader(instream);
 			BufferedReader buffreader = new BufferedReader(inputreader);
-			      
 			String line;
 			while ((line = buffreader.readLine()) != null) {
 				String[] parsed = (line.split(","));

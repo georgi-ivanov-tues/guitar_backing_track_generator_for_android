@@ -36,7 +36,7 @@ public class CsvWriter {
 				fos.write(data[i].getBytes());
 				fos.write(",".getBytes());
 			}
-			if(newTrack == true){
+			if(newTrack){
 				Calendar c = Calendar.getInstance();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss ");
 				String strDate = sdf.format(c.getTime());
@@ -70,7 +70,7 @@ public class CsvWriter {
 		FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE); // Replacing favourites.csv		              
 		for(int i = 0; i < tracks.size(); i++){
 			String[] temp = tracks.get(i);
-			for(int i1 = 0; i1 <= 4; i1++){
+			for(int i1 = 0; i1 < temp.length; i1++){
 				fos.write(temp[i1].getBytes());
 				fos.write(",".getBytes());
 			}
@@ -101,7 +101,7 @@ public class CsvWriter {
 		FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE); // Replacing favourites.csv		              
 		for(int i = 0; i < tracks.size(); i++){
 			String[] temp = tracks.get(i);
-			for(int i1 = 0; i1 <= 6; i1++){
+			for(int i1 = 0; i1 < temp.length; i1++){
 				fos.write(temp[i1].getBytes());
 				fos.write(",".getBytes());
 			}
@@ -110,5 +110,12 @@ public class CsvWriter {
 		fos.close();
 		
 		return true;
+	}
+	
+	public void writeInCsv(String str1,String str2, Context context) throws IOException{
+		FileOutputStream fos = context.openFileOutput("sorting_info.csv", Context.MODE_PRIVATE);
+		fos.write(str1.getBytes());
+		fos.write("\n".getBytes());
+		fos.write(str2.getBytes());
 	}
 }

@@ -30,19 +30,20 @@ public final class R {
         public static final int icon=0x7f020006;
     }
     public static final class id {
-        public static final int B=0x7f090028;
+        public static final int B=0x7f09002b;
+        public static final int Choice=0x7f09001d;
         public static final int Key=0x7f090010;
         public static final int LinearLayout=0x7f090007;
         public static final int Title=0x7f090018;
-        public static final int action_settings=0x7f090025;
-        public static final int buttonA=0x7f090026;
-        public static final int buttonAddToFavourites=0x7f09001e;
-        public static final int buttonAddToRecordings=0x7f090021;
-        public static final int buttonAsharp=0x7f090027;
+        public static final int action_settings=0x7f090028;
+        public static final int buttonA=0x7f090029;
+        public static final int buttonAddToFavourites=0x7f090023;
+        public static final int buttonAddToRecordings=0x7f090026;
+        public static final int buttonAsharp=0x7f09002a;
         public static final int buttonCalm=0x7f09000e;
         public static final int buttonClear=0x7f090016;
         public static final int buttonCredits=0x7f09001c;
-        public static final int buttonDoesTrackExist=0x7f090023;
+        public static final int buttonDoesTrackExist=0x7f090020;
         public static final int buttonExit=0x7f090002;
         public static final int buttonFavourites=0x7f09001a;
         public static final int buttonGenerate=0x7f090019;
@@ -51,17 +52,19 @@ public final class R {
         public static final int buttonMin=0x7f090013;
         public static final int buttonNext=0x7f090012;
         public static final int buttonOptions=0x7f09001b;
+        public static final int buttonPause=0x7f09001f;
         public static final int buttonPlay=0x7f090008;
-        public static final int buttonPlayRec=0x7f090020;
+        public static final int buttonPlayRec=0x7f090025;
         public static final int buttonPrev=0x7f090011;
         public static final int buttonRandomize=0x7f090015;
         public static final int buttonRemoveAllTracks=0x7f090006;
         public static final int buttonRemoveTrack=0x7f090005;
         public static final int buttonSortBy=0x7f09000a;
-        public static final int buttonStartRec=0x7f09001f;
+        public static final int buttonStartRec=0x7f090024;
+        public static final int buttonStop=0x7f09001e;
         public static final int buttonSwitchToOtherView=0x7f090009;
         public static final int scrollView=0x7f090004;
-        public static final int shareInSoundcloudButton=0x7f090024;
+        public static final int shareInSoundcloudButton=0x7f090021;
         public static final int textCreatedBy=0x7f090001;
         public static final int textCreditsMenu=0x7f090000;
         public static final int textKey=0x7f09000b;
@@ -69,8 +72,8 @@ public final class R {
         public static final int textStyle=0x7f09000c;
         public static final int textViewFavouritesMenu=0x7f090003;
         public static final int textWarning=0x7f090017;
-        public static final int trackName=0x7f09001d;
-        public static final int youtube_view=0x7f090022;
+        public static final int trackName=0x7f090022;
+        public static final int youtube_view=0x7f090027;
     }
     public static final class layout {
         public static final int activity_credits_menu=0x7f030000;
@@ -79,6 +82,7 @@ public final class R {
         public static final int activity_main=0x7f030003;
         public static final int activity_music_player=0x7f030004;
         public static final int activity_options_menu=0x7f030005;
+        public static final int activity_video_player=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f080000;

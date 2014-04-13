@@ -153,9 +153,9 @@ public class GenerateMenu extends Activity {
 							String[] track = getRandomTrack(tracksThatMatchUserChoice);
 							Bundle newBundle=new Bundle();
 							newBundle.putStringArray(null, track);
-							Intent MusicPlayer = new Intent(GenerateMenu.this, MusicPlayer.class);
-							MusicPlayer.putExtras(newBundle);
-							GenerateMenu.this.startActivity(MusicPlayer); 
+							Intent VideoPlayer = new Intent(GenerateMenu.this, VideoPlayer.class);
+							VideoPlayer.putExtras(newBundle);
+							GenerateMenu.this.startActivity(VideoPlayer); 
 						}
 					} catch (IOException e) {
 						e.printStackTrace();

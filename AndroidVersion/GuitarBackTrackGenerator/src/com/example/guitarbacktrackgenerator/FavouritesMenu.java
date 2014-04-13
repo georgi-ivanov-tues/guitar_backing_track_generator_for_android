@@ -1,12 +1,15 @@
 package com.example.guitarbacktrackgenerator;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import android.os.Bundle;
+import android.os.Environment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+// Code + 10 => Bugs * 10
 public class FavouritesMenu extends Activity{
 
 	Button buttonPlay, buttonSwitchToOtherView, buttonSortBy, buttonRemoveTrack, buttonRemoveAllTracks, buttonExit;
@@ -23,7 +27,7 @@ public class FavouritesMenu extends Activity{
 	ArrayList<String[]> favouriteTracks = null, recordings = null;
 	LinearLayout linearLayout;
 	Spinner spinner;
-	String trackSelectedName = "", currentView = "favourites";
+	String trackSelectedName = "", currentView = "favourites", favouritesSortedBy = "none", recordingsSortedBy = "none";
 	int viewCounter = 0, sortByCounter = -1, otherViewSortByCounter = -1;
 
 	@Override
@@ -37,7 +41,6 @@ public class FavouritesMenu extends Activity{
 		buttonSwitchToOtherView = (Button) findViewById(R.id.buttonSwitchToOtherView);
 		buttonSwitchToOtherView.setText("Switch To Recordings");
 		buttonExit = (Button) findViewById(R.id.buttonExit);
-		//spinner = (Spinner)findViewById(R.id.spinner);
 		buttonSortBy = (Button) findViewById(R.id.buttonSortBy);
 		title = (TextView) findViewById(R.id.Title);
 		textViewFavouritesMenu = (TextView) findViewById(R.id.textViewFavouritesMenu);
@@ -46,16 +49,12 @@ public class FavouritesMenu extends Activity{
 		try {
 			takeTracksFromCsv();
 			selectingTracks(printTracks(viewCounter));
+			takeSortingInfo();
+			buttonSortBy.setText("Sort By: " + favouritesSortedBy);
+			sortByCounter = getSortByToInt(favouritesSortedBy);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
-//		String[] items = new String[]{"Name", "Key", "Most Played"};
-//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-//		spinner.setAdapter(adapter);
-//		String spin = spinner.getSelectedItem().toString();
-//        Log.d("", spin);
-//        tv.setText(spin);
 		
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -75,13 +74,21 @@ public class FavouritesMenu extends Activity{
 					CsvReader newCsvReader = new CsvReader();
 					Bundle newBundle = new Bundle();
 					try {
+						//File asd = new File(currentView + ".csv");
+						//Log.d("", Boolean.toString(asd.exists()));
 						newBundle.putStringArray(null, newCsvReader.findTrackByName(currentView+".csv", trackSelectedName, FavouritesMenu.this));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					Intent MusicPlayer = new Intent(FavouritesMenu.this, MusicPlayer.class);
-					MusicPlayer.putExtras(newBundle);
-					FavouritesMenu.this.startActivity(MusicPlayer);
+					if(currentView.equals("favourites")){
+						Intent VideoPlayer = new Intent(FavouritesMenu.this, VideoPlayer.class);
+						VideoPlayer.putExtras(newBundle);
+						FavouritesMenu.this.startActivity(VideoPlayer);
+					}else if(currentView.equals("recordings")){
+						Intent MusicPlayer = new Intent(FavouritesMenu.this, MusicPlayer.class);
+						MusicPlayer.putExtras(newBundle);
+						FavouritesMenu.this.startActivity(MusicPlayer);
+					}
 				}
 			}
 		});
@@ -104,6 +111,13 @@ public class FavouritesMenu extends Activity{
 				currentView = changeViewCounter(viewCounter);
 				linearLayout.removeAllViews();
 				trackSelectedName = "";
+				if(currentView.equals("favourites")){
+					buttonSortBy.setText("Sort By: " + favouritesSortedBy);
+					sortByCounter = getSortByToInt(favouritesSortedBy);
+				}else{
+					buttonSortBy.setText("Sort By: " + recordingsSortedBy);
+					sortByCounter = getSortByToInt(recordingsSortedBy);
+				}
 				buttonSortBy.setText("Sort By: " + getSortByCounterToAsString(sortByCounter));
 				textViewFavouritesMenu.setText(currentView.substring(0, 1).toUpperCase() + currentView.substring(1));
 				buttonSwitchToOtherView.setText("Switch to " + otherView.substring(0, 1).toUpperCase() + otherView.substring(1));
@@ -147,6 +161,36 @@ public class FavouritesMenu extends Activity{
 						e.printStackTrace();
 					}
 					linearLayout.removeAllViews();
+					if(currentView.equals("recordings")){
+						CsvReader newCsvReader = new CsvReader();
+						String[] track = {};
+						try {
+							// FUCK JAVA!!!
+							//File asd = new File(currentView + ".csv");
+							//Log.d("", Boolean.toString(asd.exists()));
+							track = newCsvReader.findTrackByName(currentView + ".csv", trackSelectedName, FavouritesMenu.this);
+							if (track == null) {
+							  Log.d("","array is null");
+							}else{
+								File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+										+ "/GuitarRecordings");
+								new File(dir, track[4]).delete();
+							}
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						
+						File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+								+ "/GuitarRecordings");
+						
+//						if (dir.isDirectory()) {
+//					        String[] children = dir.list();
+//					        for (int i = 0; i < children.length; i++) {
+//					            new File(dir, children[i]).delete();
+//					        }
+//					    }
+					}
+					
 					String text = "Track successfully removed";
 					Toast toast = Toast.makeText(FavouritesMenu.this, text, Toast.LENGTH_LONG);
 					toast.show();
@@ -168,18 +212,40 @@ public class FavouritesMenu extends Activity{
 					favouriteTracks.clear();
 				else if(currentView.equals("recordings"))
 					recordings.clear();
-				
 				linearLayout.removeAllViews(); // Not sure if OK. Find a better way maybe.
 				String text = "All tracks successfully removed";
 				Toast toast = Toast.makeText(FavouritesMenu.this, text, Toast.LENGTH_LONG);
 				toast.show();
+				
+				File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+						+ "/GuitarRecordings");
+				
+				if (dir.isDirectory()) {
+			        String[] children = dir.list();
+			        for (int i = 0; i < children.length; i++) {
+			            new File(dir, children[i]).delete();
+			        }
+			    }
+				
+				if(currentView.equals("favourites"))
+					favouritesSortedBy = "";
+				else 
+					recordingsSortedBy = "";
+				
+				buttonSortBy.setText("Sort By:");
 			}
 		});
 		
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				updateCsvFiles();
+				CsvWriter newCsvWriter = new CsvWriter();
+				try {
+					updateCsvFiles();
+					newCsvWriter.writeInCsv(favouritesSortedBy,recordingsSortedBy,FavouritesMenu.this);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				finish();
 			}
 		});
@@ -206,12 +272,27 @@ public class FavouritesMenu extends Activity{
 		}
 	}
 	
+	public int getSortByToInt(String str){
+		int num = -1;
+		if(str.equals("Name"))
+			num = 0;
+		else if(str.equals("Key"))
+			num = 1;
+		else if(str.equals("Most Played"))
+			num = 2;
+		
+		return num;
+	}	
+	
 	public void sort(int sortByCounter, int viewCounter) throws IOException{
 		ArrayList<String[]> tracks = null;
-		if(viewCounter == 0)
+		if(viewCounter == 0){
 			tracks = favouriteTracks;
-		else if(viewCounter == 1)
+			favouritesSortedBy = getSortByCounterToAsString(sortByCounter);
+		}else if(viewCounter == 1){
 			tracks = recordings;
+			recordingsSortedBy = getSortByCounterToAsString(sortByCounter);
+		}
 		
 		Sort newSorter = new Sort(tracks, sortByCounter);
 		newSorter.sort();
@@ -223,6 +304,21 @@ public class FavouritesMenu extends Activity{
 		CsvReader newCsvReader = new CsvReader();
 		favouriteTracks = newCsvReader.readFromInternalStorageCsv("favourites.csv", FavouritesMenu.this);
 		recordings = newCsvReader.readFromInternalStorageCsv("recordings.csv", FavouritesMenu.this);
+	}
+	
+	public void takeSortingInfo() throws IOException{
+		CsvReader newCsvReader = new CsvReader();
+		
+		File file = new File("data/data/com.example.guitarbacktrackgenerator/files/sorting_info.csv");
+		if(file.exists()){
+			ArrayList<String []> asd = newCsvReader.readFromInternalStorageCsv("sorting_info.csv", FavouritesMenu.this);
+			if(asd.size() == 2){
+				favouritesSortedBy = asd.get(0)[0];
+				recordingsSortedBy = asd.get(1)[0]; // fuck it..
+			}else if(asd.size() == 1)
+				favouritesSortedBy = asd.get(0)[0];
+		
+		}
 	}
 	
 	public int printTracks(int viewCounter) throws IOException{
@@ -267,7 +363,7 @@ public class FavouritesMenu extends Activity{
 				}
 			});
 		}
-	}	
+	}
 	
 	public void updateCsvFiles(){
 		CsvWriter newCsvWriter = new CsvWriter();
@@ -279,7 +375,7 @@ public class FavouritesMenu extends Activity{
 				e.printStackTrace();
 			}
 		}
-		
+
 		deleteFile("recordings.csv");
 		for(int i = 0; i < recordings.size(); i ++){
 			try {
@@ -290,36 +386,3 @@ public class FavouritesMenu extends Activity{
 		}
 	}
 }
-
-//a negative int if this < that
-//0 if this == that
-//a positive int if this > that
-
-//if(Integer.toString(Integer.valueOf(android.os.Build.VERSION.SDK)).compareTo("11") >= 0){
-// 		NEW API SHIT...		
-//buttonSortBy.setOnClickListener(new View.OnClickListener() {
-//	@SuppressLint("NewApi")
-//	@Override  
-//	public void onClick(View v) {  
-//		PopupMenu pop_up = new PopupMenu(FavouritesMenu.this, buttonSortBy);  
-//		pop_up.getMenuInflater().inflate(R.menu.pop_up_menu, pop_up.getMenu());  
-//		pop_up.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {  
-//			@SuppressLint("NewApi")
-//			public boolean onMenuItemClick(MenuItem item) {  
-//				//Toast.makeText(FavouritesMenu.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();  
-//				if(sortByCounter == 2)
-//					sortByCounter = 0;
-//				else
-//					sortByCounter++;
-//					
-//				try {
-//					buttonSortBy.setText("Sort By: " + sortBy(sortByCounter, viewCounter));
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				return true;  
-//			}  
-//		});  
-//		pop_up.show();
-//	}
-//});
