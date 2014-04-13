@@ -41,6 +41,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="38dp"
+        android:background="@drawable/button"
         android:text="@string/Exit" />
 
     <Button
@@ -49,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonPause"
         android:layout_alignLeft="@+id/buttonPause"
+        android:background="@drawable/button"
         android:text="@string/Stop" />
 
     <Button
@@ -58,6 +60,7 @@
         android:layout_above="@+id/buttonExit"
         android:layout_alignLeft="@+id/buttonExit"
         android:layout_alignRight="@+id/buttonExit"
+        android:background="@drawable/button"
         android:text="@string/Pause" />
 
     <Button
@@ -66,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonStop"
         android:layout_alignLeft="@+id/buttonStop"
+        android:background="@drawable/button"
         android:text="@string/Play" />
 
 </RelativeLayout>

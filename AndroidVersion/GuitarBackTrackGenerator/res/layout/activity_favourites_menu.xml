@@ -42,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_alignRight="@+id/buttonExit"
+        android:background="@drawable/button"
         android:text="@string/DeleteAllTracks" />
 
     <Button
@@ -50,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="24dp"
+        android:background="@drawable/button"
         android:text="@string/Exit" />
 
     <Button
@@ -59,6 +61,7 @@
         android:layout_above="@+id/buttonRemoveTrack"
         android:layout_alignLeft="@+id/buttonRemoveTrack"
         android:layout_alignRight="@+id/buttonRemoveAllTracks"
+        android:background="@drawable/button"
         android:text="@string/Play" />
 
     <Button
@@ -66,6 +69,7 @@
         android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonPlay"
+        android:background="@drawable/button"
         android:text="@string/SwitchTo" />
 <!--  
     <Spinner
@@ -86,6 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonPlay"
         android:layout_alignRight="@+id/buttonPlay"
+        android:background="@drawable/button"
         android:text="@string/SortBy" />
 
     <Button
@@ -94,6 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_alignLeft="@+id/buttonExit"
+        android:background="@drawable/button"
         android:text="@string/DeleteTrack" />
 
 </RelativeLayout>

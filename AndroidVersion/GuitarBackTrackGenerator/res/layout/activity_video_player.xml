@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/button"
         android:text="@string/Exit" />
 
     <Button
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_alignLeft="@+id/buttonExit"
+        android:background="@drawable/button"
         android:text="@string/AddToFavourites" />
 
     <Button
@@ -56,6 +58,7 @@
         android:layout_alignBaseline="@+id/buttonPlayRec"
         android:layout_alignBottom="@+id/buttonPlayRec"
         android:layout_toRightOf="@+id/buttonPlayRec"
+        android:background="@drawable/button"
         android:text="StartRec" />
 
     <Button
@@ -65,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonAddToFavourites"
         android:layout_alignLeft="@+id/buttonAddToFavourites"
+        android:background="@drawable/button"
         android:text="PlayRec" />
 
     <Button
@@ -73,6 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_toRightOf="@+id/buttonAddToFavourites"
+        android:background="@drawable/button"
         android:text="@string/AddToRecordings" />
 
     <com.google.android.youtube.player.YouTubePlayerView
