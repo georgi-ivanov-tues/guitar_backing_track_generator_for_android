@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 
 public class CsvWriter {
 
@@ -41,7 +40,6 @@ public class CsvWriter {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss ");
 				String strDate = sdf.format(c.getTime());
 				
-				Log.d("",strDate);
 				fos.write(strDate.getBytes());
 				fos.write(",0".getBytes()); // 0 for 0 times played. Fix later maybe... Fuck it...
 			}

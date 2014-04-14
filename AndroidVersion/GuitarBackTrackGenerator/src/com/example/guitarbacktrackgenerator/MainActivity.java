@@ -44,8 +44,8 @@ public class MainActivity extends Activity {
 		buttonOptions.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent OptionsMenu = new Intent(MainActivity.this, OptionsMenu.class);
-		        MainActivity.this.startActivity(OptionsMenu); 
+				Intent HelpMenu = new Intent(MainActivity.this, HelpMenu.class);
+		        MainActivity.this.startActivity(HelpMenu); 
 			}
 		});
 		

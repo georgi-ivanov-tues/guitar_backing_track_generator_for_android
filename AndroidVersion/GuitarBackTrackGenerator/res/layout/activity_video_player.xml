@@ -47,46 +47,43 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_alignLeft="@+id/buttonExit"
+        android:layout_alignRight="@+id/buttonExit"
         android:background="@drawable/button"
         android:text="@string/AddToFavourites" />
 
     <Button
-        android:id="@+id/buttonStartRec"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonPlayRec"
-        android:layout_alignBottom="@+id/buttonPlayRec"
-        android:layout_toRightOf="@+id/buttonPlayRec"
-        android:background="@drawable/button"
-        android:text="StartRec" />
-
-    <Button
         android:id="@+id/buttonPlayRec"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonAddToFavourites"
         android:layout_alignLeft="@+id/buttonAddToFavourites"
         android:background="@drawable/button"
-        android:text="PlayRec" />
+        android:text="Play Recording" />
 
-    <Button
+ <!--    <Button
         android:id="@+id/buttonAddToRecordings"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_toRightOf="@+id/buttonAddToFavourites"
         android:background="@drawable/button"
-        android:text="@string/AddToRecordings" />
+        android:text="@string/AddToRecordings" /> -->
+
+    <Button
+        android:id="@+id/buttonStartRec"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonAddToFavourites"
+        android:layout_alignRight="@+id/buttonAddToFavourites"
+        android:background="@drawable/button"
+        android:text="Start Recording" />
 
     <com.google.android.youtube.player.YouTubePlayerView
         android:id="@+id/youtube_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonPlayRec"
         android:layout_below="@+id/trackName"
-        android:layout_marginTop="15dp" >
+        android:layout_centerHorizontal="true" >
     </com.google.android.youtube.player.YouTubePlayerView>
 
 </RelativeLayout>

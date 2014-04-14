@@ -9,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 // Code + 10 => Bugs * 10
 public class FavouritesMenu extends Activity{
@@ -29,12 +30,12 @@ public class FavouritesMenu extends Activity{
 	Spinner spinner;
 	String trackSelectedName = "", currentView = "favourites", favouritesSortedBy = "none", recordingsSortedBy = "none";
 	int viewCounter = 0, sortByCounter = -1, otherViewSortByCounter = -1;
-
+	Lock mutex = new ReentrantLock(true);
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favourites_menu);
-		
 		buttonPlay = (Button) findViewById(R.id.buttonPlay);
 		buttonRemoveTrack = (Button) findViewById(R.id.buttonRemoveTrack);
 		buttonRemoveAllTracks = (Button) findViewById(R.id.buttonRemoveAllTracks);
@@ -122,6 +123,7 @@ public class FavouritesMenu extends Activity{
 				textViewFavouritesMenu.setText(currentView.substring(0, 1).toUpperCase() + currentView.substring(1));
 				buttonSwitchToOtherView.setText("Switch to " + otherView.substring(0, 1).toUpperCase() + otherView.substring(1));
 				try {
+					takeTracksFromCsv();
 					selectingTracks(printTracks(viewCounter));
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -162,34 +164,20 @@ public class FavouritesMenu extends Activity{
 					}
 					linearLayout.removeAllViews();
 					if(currentView.equals("recordings")){
-						CsvReader newCsvReader = new CsvReader();
-						String[] track = {};
-						try {
-							// FUCK JAVA!!!
-							//File asd = new File(currentView + ".csv");
-							//Log.d("", Boolean.toString(asd.exists()));
-							track = newCsvReader.findTrackByName(currentView + ".csv", trackSelectedName, FavouritesMenu.this);
-							if (track == null) {
-							  Log.d("","array is null");
-							}else{
-								File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-										+ "/GuitarRecordings");
-								new File(dir, track[4]).delete();
-							}
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						
+						String trackName = null;
 						File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-								+ "/GuitarRecordings");
-						
-//						if (dir.isDirectory()) {
-//					        String[] children = dir.list();
-//					        for (int i = 0; i < children.length; i++) {
-//					            new File(dir, children[i]).delete();
-//					        }
-//					    }
+								+ "/GuitarRecordings/");
+						for(int i = 0; i < recordings.size(); i++){
+							if(recordings.get(i)[3].equals(trackSelectedName)){
+								trackName = recordings.get(i)[4];
+								break;
+							}
+						}
+						trackName += ".3gp";
+						if (dir.isDirectory()) 
+							new File(dir, trackName).delete();
 					}
+					
 					
 					String text = "Track successfully removed";
 					Toast toast = Toast.makeText(FavouritesMenu.this, text, Toast.LENGTH_LONG);
@@ -301,9 +289,19 @@ public class FavouritesMenu extends Activity{
 	}
 	
 	public void takeTracksFromCsv() throws IOException{
-		CsvReader newCsvReader = new CsvReader();
-		favouriteTracks = newCsvReader.readFromInternalStorageCsv("favourites.csv", FavouritesMenu.this);
-		recordings = newCsvReader.readFromInternalStorageCsv("recordings.csv", FavouritesMenu.this);
+		//new Thread(new Runnable() {
+			//public void run() {
+				CsvReader newCsvReader = new CsvReader();
+				try {
+					//mutex.lock();
+						favouriteTracks = newCsvReader.readFromInternalStorageCsv("favourites.csv", FavouritesMenu.this);
+						recordings = newCsvReader.readFromInternalStorageCsv("recordings.csv", FavouritesMenu.this);
+					//mutex.unlock();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			//}
+		//}).start();
 	}
 	
 	public void takeSortingInfo() throws IOException{
@@ -322,6 +320,7 @@ public class FavouritesMenu extends Activity{
 	}
 	
 	public int printTracks(int viewCounter) throws IOException{
+		
 		ArrayList<String []> tracks = null;
 		if(viewCounter == 0)
 			tracks = favouriteTracks;

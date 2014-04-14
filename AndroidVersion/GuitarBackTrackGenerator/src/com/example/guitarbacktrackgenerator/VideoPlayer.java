@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +36,6 @@ implements YouTubePlayer.OnInitializedListener{
 		setContentView(R.layout.activity_video_player);
 
 		buttonAddToFavourites = (Button) findViewById(R.id.buttonAddToFavourites);
-		buttonAddToRecordings = (Button) findViewById(R.id.buttonAddToRecordings);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
 		buttonPlayRec = (Button) findViewById(R.id.buttonPlayRec);
 		buttonStartRec = (Button) findViewById(R.id.buttonStartRec);
@@ -54,19 +52,12 @@ implements YouTubePlayer.OnInitializedListener{
 		VIDEO = parsed[1];
 
 		YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-		youTubeView.initialize(DEVELOPER_KEY, this);
+		youTubeView.initialize(DEVELOPER_KEY, VideoPlayer.this);
 
 		buttonAddToFavourites.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				addTrackToCsv("favourites");
-			}
-		});
-
-		buttonAddToRecordings.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//addTrackToCsv("recordings");
 			}
 		});
 
@@ -79,30 +70,34 @@ implements YouTubePlayer.OnInitializedListener{
 
 		buttonPlayRec.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				rec.onPlay(mStartPlaying);
-				if (mStartPlaying) {
-					//setTitle("Stop playing");
-				} else {
-					//setTitle("Start playing");
-				}
-				mStartPlaying = !mStartPlaying;
+				new Thread(new Runnable() {
+					public void run() {
+						rec.onPlay(mStartPlaying);
+					}
+				}).start();
 			}
 		});
 		buttonStartRec.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				rec.onRecord(mStartRecording);
+				
+				//new Thread(new Runnable() {
+				//	public void run() {
+						rec.onRecord(mStartRecording);
+				//	}
+				//}).start();
+			
 				if (mStartRecording) {
 					String text = "Recording is ON";
-					buttonStartRec.setText("StopRec");
+					buttonStartRec.setText("Stop Recording");
 					Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
 					toast.show();
 				} else {
 					String text = "Recording is OFF";
-					buttonStartRec.setText("StartRec");
+					buttonStartRec.setText("Start Recording");
 					Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
 					toast.show();
-			    	asdToAddRecordingsToCsv();
+			    	askToAddRecordingsToCsv();
 				}
 				mStartRecording = !mStartRecording;
 			}
@@ -120,14 +115,30 @@ implements YouTubePlayer.OnInitializedListener{
 		trackName.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 
-	public void addTrackToCsv(String fileName){
-		CsvWriter newCsvWriter = new CsvWriter();
+	boolean success = false;
+	public void addTrackToCsv(final String fileName){
+		final CsvWriter newCsvWriter = new CsvWriter();
 		Long trackName = rec.getTrackName();
 		if(fileName.equals("recordings"))
 			userChoice[4] = Long.toString(trackName);
 		
-		try {
-			if(newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",VideoPlayer.this, true)){
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						success = newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",VideoPlayer.this, true);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
+			
+			try {
+				Thread.sleep(100); // Fix it when you learn threads!
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			if(success){
 				String text = "Track successfully added to " + fileName + "!";
 				Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
 				toast.show();
@@ -136,12 +147,9 @@ implements YouTubePlayer.OnInitializedListener{
 				Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
 				toast.show();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
-	public void asdToAddRecordingsToCsv(){
+	public void askToAddRecordingsToCsv(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlayer.this);
 		builder
 		.setTitle("Save to Recordings")

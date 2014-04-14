@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -113,9 +112,6 @@ public class GenerateMenu extends Activity {
 				}else{
 					style = "heavy";
 				}
-				
-				Log.d("", mode);
-				Log.d("", style);
 			}
 		});
 		
@@ -185,9 +181,28 @@ public class GenerateMenu extends Activity {
 		textKeyChosen.setText(key);
 	}
 	
-	ArrayList<String[]> FindBackingTracks(String[] userChoice) throws IOException{
-		CsvReader newCsvReader = new CsvReader();
-		return newCsvReader.parseCsv(userChoice,getAssets().open(userChoice[0]+"_Backing_Tracks.csv"));
+	ArrayList<String []> parsedCsv = new ArrayList<String[]>();
+	ArrayList<String[]> FindBackingTracks(final String[] userChoice) throws IOException{
+		final CsvReader newCsvReader = new CsvReader();
+		
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					parsedCsv = newCsvReader.parseCsv(userChoice,getAssets().open(userChoice[0]+"_Backing_Tracks.csv"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+		
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return parsedCsv;
+		
+		//return newCsvReader.parseCsv(userChoice,getAssets().open(userChoice[0]+"_Backing_Tracks.csv"));
 	}
 	
 	String[] getRandomTrack(ArrayList<String[]> tracksThatMatchUserChoice){

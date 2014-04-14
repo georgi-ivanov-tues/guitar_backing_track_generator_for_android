@@ -47,8 +47,8 @@
         </activity>
          
         <activity 
-            android:name=".OptionsMenu" 
-            android:label="Options"
+            android:name=".HelpMenu" 
+            android:label="Help"
             android:screenOrientation="portrait">
         </activity>
          

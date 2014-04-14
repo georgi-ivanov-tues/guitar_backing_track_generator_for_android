@@ -2,14 +2,15 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.File;
 import java.io.IOException;
-
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -19,9 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MusicPlayer extends Activity implements OnErrorListener, OnPreparedListener{
-	Button buttonExit, buttonPlay, buttonPause, buttonStop;
+	Button buttonExit, buttonPlay, buttonPause, buttonStop, buttonShare;
 	TextView title, displayUserChoice;
 	String path;
+	String[] userChoice;
+	
+	private static final String CLIENT_ID = "fdb037658f862774d00e2f94816ec0e4";
+	private static final int SHARE_SOUND  = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		buttonPlay = (Button) findViewById(R.id.buttonPlay);
 		buttonPause = (Button) findViewById(R.id.buttonPause);
 		buttonStop = (Button) findViewById(R.id.buttonStop);
+		buttonShare = (Button) findViewById(R.id.buttonShare);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
 		title = (TextView) findViewById(R.id.Title);
 		displayUserChoice = (TextView) findViewById(R.id.Choice);
@@ -38,7 +44,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		changeTextViewColors();
 
 		Bundle newBundle = this.getIntent().getExtras();
-		String[] userChoice = newBundle.getStringArray(null);
+		userChoice = newBundle.getStringArray(null);
 
 		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " "
 				+ userChoice[2] + " " + userChoice[3]);
@@ -66,10 +72,14 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 			public void onClick(View v) {
 				if(!mediaPlayer.isPlaying()){
 					File file = new File(path);
-					String text = Boolean.toString(file.exists());
-					Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
-					toast.show();
-					mediaPlayer.start();
+					if(file.exists()){
+						mediaPlayer.start();
+					}else{
+						String text = Boolean.toString(file.exists());
+						Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
+						toast.show();
+					}
+						
 				}
 			}
 		});
@@ -110,6 +120,16 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 			}
 		});
 
+		buttonShare.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+//				Intent intent = new Intent(Intent.ACTION_SEND).setType("audio/soundcloud");
+//				intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(audioFile));
+//				startActivity(Intent.createChooser(intent, "Share to"));
+				shareSound();
+			}
+		});
+		
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -132,15 +152,38 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		displayUserChoice.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 
+	private void shareSound() {
+		File audioFile = new File(path);
+		Intent intent = new Intent("com.soundcloud.android.SHARE")
+			.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(audioFile))
+			.putExtra("com.soundcloud.android.extra.title", userChoice[3])
+			.putExtra("com.soundcloud.android.extra.where", userChoice[0] + ", " + userChoice[1] + ", " +  userChoice[2] + ", Backing Track")
+			.putExtra("com.soundcloud.android.extra.description", "Thanks to: Guitar Backing Track Generator For Android")
+			.putExtra("com.soundcloud.android.extra.public", true)
+			.putExtra("com.soundcloud.android.extra.tags", new String[] {
+			"demo",
+			"post lolcat bluez",
+			"soundcloud:created-with-client-id="+CLIENT_ID
+		})
+		.putExtra("com.soundcloud.android.extra.genre", "Easy Listening");
+		//.putExtra("com.soundcloud.android.extra.location", getLocation());
+		
+		try {
+			startActivityForResult(intent, SHARE_SOUND);
+		}catch (ActivityNotFoundException notFound) {
+			String text = "You should give up life!";
+			Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
+			toast.show();
+		}
+	}
+	
 	@Override
 	public void onPrepared(MediaPlayer mp) {
-		// TODO Auto-generated method stub
 		buttonPlay.setEnabled(true);
 	}
 
 	@Override
 	public boolean onError(MediaPlayer arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
