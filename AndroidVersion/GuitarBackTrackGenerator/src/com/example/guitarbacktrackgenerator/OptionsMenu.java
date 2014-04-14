@@ -27,33 +27,17 @@ public class OptionsMenu extends Activity {
 
 		exit = (Button) findViewById(R.id.buttonExit);
 		shareInSoundcloudButton = (Button) findViewById(R.id.shareInSoundcloudButton);
-		doesTrackExistButton = (Button) findViewById(R.id.buttonDoesTrackExist);
 		
 		shareInSoundcloudButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				// this is the audio file we want to upload
-//				String path = Environment.getExternalStorageDirectory().getAbsolutePath()
-//						   + "/Download/" + "test" + ".mp3";
-//				
-//				File file = new File(path);
-//				
-//				Intent intent = new Intent("com.soundcloud.android.SHARE")
-//				  .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
-//				  .putExtra("com.soundcloud.android.extra.title", "Demo");
-//				  // more metadata can be set, see below
-//				
-//				try {
-//				    // takes the user to the SoundCloud sharing screen
-//				    startActivityForResult(intent, 0);
-//				} catch (ActivityNotFoundException e) {
-//				    // SoundCloud Android app not installed, show a dialog etc.
-//				}
-				
+				File audio = new File("Environment.getExternalStorageDirectory().getAbsolutePath()"
+						   + "/Download/demo.3gp");
+				Intent intent = new Intent(Intent.ACTION_SEND).setType("audio/soundcloud");
+				intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(audio));
+				startActivity(Intent.createChooser(intent, "Share to"));
 				shareSound();
-				
-
-				Intent sendFile = new Intent(Intent.ACTION_SEND);
+				/*Intent sendFile = new Intent(Intent.ACTION_SEND);
 				
 				String path = Environment.getExternalStorageDirectory().getAbsolutePath()
 						   + "/Download/";
@@ -70,7 +54,7 @@ public class OptionsMenu extends Activity {
 				    String text = "Give up life!";
 					Toast toast = Toast.makeText(OptionsMenu.this, text, Toast.LENGTH_LONG);
 					toast.show();
-				}		
+				}		*/
 			
 			}
 		});
@@ -101,7 +85,7 @@ public class OptionsMenu extends Activity {
 	
 	 private void shareSound() {
 			String path = Environment.getExternalStorageDirectory().getAbsolutePath()
-					   + "/Download/" + "test" + ".mp3";
+					   + "/Download/" + "demo" + ".3gp";
 			
 			File file = new File(path);
 			
