@@ -166,7 +166,8 @@ implements YouTubePlayer.OnInitializedListener{
 			toast.show();
 		}
 		
-		finish();
+		if(fileName.equals("recordings"))
+			finish();
 	}
 	
 	public void askToAddRecordingsToCsv(){

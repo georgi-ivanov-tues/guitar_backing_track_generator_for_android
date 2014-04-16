@@ -59,7 +59,7 @@ public class CsvWriter {
 		String line;
 		while ((line = buffreader.readLine()) != null) {
 			String[] parsed = (line.split(","));
-			if(!parsed[3].equals(trackName)){ // Fix to search better!
+			if(!parsed[3].equals(trackName)){
 				tracks.add(parsed);
 			}
 		}

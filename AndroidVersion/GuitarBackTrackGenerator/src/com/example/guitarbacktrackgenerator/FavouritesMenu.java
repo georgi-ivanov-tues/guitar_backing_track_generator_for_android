@@ -3,14 +3,12 @@ package com.example.guitarbacktrackgenerator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.os.Environment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -78,8 +76,6 @@ public class FavouritesMenu extends Activity{
 					CsvReader newCsvReader = new CsvReader();
 					Bundle newBundle = new Bundle();
 					try {
-						//File asd = new File(currentView + ".csv");
-						//Log.d("", Boolean.toString(asd.exists()));
 						newBundle.putStringArray(null, newCsvReader.findTrackByName(currentView+".csv", trackSelectedName, FavouritesMenu.this));
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -191,6 +187,7 @@ public class FavouritesMenu extends Activity{
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+					trackSelectedName = "";
 				}
 			}
 		});
@@ -225,6 +222,7 @@ public class FavouritesMenu extends Activity{
 					recordingsSortedBy = "";
 				
 				buttonSortBy.setText("Sort By:");
+				trackSelectedName = "";
 			}
 		});
 		
