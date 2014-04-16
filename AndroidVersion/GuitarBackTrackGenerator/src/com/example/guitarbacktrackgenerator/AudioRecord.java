@@ -24,6 +24,10 @@ public class AudioRecord {
 	String path = Environment.getExternalStorageDirectory().getAbsolutePath()
 			+ "/GuitarRecordings/" +  trackName + ".3gp";
 	
+	void setTrackName(Long time){
+		trackName = time;
+	}
+	
 	void onRecord(boolean start) {
 		if (start) {
 			startRecording();
@@ -41,7 +45,6 @@ public class AudioRecord {
 	}
 
 	void startPlaying() {
-
 		mPlayer = new MediaPlayer();
 		try {
 			mPlayer.setDataSource(path);
@@ -50,8 +53,6 @@ public class AudioRecord {
 		} catch (IOException e) {
 			Log.e(LOG_TAG, "prepare() failed");
 		}
-
-
 	}
 
 	private void stopPlaying() {
@@ -75,7 +76,7 @@ public class AudioRecord {
 		mRecorder.start();
 	}
 
-	private void stopRecording() {
+	public void stopRecording() {
 		mRecorder.stop();
 		mRecorder.release();
 		mRecorder = null;

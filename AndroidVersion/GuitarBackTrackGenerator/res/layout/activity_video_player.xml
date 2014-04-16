@@ -47,18 +47,17 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonExit"
         android:layout_alignLeft="@+id/buttonExit"
-        android:layout_alignRight="@+id/buttonExit"
         android:background="@drawable/button"
         android:text="@string/AddToFavourites" />
 
-    <Button
+    <!-- <Button
         android:id="@+id/buttonPlayRec"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonAddToFavourites"
         android:layout_alignLeft="@+id/buttonAddToFavourites"
         android:background="@drawable/button"
-        android:text="Play Recording" />
+        android:text="Play Recording" /> -->
 
  <!--    <Button
         android:id="@+id/buttonAddToRecordings"
@@ -69,15 +68,6 @@
         android:background="@drawable/button"
         android:text="@string/AddToRecordings" /> -->
 
-    <Button
-        android:id="@+id/buttonStartRec"
-        android:layout_width="125dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonAddToFavourites"
-        android:layout_alignRight="@+id/buttonAddToFavourites"
-        android:background="@drawable/button"
-        android:text="Start Recording" />
-
     <com.google.android.youtube.player.YouTubePlayerView
         android:id="@+id/youtube_view"
         android:layout_width="match_parent"
@@ -85,5 +75,14 @@
         android:layout_below="@+id/trackName"
         android:layout_centerHorizontal="true" >
     </com.google.android.youtube.player.YouTubePlayerView>
+
+    <Button
+        android:id="@+id/buttonStartRec"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/buttonExit"
+        android:layout_alignTop="@+id/buttonAddToFavourites"
+        android:background="@drawable/button"
+        android:text="Start Recording" />
 
 </RelativeLayout>

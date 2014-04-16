@@ -75,7 +75,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 					if(file.exists()){
 						mediaPlayer.start();
 					}else{
-						String text = Boolean.toString(file.exists());
+						String text = "Error on finding track...";
 						Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
 						toast.show();
 					}
@@ -123,10 +123,14 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		buttonShare.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				Intent intent = new Intent(Intent.ACTION_SEND).setType("audio/soundcloud");
-//				intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(audioFile));
-//				startActivity(Intent.createChooser(intent, "Share to"));
-				shareSound();
+				File audioFile = new File(path);
+				Intent intent = new Intent(Intent.ACTION_SEND).setType("audio/*");
+				intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(audioFile));
+				startActivity(Intent.createChooser(intent, "Share to"));
+				String text = "Please make sure you are logged in before sharing!";
+				Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
+				toast.show();
+				//shareSound();
 			}
 		});
 		

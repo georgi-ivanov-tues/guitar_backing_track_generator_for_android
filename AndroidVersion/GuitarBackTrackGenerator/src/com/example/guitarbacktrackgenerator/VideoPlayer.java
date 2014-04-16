@@ -1,16 +1,21 @@
 package com.example.guitarbacktrackgenerator;
 
+import java.io.File;
 import java.io.IOException;
+
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -21,13 +26,12 @@ import android.widget.Toast;
 public class VideoPlayer extends YouTubeBaseActivity
 implements YouTubePlayer.OnInitializedListener{
 	
-	Button buttonExit, buttonPlay, buttonPause, buttonAddToFavourites, buttonAddToRecordings, buttonStop, buttonPlayRec, buttonStartRec, buttonStopRec;
+	Button buttonExit, buttonAddToFavourites, buttonStartRec;
 	TextView title, trackName;
 	String[] userChoice;
 	static private final String DEVELOPER_KEY = "AIzaSyA53I5DUsgUvpBwOyeqfIkl9N0g9cxcHCA";
 	static private String VIDEO = "";
 	boolean mStartRecording = true;
-	boolean mStartPlaying = true;
 	final AudioRecord rec = new AudioRecord();
 	
 	@Override
@@ -37,7 +41,6 @@ implements YouTubePlayer.OnInitializedListener{
 
 		buttonAddToFavourites = (Button) findViewById(R.id.buttonAddToFavourites);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
-		buttonPlayRec = (Button) findViewById(R.id.buttonPlayRec);
 		buttonStartRec = (Button) findViewById(R.id.buttonStartRec);
 		title = (TextView) findViewById(R.id.Title);
 		trackName = (TextView) findViewById(R.id.trackName);
@@ -64,30 +67,34 @@ implements YouTubePlayer.OnInitializedListener{
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(mStartRecording == false)
+					rec.stopRecording(); // Zaradi toq red plakah...
+			
 				finish();
 			}
 		});
 
-		buttonPlayRec.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				new Thread(new Runnable() {
-					public void run() {
-						rec.onPlay(mStartPlaying);
-					}
-				}).start();
-			}
-		});
 		buttonStartRec.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				//new Thread(new Runnable() {
+				//Thread recordingThread = new Thread(new Runnable() {
 				//	public void run() {
 						rec.onRecord(mStartRecording);
 				//	}
-				//}).start();
-			
+				//});
+				
+//				recordingThread.start();
+//				try {
+//					recordingThread.join();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+						
+				
+				//Log.d("",Long.toString(rec.getTrackName()));
+				
 				if (mStartRecording) {
+					//rec.setTrackName(System.currentTimeMillis());
 					String text = "Recording is ON";
 					buttonStartRec.setText("Stop Recording");
 					Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
@@ -115,38 +122,51 @@ implements YouTubePlayer.OnInitializedListener{
 		trackName.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 
-	boolean success = false;
 	public void addTrackToCsv(final String fileName){
+		boolean success = false;
 		final CsvWriter newCsvWriter = new CsvWriter();
 		Long trackName = rec.getTrackName();
 		if(fileName.equals("recordings"))
 			userChoice[4] = Long.toString(trackName);
 		
-			new Thread(new Runnable() {
-				public void run() {
-					try {
-						success = newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",VideoPlayer.this, true);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}).start();
-			
-			try {
-				Thread.sleep(100); // Fix it when you learn threads!
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if(success){
-				String text = "Track successfully added to " + fileName + "!";
-				Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
-				toast.show();
-			}else{
-				String text = "Track already added to " + fileName + "!";
-				Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
-				toast.show();
-			}
+		Log.d("",userChoice[4]);
+		
+//		Thread fileReader = new Thread(new Runnable() {
+//			public void run() {
+//				try {
+//					success = newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",VideoPlayer.this, true);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+		
+//		fileReader.start();
+//		try {
+//			fileReader.join();
+//		} catch (InterruptedException e1) {
+//			e1.printStackTrace();
+//		}
+		
+		
+		// Mrazq nishki!
+		try {
+			success = newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",VideoPlayer.this, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if(success){
+			String text = "Track successfully added to " + fileName + "!";
+			Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
+			toast.show();
+		}else{
+			String text = "Track already added to " + fileName + "!";
+			Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
+			toast.show();
+		}
+		
+		finish();
 	}
 	
 	public void askToAddRecordingsToCsv(){
@@ -160,7 +180,20 @@ implements YouTubePlayer.OnInitializedListener{
 		    	askForTrackName();
 		    }
 		})
-		.setNegativeButton("No", null)					
+		
+		.setNegativeButton("No", new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int which) {			      	
+				String trackName = Long.toString(rec.getTrackName());
+				File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+						+ "/GuitarRecordings/");
+				
+				trackName += ".3gp";
+				if (dir.isDirectory()) 
+					new File(dir, trackName).delete();
+		    }
+		})
+		//.setNegativeButton("No", null)
+			 
 		.show();
 	}
 	
@@ -183,7 +216,7 @@ implements YouTubePlayer.OnInitializedListener{
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
     	 public void onClick(DialogInterface dialog, int whichButton) {
-    	     // Canceled.
+    	     // Sorry...
     	}
     	});
 

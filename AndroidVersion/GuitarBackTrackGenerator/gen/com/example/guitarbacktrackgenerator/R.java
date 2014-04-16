@@ -31,15 +31,15 @@ public final class R {
         public static final int icon=0x7f020007;
     }
     public static final class id {
-        public static final int B=0x7f090029;
+        public static final int B=0x7f090028;
         public static final int Choice=0x7f09001d;
         public static final int Key=0x7f09000c;
         public static final int LinearLayout=0x7f090007;
         public static final int Title=0x7f090018;
-        public static final int action_settings=0x7f090026;
-        public static final int buttonA=0x7f090027;
+        public static final int action_settings=0x7f090025;
+        public static final int buttonA=0x7f090026;
         public static final int buttonAddToFavourites=0x7f090022;
-        public static final int buttonAsharp=0x7f090028;
+        public static final int buttonAsharp=0x7f090027;
         public static final int buttonCalm=0x7f090011;
         public static final int buttonClear=0x7f090016;
         public static final int buttonCredits=0x7f09001c;
@@ -53,7 +53,6 @@ public final class R {
         public static final int buttonOptions=0x7f09001b;
         public static final int buttonPause=0x7f09001f;
         public static final int buttonPlay=0x7f090008;
-        public static final int buttonPlayRec=0x7f090023;
         public static final int buttonPrev=0x7f09000d;
         public static final int buttonRandomize=0x7f090017;
         public static final int buttonRemoveAllTracks=0x7f090006;
@@ -72,7 +71,7 @@ public final class R {
         public static final int textViewFavouritesMenu=0x7f090003;
         public static final int textWarning=0x7f090014;
         public static final int trackName=0x7f090021;
-        public static final int youtube_view=0x7f090025;
+        public static final int youtube_view=0x7f090023;
     }
     public static final class layout {
         public static final int activity_credits_menu=0x7f030000;
