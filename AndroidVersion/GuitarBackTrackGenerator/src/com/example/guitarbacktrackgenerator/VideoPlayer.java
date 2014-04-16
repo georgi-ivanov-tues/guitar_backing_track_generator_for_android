@@ -31,7 +31,7 @@ implements YouTubePlayer.OnInitializedListener{
 	String[] userChoice;
 	static private final String DEVELOPER_KEY = "AIzaSyA53I5DUsgUvpBwOyeqfIkl9N0g9cxcHCA";
 	static private String VIDEO = "";
-	boolean mStartRecording = true;
+	boolean mStartRecording = true, backPressed = false;
 	final AudioRecord rec = new AudioRecord();
 	
 	@Override
@@ -67,9 +67,10 @@ implements YouTubePlayer.OnInitializedListener{
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(mStartRecording == false)
+				if(mStartRecording == false && backPressed == false){
+					backPressed = true;
 					rec.stopRecording(); // Zaradi toq red plakah...
-			
+				}
 				finish();
 			}
 		});
@@ -111,6 +112,15 @@ implements YouTubePlayer.OnInitializedListener{
 		});
 	}
 
+	@Override
+	public void onBackPressed() { // A zaradi taq funckiq napravo si revah...
+		if(mStartRecording == false && backPressed == false){
+			backPressed = true;
+			rec.stopRecording();
+		}
+		finish();
+	}
+	
 	public boolean onCreateMusicPlayer(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);

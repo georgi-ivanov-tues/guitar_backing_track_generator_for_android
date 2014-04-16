@@ -3,6 +3,7 @@ package com.example.guitarbacktrackgenerator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.annotation.SuppressLint;
@@ -246,6 +247,18 @@ public class FavouritesMenu extends Activity{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		CsvWriter newCsvWriter = new CsvWriter();
+		try {
+			updateCsvFiles();
+			newCsvWriter.writeInCsv(favouritesSortedBy,recordingsSortedBy,FavouritesMenu.this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		finish();
 	}
 	
 	public String changeViewCounter(int viewCounter){
