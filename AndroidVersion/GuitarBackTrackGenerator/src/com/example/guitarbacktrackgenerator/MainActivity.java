@@ -8,9 +8,34 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * The main activity from which the application starts
+ * @author Georgi Ivanov and Nedelcho Delechev
+ */
 public class MainActivity extends Activity {
-
-	Button buttonGenerate, buttonFavouritesRecordings, buttonOptions, buttonCredits, buttonExit;
+	/**
+	 * A button which opens the generate menu
+	 */
+	Button buttonGenerate;
+	/**
+	 * A button which opens the favourites/recordings menu
+	 */
+	Button buttonFavouritesRecordings;
+	/**
+	 * A button which opens the help menu
+	 */
+	Button buttonHelp;
+	/**
+	 * A button which opens the credits menu
+	 */
+	Button buttonCredits; 
+	/**
+	 * A button which exits the application
+	 */
+	Button buttonExit;
+	/**
+	 * The title of the menu
+	 */
 	TextView title;
 
 	@Override
@@ -19,7 +44,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		buttonGenerate = (Button) findViewById(R.id.buttonGenerate);
 		buttonFavouritesRecordings = (Button) findViewById(R.id.buttonFavourites);
-		buttonOptions = (Button) findViewById(R.id.buttonOptions);
+		buttonHelp = (Button) findViewById(R.id.buttonOptions);
 		buttonCredits = (Button) findViewById(R.id.buttonCredits);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
 		
@@ -41,7 +66,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		buttonOptions.setOnClickListener(new View.OnClickListener() {
+		buttonHelp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent HelpMenu = new Intent(MainActivity.this, HelpMenu.class);

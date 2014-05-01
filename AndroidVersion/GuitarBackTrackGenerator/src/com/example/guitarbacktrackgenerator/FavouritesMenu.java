@@ -21,7 +21,10 @@ import android.widget.Toast;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-// Code + 10 => Bugs * 10
+/**
+ * A menu where the user can manage his favourte tracks as well as his recordings
+ * @author Georgi Ivanov
+ */
 public class FavouritesMenu extends Activity{
 
 	Button buttonPlay, buttonSwitchToOtherView, buttonSortBy, buttonRemoveTrack, buttonRemoveAllTracks, buttonExit;
@@ -261,11 +264,21 @@ public class FavouritesMenu extends Activity{
 		finish();
 	}
 	
+	/**
+	 * Returns a string according to the viewCounter
+	 * @param viewCounter An integer showing the current view
+	 * @return "favourites" or "recording" depending on the current view
+	 */
 	public String changeViewCounter(int viewCounter){
 		String[] view = {"favourites", "recordings"};
 		return view[viewCounter];
 	}
 	
+	/**
+	 * Returns a string depending ot the sortByCounter
+	 * @param sortByCounter An integer showing the current sorting
+	 * @return "Name", "Key" or "Most Played" depending on the current sorting
+	 */
 	public String getSortByCounterToAsString(int sortByCounter){
 		String[] sortBy = {"Name", "Key", "Most Played"};
 		if(sortByCounter == -1){;
@@ -275,6 +288,11 @@ public class FavouritesMenu extends Activity{
 		}
 	}
 	
+	/**
+	 * Returns a number depending ot the current sorting
+	 * @param str A string holding the current sorting
+	 * @return Returns a number depending ot the current sorting
+	 */
 	public int getSortByToInt(String str){
 		int num = -1;
 		if(str.equals("Name"))
@@ -287,6 +305,12 @@ public class FavouritesMenu extends Activity{
 		return num;
 	}	
 	
+	/**
+	 * Sorting the tracks in the current view
+	 * @param sortByCounter Shows by what the tracks should be sorted
+	 * @param viewCounter Shows the current view
+	 * @throws IOException
+	 */
 	public void sort(int sortByCounter, int viewCounter) throws IOException{
 		ArrayList<String[]> tracks = null;
 		if(viewCounter == 0){
@@ -303,6 +327,10 @@ public class FavouritesMenu extends Activity{
 		selectingTracks(printTracks(viewCounter));
 	}
 	
+	/**
+	 * Takes the user's favourite tracks and his recordings from the csv files
+	 * @throws IOException
+	 */
 	public void takeTracksFromCsv() throws IOException{
 		CsvReader newCsvReader = new CsvReader();
 		try {
@@ -313,6 +341,10 @@ public class FavouritesMenu extends Activity{
 		}
 	}
 	
+	/**
+	 * Parses the sorting_info.csv in order to see by what each view is sorted
+	 * @throws IOException
+	 */
 	public void takeSortingInfo() throws IOException{
 		CsvReader newCsvReader = new CsvReader();
 		
@@ -328,8 +360,13 @@ public class FavouritesMenu extends Activity{
 		}
 	}
 	
+	/**
+	 * Prints the tracks on current view
+	 * @param viewCounter Shows the current view
+	 * @return The number of tracks
+	 * @throws IOException
+	 */
 	public int printTracks(int viewCounter) throws IOException{
-		
 		ArrayList<String []> tracks = null;
 		if(viewCounter == 0)
 			tracks = favouriteTracks;
@@ -347,6 +384,7 @@ public class FavouritesMenu extends Activity{
 			String trackName = tracks.get(i)[3];
 			textView[i].setText(trackName);
 			textView[i].setTextColor(Color.parseColor("#FFFFFF"));
+			textView[i].setTextSize(18);
 			linearLayout.setBackgroundColor(Color.TRANSPARENT);
 			linearLayout.addView(textView[i]);
 		}
@@ -354,6 +392,10 @@ public class FavouritesMenu extends Activity{
 		return tracks.size();
 	}
 	
+	/**
+	 * Enables the user to select tracks from the current view
+	 * @param numOfTracks The number of tracks on the current view
+	 */
 	public void selectingTracks(int numOfTracks){
 		for(int i = 0; i < numOfTracks; i++) {
 			final int num = numOfTracks; // Povrashtam na Javata..
@@ -373,6 +415,9 @@ public class FavouritesMenu extends Activity{
 		}
 	}
 	
+	/**
+	 * Updates the csv files when the activity is closed
+	 */
 	public void updateCsvFiles(){
 		CsvWriter newCsvWriter = new CsvWriter();
 		deleteFile("favourites.csv");
@@ -394,3 +439,5 @@ public class FavouritesMenu extends Activity{
 		}
 	}
 }
+
+//Code + 10 => Bugs * 10

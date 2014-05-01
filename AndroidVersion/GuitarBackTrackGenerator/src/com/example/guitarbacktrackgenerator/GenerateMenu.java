@@ -12,14 +12,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * A menu where the user can choose key, mode and style of the desired backing track
+ * @author Georgi Ivanov and Nedelcho Delchev
+ */
 public class GenerateMenu extends Activity {
-	
+
 	Button buttonPrev,buttonNext, buttonMaj, buttonMin, buttonCalm, buttonHeavy, buttonRadomize, buttonClear, buttonPlay, buttonExit;
 	TextView title,textKey,textMode,textStyle, textKeyChosen,warning; 
-	
+
 	String key = "A", mode, style;
 	String[] userChoice = new String[3];
-	
+
 	int keyCounter = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +39,16 @@ public class GenerateMenu extends Activity {
 		buttonClear = (Button) findViewById(R.id.buttonClear);
 		buttonPlay = (Button) findViewById(R.id.buttonPlay);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
-		
+
 		title = (TextView) findViewById(R.id.Title);
 		textKey = (TextView) findViewById(R.id.textKey);
 		textMode = (TextView) findViewById(R.id.textMode);
 		textStyle = (TextView) findViewById(R.id.textStyle);
 		textKeyChosen = (TextView) findViewById(R.id.Key);
 		warning = (TextView) findViewById(R.id.textWarning);
-		
+
 		changeTextViewColors();
-		
+
 		buttonPrev.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -52,11 +56,11 @@ public class GenerateMenu extends Activity {
 					keyCounter = 11;
 				else
 					keyCounter--;
-				
+
 				changeKey(keyCounter);
 			}
 		});
-		
+
 		buttonNext.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -64,39 +68,39 @@ public class GenerateMenu extends Activity {
 					keyCounter = 0;
 				else
 					keyCounter++;
-				
+
 				changeKey(keyCounter);
 			}
 		});
-		
+
 		buttonMaj.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mode = "maj";
 			}
 		});
-		
+
 		buttonMin.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				mode = "min";
 			}
 		});
-		
+
 		buttonCalm.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				style = "calm";
 			}
 		});
-		
+
 		buttonHeavy.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				style = "heavy";
 			}
 		});
-		
+
 		buttonRadomize.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -106,7 +110,7 @@ public class GenerateMenu extends Activity {
 				}else{
 					mode = "maj";
 				}
-				
+
 				if(getRandomNumber(2) == 0){
 					style = "calm";
 				}else{
@@ -114,7 +118,7 @@ public class GenerateMenu extends Activity {
 				}
 			}
 		});
-		
+
 		buttonClear.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -125,14 +129,14 @@ public class GenerateMenu extends Activity {
 				style = null;
 			}
 		});
-		
+
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				userChoice[0] = key;
 				userChoice[1] = mode;
 				userChoice[2] = style;
-				
+
 				if(mode == null || style == null){
 					String text = "Please choose key, mode and style before clicking play!";
 					Toast toast = Toast.makeText(GenerateMenu.this, text, Toast.LENGTH_LONG);
@@ -140,7 +144,7 @@ public class GenerateMenu extends Activity {
 				}else{
 					try {
 						ArrayList<String[]>tracksThatMatchUserChoice = FindBackingTracks(userChoice);
-						
+
 						if(tracksThatMatchUserChoice.size() == 0){
 							String text = "No tracks matching your input... Sorry :(";
 							Toast toast = Toast.makeText(GenerateMenu.this, text, Toast.LENGTH_LONG);
@@ -159,7 +163,7 @@ public class GenerateMenu extends Activity {
 				}
 			}
 		});
-		
+
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -174,28 +178,51 @@ public class GenerateMenu extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
+
+	/**
+	 * Changes the key acording to the keyCounter
+	 * @param keyCounter An integer that counts how many times the buttons have been clicked
+	 */
 	void changeKey(int keyCounter){
 		String[] currentKey = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
 		key = currentKey[keyCounter];
 		textKeyChosen.setText(key);
 	}
-	
+
+	/**
+	 * Finds all the backing tracks that match the user's choice of key, mode and style
+	 * @param userChoice The user's choice of key, mode and style
+	 * @return All the tracks that match the user's choice
+	 * @throws IOException
+	 */
 	ArrayList<String[]> FindBackingTracks(final String[] userChoice) throws IOException{
 		final CsvReader newCsvReader = new CsvReader();
 		return newCsvReader.parseCsv(userChoice,getAssets().open(userChoice[0]+"_Backing_Tracks.csv"));
 	}
-	
+
+	/**
+	 * Returns a random track from all the tracks that match the user's choice
+	 * @param tracksThatMatchUserChoice The tracks that match the user's choice
+	 * @return Returns a random track from all the tracks that match the user's choice
+	 */
 	String[] getRandomTrack(ArrayList<String[]> tracksThatMatchUserChoice){
 		int randomNum = (int)(Math.random()*tracksThatMatchUserChoice.size());	
 		String[] randomTrack = tracksThatMatchUserChoice.get(randomNum);
 		return randomTrack;		
 	}
-	
+
+	/**
+	 * Generates a random number from 0 to max
+	 * @param max The max number the random number can be
+	 * @return The random number
+	 */
 	int getRandomNumber(int max){
 		return (int)(Math.random()*max);
 	}
-	
+
+	/**
+	 * Changes the color of the textViews in the menu
+	 */
 	void changeTextViewColors(){
 		textKey.setTextColor(Color.parseColor("#FFFFFF"));
 		textMode.setTextColor(Color.parseColor("#FFFFFF"));

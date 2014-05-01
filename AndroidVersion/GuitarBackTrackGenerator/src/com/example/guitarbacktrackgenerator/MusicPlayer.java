@@ -18,15 +18,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * A music player for playing the user's recordings
+ * @author Nedelcho Delchev and Georgi Ivanov
+ */
 public class MusicPlayer extends Activity implements OnErrorListener, OnPreparedListener{
 	Button buttonExit, buttonPlay, buttonPause, buttonStop, buttonShare;
 	TextView title, displayUserChoice;
 	String path;
 	String[] userChoice;
 	
-	//private static final String CLIENT_ID = "fdb037658f862774d00e2f94816ec0e4";
-	//private static final int SHARE_SOUND  = 2;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -150,6 +151,9 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		return true;
 	}
 
+	/**
+	 * Changes the color of the textViews in the menu
+	 */
 	void changeTextViewColors() {
 		title.setTextColor(Color.parseColor("#FFFFFF"));
 		displayUserChoice.setTextColor(Color.parseColor("#FFFFFF"));

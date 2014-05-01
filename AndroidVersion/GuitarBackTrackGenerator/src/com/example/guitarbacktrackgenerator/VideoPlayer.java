@@ -23,6 +23,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * A video player that plays a random track from youtube that matches the user's choice
+ * @author Georgi Ivanon and Nedelcho Delchev
+ */
 public class VideoPlayer extends YouTubeBaseActivity
 implements YouTubePlayer.OnInitializedListener{
 	
@@ -127,11 +131,18 @@ implements YouTubePlayer.OnInitializedListener{
 		return true;
 	}
 
+	/**
+	 * Changes the color of the textViews in the menu
+	 */
 	void changeTextViewColors() {
 		title.setTextColor(Color.parseColor("#FFFFFF"));
 		trackName.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 
+	/**
+	 * Adds the current track playing into a csv file
+	 * @param fileName The filename where the track should be added
+	 */
 	public void addTrackToCsv(final String fileName){
 		boolean success = false;
 		final CsvWriter newCsvWriter = new CsvWriter();
@@ -180,6 +191,9 @@ implements YouTubePlayer.OnInitializedListener{
 			finish();
 	}
 	
+	/**
+	 * Ask the user if he would like to save the recording
+	 */
 	public void askToAddRecordingsToCsv(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlayer.this);
 		builder
@@ -208,6 +222,9 @@ implements YouTubePlayer.OnInitializedListener{
 		.show();
 	}
 	
+	/**
+	 * Ask the user for a name for the recording
+	 */
 	public void askForTrackName(){
 		AlertDialog.Builder alert = new AlertDialog.Builder(VideoPlayer.this);
 		
@@ -236,8 +253,10 @@ implements YouTubePlayer.OnInitializedListener{
 	
 	@Override
 	public void onInitializationFailure(Provider provider, YouTubeInitializationResult error) {
-		Toast.makeText(this, "Oh no! "+error.toString(),
-				Toast.LENGTH_LONG).show();
+		if(error.toString().equals("SERVICE_MISSING"))
+			Toast.makeText(this, "Please install the youtube application first!",Toast.LENGTH_LONG).show();
+		else
+			Toast.makeText(this, error.toString(),Toast.LENGTH_LONG).show();
 	}
 	@Override
 	public void onInitializationSuccess(Provider provider, YouTubePlayer player,boolean wasRestored) {

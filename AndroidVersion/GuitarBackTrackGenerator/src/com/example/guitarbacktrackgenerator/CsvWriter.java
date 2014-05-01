@@ -11,8 +11,21 @@ import java.util.Calendar;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+/**
+ * A class for writing in csv files
+ * @author Georgi Ivanov
+ */
 public class CsvWriter {
 
+	/**
+	 * Writes in a csv file that is in the internal storage
+	 * @param data The data to be written
+	 * @param fileName The name of the file where the data should be written
+	 * @param context The activity from which it should be executed
+	 * @param newTrack True if the track is new, false if the track is already there
+	 * @return True if the track is added, false if it's not
+	 * @throws IOException
+	 */
 	@SuppressLint("SimpleDateFormat")
 	public boolean writeInInternalStorageCsv(String[] data,String fileName, Context context, boolean newTrack) throws IOException{
 		boolean shouldTrackBeAdded = true;
@@ -50,7 +63,14 @@ public class CsvWriter {
 		return shouldTrackBeAdded;
 	}
 	
-	public boolean removeTrack(String trackName ,String fileName, Context context) throws IOException{
+	/**
+	 * Removes a track from a given csv file
+	 * @param trackName The name of the track that is to be removed
+	 * @param fileName The name of the file from where the track should be removed
+	 * @param context The activity from which it should be executed
+	 * @throws IOException
+	 */
+	public void removeTrack(String trackName ,String fileName, Context context) throws IOException{
 		InputStream instream = context.openFileInput(fileName);
 		InputStreamReader inputreader = new InputStreamReader(instream);
 		BufferedReader buffreader = new BufferedReader(inputreader);
@@ -75,11 +95,16 @@ public class CsvWriter {
 			fos.write("0\n".getBytes());
 		}
 		fos.close();
-		
-		return true;
 	}
 	
-	public boolean changeNumberOfTimesPlayed(String trackName ,String fileName, Context context) throws IOException{
+	/**
+	 * Changes the number of times a track has been played
+	 * @param trackName The name of the track that is played
+	 * @param fileName The name of the file from which the track is being played
+	 * @param context The activity from which it should be executed
+	 * @throws IOException
+	 */
+	public void changeNumberOfTimesPlayed(String trackName ,String fileName, Context context) throws IOException{
 		InputStream instream = context.openFileInput(fileName);
 		InputStreamReader inputreader = new InputStreamReader(instream);
 		BufferedReader buffreader = new BufferedReader(inputreader);
@@ -106,14 +131,19 @@ public class CsvWriter {
 			fos.write("\n".getBytes());
 		}
 		fos.close();
-		
-		return true;
 	}
 	
-	public void writeInCsv(String str1,String str2, Context context) throws IOException{
+	/**
+	 * Writes how the tracks are sorted in sorting_info.csv
+	 * @param favouritesSortedBy The information about the user's favourite tracks
+	 * @param recordingsSortedBy The information about the user's recordings
+	 * @param context The activity from which it should be executed
+	 * @throws IOException
+	 */
+	public void writeInCsv(String favouritesSortedBy,String recordingsSortedBy, Context context) throws IOException{
 		FileOutputStream fos = context.openFileOutput("sorting_info.csv", Context.MODE_PRIVATE);
-		fos.write(str1.getBytes());
+		fos.write(favouritesSortedBy.getBytes());
 		fos.write("\n".getBytes());
-		fos.write(str2.getBytes());
+		fos.write(recordingsSortedBy.getBytes());
 	}
 }

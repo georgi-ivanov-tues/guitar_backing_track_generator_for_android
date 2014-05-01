@@ -20,15 +20,22 @@
         android:text="@string/Credits"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
-    <TextView
-        android:id="@+id/textCreatedBy"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="240dp"
         android:layout_alignLeft="@+id/buttonExit"
+        android:layout_alignRight="@+id/buttonExit"
         android:layout_below="@+id/textCreditsMenu"
-        android:layout_marginTop="16dp"
-        android:text="Created by: Georgi Ivanov and Nedelcho Delchev"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_marginTop="0dp" >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
     
     <Button
         android:id="@+id/buttonExit"
@@ -40,5 +47,14 @@
         android:background="@drawable/button"
         android:text="@string/Exit" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonExit"
+        android:layout_alignLeft="@+id/buttonExit"
+        android:layout_alignRight="@+id/buttonExit"
+        android:background="@drawable/button"
+        android:text="Visit Website" />
     
 </RelativeLayout>

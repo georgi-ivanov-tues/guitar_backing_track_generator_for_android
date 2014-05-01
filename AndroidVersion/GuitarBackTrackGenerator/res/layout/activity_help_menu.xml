@@ -29,5 +29,22 @@
         android:layout_marginBottom="54dp"
         android:background="@drawable/button"
         android:text="@string/Exit" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_alignLeft="@+id/buttonExit"
+        android:layout_alignRight="@+id/buttonExit"
+        android:layout_below="@+id/textCreditsMenu"
+        android:layout_marginTop="0dp" >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
     
 </RelativeLayout>
