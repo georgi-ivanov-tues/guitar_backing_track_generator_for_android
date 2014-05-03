@@ -2,6 +2,7 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -19,7 +20,7 @@ import android.widget.Toast;
 public class GenerateMenu extends Activity {
 
 	Button buttonPrev,buttonNext, buttonMaj, buttonMin, buttonCalm, buttonHeavy, buttonRadomize, buttonClear, buttonPlay, buttonExit;
-	TextView title,textKey,textMode,textStyle, textKeyChosen,warning; 
+	TextView title,textKey,textMode,textStyle, textKeyChosen; 
 
 	String key = "A", mode, style;
 	String[] userChoice = new String[3];
@@ -45,7 +46,6 @@ public class GenerateMenu extends Activity {
 		textMode = (TextView) findViewById(R.id.textMode);
 		textStyle = (TextView) findViewById(R.id.textStyle);
 		textKeyChosen = (TextView) findViewById(R.id.Key);
-		warning = (TextView) findViewById(R.id.textWarning);
 
 		changeTextViewColors();
 
@@ -77,6 +77,8 @@ public class GenerateMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				mode = "maj";
+				buttonMin.setBackgroundResource(R.drawable.button);
+				buttonMaj.setBackgroundResource(R.drawable.button_clicked);
 			}
 		});
 
@@ -84,6 +86,8 @@ public class GenerateMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				mode = "min";
+				buttonMin.setBackgroundResource(R.drawable.button_clicked);
+				buttonMaj.setBackgroundResource(R.drawable.button);
 			}
 		});
 
@@ -91,6 +95,8 @@ public class GenerateMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				style = "calm";
+				buttonCalm.setBackgroundResource(R.drawable.button_clicked);
+				buttonHeavy.setBackgroundResource(R.drawable.button);
 			}
 		});
 
@@ -98,6 +104,8 @@ public class GenerateMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 				style = "heavy";
+				buttonCalm.setBackgroundResource(R.drawable.button);
+				buttonHeavy.setBackgroundResource(R.drawable.button_clicked);
 			}
 		});
 
@@ -116,6 +124,8 @@ public class GenerateMenu extends Activity {
 				}else{
 					style = "heavy";
 				}
+				
+				showSelections();
 			}
 		});
 
@@ -127,6 +137,8 @@ public class GenerateMenu extends Activity {
 				textKeyChosen.setText("A");
 				mode = null;
 				style = null;
+				
+				clearSelection();
 			}
 		});
 
@@ -142,23 +154,36 @@ public class GenerateMenu extends Activity {
 					Toast toast = Toast.makeText(GenerateMenu.this, text, Toast.LENGTH_LONG);
 					toast.show();
 				}else{
-					try {
-						ArrayList<String[]>tracksThatMatchUserChoice = FindBackingTracks(userChoice);
+					Thread playThread = new Thread(new Runnable() {
+						public void run() {
+							ArrayList<String[]> tracksThatMatchUserChoice = null;
+							try {
+								tracksThatMatchUserChoice = FindBackingTracks(userChoice);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 
-						if(tracksThatMatchUserChoice.size() == 0){
-							String text = "No tracks matching your input... Sorry :(";
-							Toast toast = Toast.makeText(GenerateMenu.this, text, Toast.LENGTH_LONG);
-							toast.show();
-						}else{
-							String[] track = getRandomTrack(tracksThatMatchUserChoice);
-							Bundle newBundle=new Bundle();
-							newBundle.putStringArray(null, track);
-							Intent VideoPlayer = new Intent(GenerateMenu.this, VideoPlayer.class);
-							VideoPlayer.putExtras(newBundle);
-							GenerateMenu.this.startActivity(VideoPlayer); 
+							if(tracksThatMatchUserChoice.size() == 0){
+								String text = "No tracks matching your input... Sorry :(";
+								Toast toast = Toast.makeText(GenerateMenu.this, text, Toast.LENGTH_LONG);
+								toast.show();
+							}else{
+								String[] track = getRandomTrack(tracksThatMatchUserChoice);
+								Bundle newBundle=new Bundle();
+								newBundle.putStringArray(null, track);
+								Intent VideoPlayer = new Intent(GenerateMenu.this, VideoPlayer.class);
+								VideoPlayer.putExtras(newBundle);
+								GenerateMenu.this.startActivity(VideoPlayer); 
+							}
+
 						}
-					} catch (IOException e) {
-						e.printStackTrace();
+					});
+					
+					playThread.start();
+					try {
+						playThread.join();
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
 					}
 				}
 			}
@@ -219,6 +244,27 @@ public class GenerateMenu extends Activity {
 	int getRandomNumber(int max){
 		return (int)(Math.random()*max);
 	}
+	
+	void clearSelection(){
+		buttonMaj.setBackgroundResource(R.drawable.button);
+		buttonMin.setBackgroundResource(R.drawable.button);
+		buttonCalm.setBackgroundResource(R.drawable.button);
+		buttonHeavy.setBackgroundResource(R.drawable.button);
+	}
+	
+	void showSelections(){
+		clearSelection();
+		
+		if(mode.equals("maj"))
+			buttonMaj.setBackgroundResource(R.drawable.button_clicked);
+		else if(mode.equals("min"))
+			buttonMin.setBackgroundResource(R.drawable.button_clicked);
+		
+		if(style.equals("heavy"))
+			buttonHeavy.setBackgroundResource(R.drawable.button_clicked);
+		else if(style.equals("calm"))
+			buttonCalm.setBackgroundResource(R.drawable.button_clicked);
+	}
 
 	/**
 	 * Changes the color of the textViews in the menu
@@ -228,6 +274,5 @@ public class GenerateMenu extends Activity {
 		textMode.setTextColor(Color.parseColor("#FFFFFF"));
 		textStyle.setTextColor(Color.parseColor("#FFFFFF"));
 		textKeyChosen.setTextColor(Color.parseColor("#FFFFFF"));
-		warning.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 }

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList; 
 import java.util.Scanner;
 import android.content.Context;
+import android.util.Log;
 
 /**
  * A class for parsing and reading from csv files
@@ -20,20 +21,34 @@ public class CsvReader{
 	 * @return An ArrayList of string arrays which contains the data from the csv file
 	 * @throws IOException
 	 */
-	public ArrayList<String[]> parseCsv(String[] userChoice, InputStream inputStream) throws IOException{
-		ArrayList<String[]> tracksThatMatchUserChoice = new ArrayList<String[]>();
-		try{
-		    Scanner newScanner = new Scanner(inputStream);
-		    while(newScanner.hasNextLine()){
-		    	String[] parsed = (newScanner.nextLine()).split(",");
-		    	if(parsed[0].equals(userChoice[0]) && parsed[1].equals(userChoice[1]) && parsed[2].equals(userChoice[2])){
-		    		tracksThatMatchUserChoice.add(parsed);
-		    	}
-		    }
-		}catch (Exception e) {}
+	public ArrayList<String[]> parseCsv(final String[] userChoice, final InputStream inputStream) throws IOException{
+
+		final ArrayList<String[]> tracksThatMatchUserChoice = new ArrayList<String[]>();
+		Thread newThread = new Thread(new Runnable() {
+			public void run() {
+				try{
+					Scanner newScanner = new Scanner(inputStream);
+					while(newScanner.hasNextLine()){
+						String[] parsed = (newScanner.nextLine()).split(",");
+						if(parsed[0].equals(userChoice[0]) && parsed[1].equals(userChoice[1]) && parsed[2].equals(userChoice[2])){
+							tracksThatMatchUserChoice.add(parsed);
+						}
+					}
+				}catch (Exception e) {}
+				Log.d("Thread Name = ", Thread.currentThread().getName());
+			}
+		});
+
+		newThread.start();
+		try {
+			newThread.join();
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+
 		return tracksThatMatchUserChoice;
 	}
-	
+
 	/**
 	 * Parses a file from the internal storage of the device
 	 * @param fileName The name of the file to be parsed
@@ -41,24 +56,41 @@ public class CsvReader{
 	 * @return An ArrayList of string arrays which contains the data from the csv file
 	 * @throws IOException
 	 */
-	public ArrayList<String[]> readFromInternalStorageCsv(String fileName, Context context) throws IOException{
-		ArrayList<String[]> tracks = new ArrayList<String[]>();
-		try {
-			InputStream instream = context.openFileInput(fileName);
-			InputStreamReader inputreader = new InputStreamReader(instream);
-			BufferedReader buffreader = new BufferedReader(inputreader);
-			      
-			String line;
-			while ((line = buffreader.readLine()) != null) {
-				String[] parsed = (line.split(","));
-				tracks.add(parsed);
+	public ArrayList<String[]> readFromInternalStorageCsv(final String fileName, final Context context) throws IOException{
+		final ArrayList<String[]> tracks = new ArrayList<String[]>();
+
+		Thread newThread = new Thread(new Runnable() {
+			public void run() {
+				try {
+					InputStream instream = context.openFileInput(fileName);
+					InputStreamReader inputreader = new InputStreamReader(instream);
+					BufferedReader buffreader = new BufferedReader(inputreader);
+
+					String line;
+					while ((line = buffreader.readLine()) != null) {
+						String[] parsed = (line.split(","));
+						tracks.add(parsed);
+					}
+					instream.close();
+				} catch (java.io.FileNotFoundException e) {} catch (IOException e) {
+					e.printStackTrace();
+				}	
+				Log.d("Thread Name = ", Thread.currentThread().getName());
 			}
-			instream.close();
-		} catch (java.io.FileNotFoundException e) {}	
-	
+		});
+		
+		newThread.start();
+		try {
+			newThread.join();
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+
 		return tracks;
 	}
+
 	
+	String[] track = null;
 	/**
 	 * Finds a track by it's name and returns the whole information for the track
 	 * @param fileName The name of the file to be searched
@@ -67,22 +99,36 @@ public class CsvReader{
 	 * @return An array of stings holding the information for the searched track
 	 * @throws IOException
 	 */
-	public String[] findTrackByName(String fileName, String trackName, Context context) throws IOException{
-		String[] track = null;
-		try {
-			InputStream instream = context.openFileInput(fileName);
-			InputStreamReader inputreader = new InputStreamReader(instream);
-			BufferedReader buffreader = new BufferedReader(inputreader);
-			String line;
-			while ((line = buffreader.readLine()) != null) {
-				String[] parsed = (line.split(","));
-				if(parsed[3].equals(trackName)){
-					track = parsed;
+	public String[] findTrackByName(final String fileName, final String trackName, final Context context) throws IOException{
+
+		Thread newThread = new Thread(new Runnable() {
+			public void run() {
+				try {
+					InputStream instream = context.openFileInput(fileName);
+					InputStreamReader inputreader = new InputStreamReader(instream);
+					BufferedReader buffreader = new BufferedReader(inputreader);
+					String line;
+					while ((line = buffreader.readLine()) != null) {
+						String[] parsed = (line.split(","));
+						if(parsed[3].equals(trackName)){
+							track = parsed;
+						}
+					}
+					instream.close();
+				} catch (java.io.FileNotFoundException e) {} catch (IOException e) {
+					e.printStackTrace();
 				}
+				Log.d("Thread Name = ", Thread.currentThread().getName());
 			}
-			instream.close();
-		} catch (java.io.FileNotFoundException e) {}
-		
+		});
+
+		newThread.start();
+		try {
+			newThread.join();
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+
 		return track;
 	}
 }

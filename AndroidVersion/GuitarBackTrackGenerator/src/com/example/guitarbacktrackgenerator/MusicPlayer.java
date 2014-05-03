@@ -2,6 +2,7 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.File;
 import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,6 +28,8 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 	TextView title, displayUserChoice;
 	String path;
 	String[] userChoice;
+	final MediaPlayer mediaPlayer = new MediaPlayer();
+	boolean backPressed = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 
 		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " "
 				+ userChoice[2] + " " + userChoice[3]);
-		final MediaPlayer mediaPlayer = new MediaPlayer();
+		//final MediaPlayer mediaPlayer = new MediaPlayer();
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		path = Environment.getExternalStorageDirectory().getAbsolutePath()
 					+ "/GuitarRecordings/" +  userChoice[4] + ".3gp";
@@ -137,13 +140,26 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mediaPlayer.stop();
-				mediaPlayer.release();
+				if(backPressed == false){
+					backPressed = true;
+					mediaPlayer.stop();
+					mediaPlayer.release();
+				}
 				finish();
 			}
 		});
 	}
 
+	@Override
+	public void onBackPressed() {
+		if(backPressed == false){
+			backPressed = true;
+			mediaPlayer.stop();
+			mediaPlayer.release();
+		}
+		finish();
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

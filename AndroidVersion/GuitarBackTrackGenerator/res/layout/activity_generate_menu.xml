@@ -59,21 +59,12 @@
         android:text="@string/Mode"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/textWarning"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonExit"
-        android:layout_toLeftOf="@+id/buttonMin"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
     <Button
         android:id="@+id/buttonExit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/buttonPlay"
         android:layout_alignBottom="@+id/buttonPlay"
-        android:layout_alignLeft="@+id/textWarning"
         android:layout_alignRight="@+id/buttonHeavy"
         android:background="@drawable/button"
         android:text="@string/Exit" />
@@ -96,17 +87,6 @@
         android:layout_centerVertical="true"
         android:background="@drawable/button"
         android:text="@string/Calm" />
-
-    <Button
-        android:id="@+id/buttonClear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonExit"
-        android:layout_alignLeft="@+id/textWarning"
-        android:layout_alignRight="@+id/buttonExit"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/button"
-        android:text="@string/Clear" />
 
     <TextView
         android:id="@+id/textStyle"
@@ -159,5 +139,15 @@
         android:layout_toLeftOf="@+id/textMode"
         android:background="@drawable/button"
         android:text="@string/Random" />
+
+    <Button
+        android:id="@+id/buttonClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonExit"
+        android:layout_alignLeft="@+id/buttonExit"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/button"
+        android:text="@string/Clear" />
 
 </RelativeLayout>

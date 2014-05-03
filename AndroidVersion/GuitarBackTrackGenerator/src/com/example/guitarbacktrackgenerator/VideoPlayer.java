@@ -2,13 +2,11 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.File;
 import java.io.IOException;
-
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -29,7 +27,7 @@ import android.widget.Toast;
  */
 public class VideoPlayer extends YouTubeBaseActivity
 implements YouTubePlayer.OnInitializedListener{
-	
+
 	Button buttonExit, buttonAddToFavourites, buttonStartRec;
 	TextView title, trackName;
 	String[] userChoice;
@@ -37,7 +35,7 @@ implements YouTubePlayer.OnInitializedListener{
 	static private String VIDEO = "";
 	boolean mStartRecording = true, backPressed = false;
 	final AudioRecord rec = new AudioRecord();
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,24 +80,21 @@ implements YouTubePlayer.OnInitializedListener{
 		buttonStartRec.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//Thread recordingThread = new Thread(new Runnable() {
-				//	public void run() {
+				Thread recordingThread = new Thread(new Runnable() {
+					public void run() {
 						rec.onRecord(mStartRecording);
-				//	}
-				//});
-				
-//				recordingThread.start();
-//				try {
-//					recordingThread.join();
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-						
-				
-				//Log.d("",Long.toString(rec.getTrackName()));
-				
+						Log.d("Thread Name = ", java.lang.Thread.currentThread().getName());
+					}
+				});
+
+				recordingThread.start();
+				try {
+					recordingThread.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
 				if (mStartRecording) {
-					//rec.setTrackName(System.currentTimeMillis());
 					String text = "Recording is ON";
 					buttonStartRec.setText("Stop Recording");
 					Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
@@ -109,7 +104,7 @@ implements YouTubePlayer.OnInitializedListener{
 					buttonStartRec.setText("Start Recording");
 					Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
 					toast.show();
-			    	askToAddRecordingsToCsv();
+					askToAddRecordingsToCsv();
 				}
 				mStartRecording = !mStartRecording;
 			}
@@ -124,7 +119,7 @@ implements YouTubePlayer.OnInitializedListener{
 		}
 		finish();
 	}
-	
+
 	public boolean onCreateMusicPlayer(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -139,44 +134,28 @@ implements YouTubePlayer.OnInitializedListener{
 		trackName.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 
+	boolean success = false;
 	/**
 	 * Adds the current track playing into a csv file
 	 * @param fileName The filename where the track should be added
 	 */
 	public void addTrackToCsv(final String fileName){
-		boolean success = false;
+		//boolean success = false;
 		final CsvWriter newCsvWriter = new CsvWriter();
 		Long trackName = rec.getTrackName();
 		if(fileName.equals("recordings"))
 			userChoice[4] = Long.toString(trackName);
-		
+
 		Log.d("",userChoice[4]);
-		
-//		Thread fileReader = new Thread(new Runnable() {
-//			public void run() {
-//				try {
-//					success = newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",VideoPlayer.this, true);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-		
-//		fileReader.start();
-//		try {
-//			fileReader.join();
-//		} catch (InterruptedException e1) {
-//			e1.printStackTrace();
-//		}
-		
-		
-		// Mrazq nishki!
+
 		try {
 			success = newCsvWriter.writeInInternalStorageCsv(userChoice, fileName+".csv",VideoPlayer.this, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
+		// Mrazq nishki!
+
 		if(success){
 			String text = "Track successfully added to " + fileName + "!";
 			Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
@@ -186,11 +165,11 @@ implements YouTubePlayer.OnInitializedListener{
 			Toast toast = Toast.makeText(VideoPlayer.this, text, Toast.LENGTH_LONG);
 			toast.show();
 		}
-		
+
 		if(fileName.equals("recordings"))
 			finish();
 	}
-	
+
 	/**
 	 * Ask the user if he would like to save the recording
 	 */
@@ -201,56 +180,56 @@ implements YouTubePlayer.OnInitializedListener{
 		.setMessage("Do you want to save recording ?")
 		.setIcon(android.R.drawable.ic_dialog_alert)
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int which) {			      	
-		    	askForTrackName();
-		    }
+			public void onClick(DialogInterface dialog, int which) {			      	
+				askForTrackName();
+			}
 		})
-		
+
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int which) {			      	
+			public void onClick(DialogInterface dialog, int which) {			      	
 				String trackName = Long.toString(rec.getTrackName());
 				File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
 						+ "/GuitarRecordings/");
-				
+
 				trackName += ".3gp";
 				if (dir.isDirectory()) 
 					new File(dir, trackName).delete();
-		    }
+			}
 		})
 		//.setNegativeButton("No", null)
-			 
+
 		.show();
 	}
-	
+
 	/**
 	 * Ask the user for a name for the recording
 	 */
 	public void askForTrackName(){
 		AlertDialog.Builder alert = new AlertDialog.Builder(VideoPlayer.this);
-		
-    	alert.setTitle("Name your recordings");
-    	alert.setMessage("Please name your recording");
 
-    	final EditText input = new EditText(VideoPlayer.this);
-    	alert.setView(input);
+		alert.setTitle("Name your recordings");
+		alert.setMessage("Please name your recording");
 
-    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-    	public void onClick(DialogInterface dialog, int whichButton) {
-    	Editable value = input.getText();
-    		userChoice[3] = value.toString();
-    		addTrackToCsv("recordings");
-    	 }
-    	});
+		final EditText input = new EditText(VideoPlayer.this);
+		alert.setView(input);
 
-    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-    	 public void onClick(DialogInterface dialog, int whichButton) {
-    	     // Sorry...
-    	}
-    	});
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				Editable value = input.getText();
+				userChoice[3] = value.toString();
+				addTrackToCsv("recordings");
+			}
+		});
 
-    	alert.show();
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// Sorry...
+			}
+		});
+
+		alert.show();
 	}
-	
+
 	@Override
 	public void onInitializationFailure(Provider provider, YouTubeInitializationResult error) {
 		if(error.toString().equals("SERVICE_MISSING"))
