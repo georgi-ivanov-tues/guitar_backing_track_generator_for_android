@@ -23,7 +23,7 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+		android:layout_height="150dp"        
         android:layout_alignLeft="@+id/buttonRemoveTrack"
         android:layout_alignRight="@+id/buttonRemoveAllTracks"
         android:layout_below="@+id/textViewFavouritesMenu" >

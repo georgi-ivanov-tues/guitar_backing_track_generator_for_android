@@ -51,7 +51,7 @@ public class HelpMenu extends Activity {
 		textView[0] = new TextView(this);
 		textView[1] = new TextView(this);
 		textView[2] = new TextView(this);
-		textView[0].setText("Playing: " + "\n" + "Please make sure that you have the Youtube application installed on your phone before you start playing." + "\n");
+		textView[0].setText("Before Playing: " + "\n" + "Please make sure that you have the Youtube application installed on your phone before you start playing." + "\n");
 		textView[1].setText("Recording: " + "\n" + "Keep in mind that if the volume of the speakers is too high you won't be able to hear your playing on the recording. That's why we recommend using external speakers in order to get a full and better sounding recording and/or turning the volume down" + "\n");
 		textView[2].setText("Sharing: " + "\n" + "Before sharing please make sure that you are logged in the desired sharing application in order to be able to share your recording");
 		
@@ -72,3 +72,22 @@ public class HelpMenu extends Activity {
 
 }
 
+
+/*
+
+About the Application:
+
+
+Before Playing:
+Please make sure that you have the Youtube application installed on your phone before you start playing.
+
+Recording:
+Keep in mind that if the volume of the speakers is too high you won't be able to hear your playing on the
+recording. That's why we recommend using external speakers in order to get a full and better 
+sounding recording and/or turning the volume down.
+
+Sharing:
+Before sharing please make sure that you are logged in the desired sharing application
+in order to be able to share your recording
+
+*/

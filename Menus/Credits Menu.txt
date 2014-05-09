@@ -1,0 +1,6 @@
+Created by: Georgi Ivanov and Nedelcho Delechev students from 
+the "Technological School of Electronic Systems" in Sofia, Bulgaria as a part of a school project 
+for the subject "Technology of Programing" with teacher Kiril Mitov.
+
+We don not own any of the music used in this application.
+All rights belong to their respective owners.

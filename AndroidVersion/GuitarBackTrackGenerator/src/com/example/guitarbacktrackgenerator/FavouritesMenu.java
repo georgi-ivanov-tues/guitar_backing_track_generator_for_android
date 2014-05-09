@@ -21,6 +21,7 @@ import android.widget.Toast;
  * A menu where the user can manage his favourite tracks as well as his recordings
  * @author Georgi Ivanov
  */
+
 public class FavouritesMenu extends Activity{
 
 	Button buttonPlay, buttonSwitchToOtherView, buttonSortBy, buttonRemoveTrack, buttonRemoveAllTracks, buttonExit;
@@ -47,6 +48,8 @@ public class FavouritesMenu extends Activity{
 		textViewFavouritesMenu = (TextView) findViewById(R.id.textViewFavouritesMenu);
 		linearLayout = (LinearLayout) findViewById(R.id.LinearLayout);
 
+
+
 		try {
 			takeTracksFromCsv();
 			takeSortingInfo();
@@ -57,18 +60,6 @@ public class FavouritesMenu extends Activity{
 			e.printStackTrace();
 		}
 
-		//		Thread Thread = new Thread(new Runnable() {
-		//			public void run() {
-		//
-		//			}
-		//		});
-		//
-		//		Thread.start();
-		//		try {
-		//			Thread.join();
-		//		} catch (InterruptedException e1) {
-		//			e1.printStackTrace();
-		//		}
 
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override

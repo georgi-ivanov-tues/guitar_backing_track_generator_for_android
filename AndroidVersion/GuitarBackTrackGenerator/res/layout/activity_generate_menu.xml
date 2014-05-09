@@ -37,8 +37,8 @@
         android:layout_alignBaseline="@+id/Key"
         android:layout_alignBottom="@+id/Key"
         android:layout_alignRight="@+id/buttonMaj"
-        android:background="@drawable/button"
-        android:text="@string/Prev" />
+        android:background="@drawable/left2"
+         />
 
     <Button
         android:id="@+id/buttonHeavy"
@@ -76,8 +76,8 @@
         android:layout_alignBaseline="@+id/Key"
         android:layout_alignBottom="@+id/Key"
         android:layout_alignLeft="@+id/buttonMin"
-        android:background="@drawable/button"
-        android:text="@string/Next" />
+        android:background="@drawable/right2"
+        />
 
     <Button
         android:id="@+id/buttonCalm"
@@ -149,5 +149,15 @@
         android:layout_marginBottom="14dp"
         android:background="@drawable/button"
         android:text="@string/Clear" />
+
+    <!-- <ImageButton
+        android:id="@+id/btnForward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonPrev"
+        android:layout_toLeftOf="@+id/Key"
+        android:background="@null"
+        android:contentDescription="@string/ForwardRecording"
+        android:src="@drawable/left" /> -->
 
 </RelativeLayout>

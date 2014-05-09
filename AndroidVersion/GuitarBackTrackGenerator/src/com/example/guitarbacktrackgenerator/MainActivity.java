@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 	 * The title of the menu
 	 */
 	TextView title;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

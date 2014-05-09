@@ -33,9 +33,11 @@
     <string name="DeleteAllTracks">Delete All Tracks</string>
     <string name="SwitchTo">Switch To</string>
     <string name="SortBy">Sort By</string>
-    <string name="Music_Player">Music Player</string>
-   
-    
-   
+    <string name="MusicPlayer">Music Player</string>
+    <string name="VideoPlayer">Video Player</string>
+    <string name="Share">Share</string>
+    <string name="PlayRecording">Plays the recording when pressed/Pauses it if pressed again</string>
+    <string name="ForwardRecording">Forwards the recording when pressed</string>
+    <string name="BackwardRecording">Backwards the recording when pressed</string>
 
 </resources>

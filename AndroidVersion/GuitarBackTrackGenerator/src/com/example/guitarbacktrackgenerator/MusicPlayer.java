@@ -2,141 +2,162 @@ package com.example.guitarbacktrackgenerator;
 
 import java.io.File;
 import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnErrorListener;
-import android.media.MediaPlayer.OnPreparedListener;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.Menu;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 /**
  * A music player for playing the user's recordings
- * @author Nedelcho Delchev and Georgi Ivanov
+ * @author Georgi Ivanov and Nedelcho Delchev
  */
-public class MusicPlayer extends Activity implements OnErrorListener, OnPreparedListener{
-	Button buttonExit, buttonPlay, buttonPause, buttonStop, buttonShare;
-	TextView title, displayUserChoice;
-	String path;
-	String[] userChoice;
-	final MediaPlayer mediaPlayer = new MediaPlayer();
-	boolean backPressed = false;
-	
+public class MusicPlayer extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
+
+	private ImageButton buttonPlay, buttonForward, buttonBackward;
+	private Button buttonShare, buttonExit;
+	private TextView songCurrentDurationLabel, songTotalDurationLabel, displayUserChoice, title;
+	private SeekBar songProgressBar;
+	private MediaPlayer mediaPlayer = new MediaPlayer();
+	private Handler mHandler = new Handler();;
+	private Utilities utils;
+	private int seekForwardTime = 5000, seekBackwardTime = 5000; // 5000 milliseconds
+	private boolean backPressed = false;
+	private String[] userChoice;
+	private String path;
+
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_music_player);
 
-		buttonPlay = (Button) findViewById(R.id.buttonPlay);
-		buttonPause = (Button) findViewById(R.id.buttonPause);
-		buttonStop = (Button) findViewById(R.id.buttonStop);
+		buttonPlay = (ImageButton) findViewById(R.id.btnPlay);
+		buttonForward = (ImageButton) findViewById(R.id.btnForward);
+		buttonBackward = (ImageButton) findViewById(R.id.btnBackward);
 		buttonShare = (Button) findViewById(R.id.buttonShare);
 		buttonExit = (Button) findViewById(R.id.buttonExit);
-		title = (TextView) findViewById(R.id.Title);
-		displayUserChoice = (TextView) findViewById(R.id.Choice);
-
-		changeTextViewColors();
+		title = (TextView) findViewById(R.id.title);
+		displayUserChoice = (TextView) findViewById(R.id.songName);
+		songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
+		songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
+		songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
+		utils = new Utilities();
 
 		Bundle newBundle = this.getIntent().getExtras();
 		userChoice = newBundle.getStringArray(null);
 
 		displayUserChoice.setText(userChoice[0] + " " + userChoice[1] + " "
 				+ userChoice[2] + " " + userChoice[3]);
-		//final MediaPlayer mediaPlayer = new MediaPlayer();
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		path = Environment.getExternalStorageDirectory().getAbsolutePath()
-					+ "/GuitarRecordings/" +  userChoice[4] + ".3gp";
-		try {
-			mediaPlayer.setDataSource(path);
-		} catch (IllegalArgumentException e1) {
-			e1.printStackTrace();
-		} catch (SecurityException e1) {
-			e1.printStackTrace();
-		} catch (IllegalStateException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
-		mediaPlayer.setOnErrorListener(this);
-		mediaPlayer.setOnPreparedListener(this);
-		mediaPlayer.prepareAsync();
+				+ "/GuitarRecordings/" +  userChoice[4] + ".3gp";
+
+		// Listeners
+		songProgressBar.setOnSeekBarChangeListener(this); // Important
+		mediaPlayer.setOnCompletionListener(this); // Important
+
+		prepareMusicPlayer();
+
+		/**
+		 * Play button click event
+		 * plays a song and changes button to pause image
+		 * pauses a song and changes button to play image
+		 * */
 		buttonPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				if(!mediaPlayer.isPlaying()){
-					File file = new File(path);
-					if(file.exists()){
+			public void onClick(View arg0) {
+				// check for already playing
+				if(mediaPlayer.isPlaying()){
+					if(mediaPlayer != null){
+						mediaPlayer.pause();
+						// Changing button image to play button
+						buttonPlay.setImageResource(R.drawable.btn_play);
+					}
+				}else{
+					// Resume song
+					if(mediaPlayer != null){
 						mediaPlayer.start();
-					}else{
-						String text = "Error on finding track...";
-						Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
-						toast.show();
+						updateProgressBar();
+						// Changing button image to pause button
+						buttonPlay.setImageResource(R.drawable.btn_pause);
 					}
-						
 				}
 			}
 		});
 
-		buttonPause.setOnClickListener(new View.OnClickListener() {
+		/**
+		 * Forward button click event
+		 * Forwards song specified seconds
+		 * */
+		buttonForward.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				if (mediaPlayer.isPlaying()) {
-					mediaPlayer.pause();
+			public void onClick(View arg0) {
+				// get current song position				
+				int currentPosition = mediaPlayer.getCurrentPosition();
+				// check if seekForward time is lesser than song duration
+				if(currentPosition + seekForwardTime <= mediaPlayer.getDuration()){
+					// forward song
+					mediaPlayer.seekTo(currentPosition + seekForwardTime);
+				}else{
+					// forward to end position
+					mediaPlayer.seekTo(mediaPlayer.getDuration());
 				}
 			}
 		});
 
-		buttonStop.setOnClickListener(new View.OnClickListener() {
+		/**
+		 * Backward button click event
+		 * Backward song to specified seconds
+		 * */
+		buttonBackward.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
-				if (mediaPlayer.isPlaying()){
-					mediaPlayer.reset();
-					try {
-						mediaPlayer.setDataSource(path);
-					} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-					} catch (SecurityException e1) {
-						e1.printStackTrace();
-					} catch (IllegalStateException e1) {
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-					try {
-						mediaPlayer.prepare();
-					} catch (IllegalStateException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+			public void onClick(View arg0) {
+				// get current song position				
+				int currentPosition = mediaPlayer.getCurrentPosition();
+				// check if seekBackward time is greater than 0 sec
+				if(currentPosition - seekBackwardTime >= 0){
+					// forward song
+					mediaPlayer.seekTo(currentPosition - seekBackwardTime);
+				}else{
+					// backward to starting position
+					mediaPlayer.seekTo(0);
 				}
+
 			}
 		});
 
+		/**
+		 * A button for sharing the current recording
+		 */
 		buttonShare.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				File audioFile = new File(path);
+				//File audioFile = new File(path);
+				File audioFile = new File("raw/test.mp3");
 				Intent intent = new Intent(Intent.ACTION_SEND).setType("audio/*");
 				intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(audioFile));
 				startActivity(Intent.createChooser(intent, "Share to"));
 				String text = "Please make sure you are logged in before sharing!";
 				Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
 				toast.show();
-				//shareSound();
 			}
 		});
-		
+
+		/**
+		 * A button for exiting and going back to the previous activity
+		 */
 		buttonExit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -159,55 +180,114 @@ public class MusicPlayer extends Activity implements OnErrorListener, OnPrepared
 		}
 		finish();
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+
+	/**
+	 * Update timer on seek bar
+	 * */
+	public void updateProgressBar() {
+		mHandler.postDelayed(mUpdateTimeTask, 100);        
+	}	
+
+	/**
+	 * Background Runnable thread
+	 * */
+	private Runnable mUpdateTimeTask = new Runnable() {
+		public void run() {
+			if(backPressed == false){
+				long totalDuration = mediaPlayer.getDuration();
+				long currentDuration = mediaPlayer.getCurrentPosition();
+
+				// Displaying Total Duration time
+				songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
+				// Displaying time completed playing
+				songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
+
+				// Updating progress bar
+				int progress = (int)(utils.getProgressPercentage(currentDuration, totalDuration));
+				//Log.d("Progress", ""+progress);
+				songProgressBar.setProgress(progress);
+
+				// Running this thread after 100 milliseconds
+				mHandler.postDelayed(this, 100);
+			}
+		}
+	};
+
+	/**
+	 * Prepares the music player
+	 * Loads the songs length
+	 * Changes the text's color
+	 */
+	public void prepareMusicPlayer(){
+		try {
+			mediaPlayer.setDataSource(path);
+		} catch (IllegalArgumentException e1) {
+			e1.printStackTrace();
+		} catch (SecurityException e1) {
+			e1.printStackTrace();
+		} catch (IllegalStateException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		try {
+			mediaPlayer.prepare();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		long totalDuration = mediaPlayer.getDuration();
+		long currentDuration = mediaPlayer.getCurrentPosition();
+		songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
+		songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
+		displayUserChoice.setTextColor(Color.parseColor("#FFFFFF"));
+		title.setTextColor(Color.parseColor("#FFFFFF"));
 	}
 
 	/**
-	 * Changes the color of the textViews in the menu
-	 */
-	void changeTextViewColors() {
-		title.setTextColor(Color.parseColor("#FFFFFF"));
-		displayUserChoice.setTextColor(Color.parseColor("#FFFFFF"));
+	 * Best fuction ever!
+	 * */
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromTouch) {
+
 	}
 
-	// Sharing in soundcloud only
-//	private void shareSound() {
-//		File audioFile = new File(path);
-//		Intent intent = new Intent("com.soundcloud.android.SHARE")
-//			.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(audioFile))
-//			.putExtra("com.soundcloud.android.extra.title", userChoice[3])
-//			.putExtra("com.soundcloud.android.extra.where", userChoice[0] + ", " + userChoice[1] + ", " +  userChoice[2] + ", Backing Track")
-//			.putExtra("com.soundcloud.android.extra.description", "Thanks to: Guitar Backing Track Generator For Android")
-//			.putExtra("com.soundcloud.android.extra.public", true)
-//			.putExtra("com.soundcloud.android.extra.tags", new String[] {
-//			"demo",
-//			"post lolcat bluez",
-//			"soundcloud:created-with-client-id="+CLIENT_ID
-//		})
-//		.putExtra("com.soundcloud.android.extra.genre", "Easy Listening");
-//		//.putExtra("com.soundcloud.android.extra.location", getLocation());
-//		
-//		try {
-//			startActivityForResult(intent, SHARE_SOUND);
-//		}catch (ActivityNotFoundException notFound) {
-//			String text = "You should give up life!";
-//			Toast toast = Toast.makeText(MusicPlayer.this, text, Toast.LENGTH_LONG);
-//			toast.show();
-//		}
-//	}
-	
+	/**
+	 * When user starts moving the progress handler
+	 * */
 	@Override
-	public void onPrepared(MediaPlayer mp) {
-		buttonPlay.setEnabled(true);
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// remove message Handler from updating progress bar
+		mHandler.removeCallbacks(mUpdateTimeTask);
+	}
+
+	/**
+	 * When user stops moving the progress handler
+	 * */
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		mHandler.removeCallbacks(mUpdateTimeTask);
+		int totalDuration = mediaPlayer.getDuration();
+		int currentPosition = utils.progressToTimer(seekBar.getProgress(), totalDuration);
+
+		// forward or backward to certain seconds
+		mediaPlayer.seekTo(currentPosition);
+
+		// update timer progress again
+		updateProgressBar();
 	}
 
 	@Override
-	public boolean onError(MediaPlayer arg0, int arg1, int arg2) {
-		return false;
+	public void onDestroy(){
+		super.onDestroy();
+		mediaPlayer.release();
+	}
+
+	@Override
+	public void onCompletion(MediaPlayer arg0) {
+
 	}
 }

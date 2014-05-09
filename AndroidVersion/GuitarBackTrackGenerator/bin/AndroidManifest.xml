@@ -69,7 +69,7 @@
             android:label="MusicPlayer"
             android:screenOrientation="portrait">
         </activity>
-          
+        
     </application>
 
 </manifest>
